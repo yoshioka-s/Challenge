@@ -27,10 +27,14 @@ router.post('/login', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
   var hashed = tempAuthInfo[username].password;
+  var data;
   bcrypt.compare(password, hashed, function(err, res) {
   	console.log("Logged in: ", res)
+  	data = res;
   })
-  res.send("loggedin")
+  .then(function(data) {
+  	res.send(data);
+  })
 })
 
 // router.get('/logout', function(req, res) {

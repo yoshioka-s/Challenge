@@ -4,6 +4,7 @@ angular.module('challengeApp.services', [])
     $http.post('/auth/signup', {username: username, password: password})
     .success(function(data) {
       console.log("getUserInfo: ", data)
+      return data;
     })
     .error(function(error) {
       console.log("getUserInfoError: ", error)
@@ -16,13 +17,14 @@ angular.module('challengeApp.services', [])
   };
 
   var login = function(username, password) {
-    $http.post('/auth/login', {username: username, password: password})
-    .success(function(data) {
+    return $http.post('/auth/login', {username: username, password: password})
+    .then(function(data) {
       console.log("login successful: ", data);
+      return data;
     })
-    .error(function(error) {
-      console.log("login error, ", error);
-    })
+    // .error(function(error) {
+    //   console.log("login error, ", error);
+    // })
   }
   var logout = function() {
     return $http.get('/auth/logout').then(function() {
