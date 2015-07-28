@@ -22,8 +22,12 @@ router.post('/signup', function(req, res) {
 	  })
 	  
 	})
-  res.send("good");
+    res.send("good");
 });
+
+router.post('/login', function(req, res) {
+
+})
 
 // router.get('/logout', function(req, res) {
 //   req.logout();
