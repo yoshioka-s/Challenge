@@ -1,5 +1,4 @@
 angular.module('challengeApp.services', [])
-
 .factory('Auth', function ($http) {
   var getUserInfo = function() {
     return $http.get('/api/1/user_info').then(function(res) {
@@ -8,7 +7,6 @@ angular.module('challengeApp.services', [])
       throw Error(error);
     });
   };
-
   var logout = function() {
     return $http.get('/auth/logout').then(function() {
       return true;
@@ -16,13 +14,11 @@ angular.module('challengeApp.services', [])
       throw Error(error);
     });
   };
-
   return {
     'getUserInfo': getUserInfo,
     'logout': logout
   };
 })
-
 .factory('ChallengeFactory', function($http){
   var getChallengeInfo = function(challengeId){
     return $http({

@@ -1,5 +1,4 @@
 angular.module('challengeApp.userChallenge', [])
-
 .controller('UserChallengesController', function ($scope, ChallengeFactory) {
   $scope.challenges = [];
 
