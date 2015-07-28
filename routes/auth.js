@@ -2,6 +2,12 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 
+// routing to auth
+router.post('/login', function(req, res) {
+  console.log("auth.js: ", req.body)
+  res.send("good");
+});
+
 // router.get('/logout', function(req, res) {
 //   req.logout();
 //   if (req.xhr) {

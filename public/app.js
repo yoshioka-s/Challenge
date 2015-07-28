@@ -10,10 +10,10 @@ angular.module('challengeApp', [
   // TODO: reroute to login/landing page
   $urlRouterProvider.otherwise('/');
   $stateProvider
-    // .state('signin', {
-    //   url: '/signin',
-    //   templateUrl: 'angular/client/challengerApp/auth/signin.html'
-    // })
+    .state('signin', {
+      url: '/signin',
+      templateUrl: '/html/signin.html'
+    })
 
     // .state('signout', {
     //   url: '/signout',
@@ -22,7 +22,6 @@ angular.module('challengeApp', [
     //     $state.go('signin');
     //   }
     // })
-
     .state('challenge_create', {
       url: '/challenge/create',
       templateUrl: './html/create.html',
@@ -38,7 +37,6 @@ angular.module('challengeApp', [
       templateUrl: './html/list.html',
       controller: 'ChallengeListController'
     })
-
     .state('user', {
       url: '/user',
       templateUrl: './html/user.html',
@@ -46,9 +44,13 @@ angular.module('challengeApp', [
     });
 
 }).controller('ChallengeAppController', function($scope, $state, Auth) {
-  $scope.user = null;
+  $scope.user = {};
 
-  
+  $scope.signIn = function(username, pw) {
+    $scope.user.username = username;
+    $scope.user.password = pw;
+    Auth.getUserInfo(username, pw);
+  }
 
   // $scope.setCurrentUser = function() {
   //   Auth.getUserInfo().then(function(user) {

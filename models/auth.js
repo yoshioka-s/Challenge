@@ -1,5 +1,5 @@
 var bcrypt = require('bcrypt');
-
+var express = require('express');
 // global variable for storing username and password
 
 // TODO create login page (html)
