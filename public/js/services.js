@@ -1,7 +1,7 @@
 angular.module('challengeApp.services', [])
 .factory('Auth', function ($http) {
   var getUserInfo = function(username, pw) {
-    $http.post('/auth/login', {username: username, pw: pw})
+    $http.post('/auth/signup', {username: username, pw: pw})
     .success(function(data) {
       console.log("getUserInfo: ", data)
     })

@@ -1,10 +1,27 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
+var bcrypt = require('bcrypt');
+// require crypto?
+
+var tempAuthPW = {};
 
 // routing to auth
-router.post('/login', function(req, res) {
-  console.log("auth.js: ", req.body)
+router.post('/signup', function(req, res) {
+	var username = req.body.username;
+	tempAuthPW[username] = {};
+	bcrypt.genSalt(10, function(err, salt) {
+	  if(err) {
+	  	console.log(err);
+	  	return;
+	  }
+	  bcrypt.hash(req.body.pw, salt, function(err, hash) {
+	    tempAuthPW[username].password = hash;
+	    tempAuthPW[username].salt = salt;
+	    console.log(tempAuthPW);
+	  })
+	  
+	})
   res.send("good");
 });
 
