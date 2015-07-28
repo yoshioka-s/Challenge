@@ -6,14 +6,13 @@ var models = require('../models');
  * Check if user is logged in and return an error otherwise
  */
 var requires_login = function(req, res, next) {
-  // if (!req.isAuthenticated()) {
-  //     res.status(401).json({'error': 'ENOTAUTH', 'message':'Endpoint requires login.'});
-  //   } else {
-  //     next();
-  //   }
-
+  if (!req.isAuthenticated()) {
+      res.status(401).json({'error': 'ENOTAUTH', 'message':'Endpoint requires login.'});
+    } else {
+      next();
+    }
   // Disabled for now
-  next();
+  // next();
 };
 
 /**
