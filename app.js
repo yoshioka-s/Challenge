@@ -12,7 +12,7 @@ var auth = require('./routes/auth');
 
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
-var passport = require('./middleware/passport');
+// var passport = require('./middleware/passport');
 
 var app = express();
 
@@ -28,8 +28,8 @@ app.use(session({
   'resave': false,
   'saveUninitialized': false
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
