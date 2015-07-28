@@ -28,7 +28,7 @@ angular.module('challengeApp', [
       controller: 'ChallengeController'
     })
     .state('dashboard.list', {
-      url: '/dashboard/list',
+      url: '/list',
       templateUrl: './html/allchallenges.html',
     })
     .state('dashboard', {
