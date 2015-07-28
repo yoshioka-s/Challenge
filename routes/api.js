@@ -6,14 +6,13 @@ var models = require('../models');
  * Check if user is logged in and return an error otherwise
  */
 var requires_login = function(req, res, next) {
-  // if (!req.isAuthenticated()) {
-  //     res.status(401).json({'error': 'ENOTAUTH', 'message':'Endpoint requires login.'});
-  //   } else {
-  //     next();
-  //   }
-
+  if (!req.isAuthenticated()) {
+      res.status(401).json({'error': 'ENOTAUTH', 'message':'Endpoint requires login.'});
+    } else {
+      next();
+    }
   // Disabled for now
-  next();
+  // next();
 };
 
 /**
@@ -436,6 +435,31 @@ router.post('/challenge/:id/comments', requires_login, function(req, res) {
   }).then(function() {
     res.json({'success': true});
   });
+});
+
+router.post('/challenge/:id/upvote', requires_login, function(req, res) {
+  var challengeId = parseInt(req.params.id);
+  var userId = req.body.userId;
+
+  models.UserChallenge.findOne({
+    where: {
+      challengeId: challengeId,
+      userId: userId
+    }
+  }).then(function (userChallenge) {
+    var upvote = userChallenge.get('upvote');
+    models.userChallenge.update({
+      upvote: upvote +1
+    }, {
+      where: {
+        challengeId: challengeId,
+        userId: userId
+      }
+    }).then(function () {
+      res.status(200).json({'success': true});
+    });
+  });
+
 });
 
 module.exports = {
