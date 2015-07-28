@@ -1,13 +1,11 @@
 angular.module('challengeApp.challenge', [])
 
 .controller('ChallengeController', function ($scope, ChallengeFactory, $stateParams) {
-
   $scope.challengeData = {};
   $scope.creator = null;
   $scope.started = false;
   $scope.complete = false;
   $scope.winner = null;
-
   $scope.canBeStarted = false;
   $scope.isParticipant = false;
   $scope.hasAccepted = false;

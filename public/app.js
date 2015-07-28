@@ -7,42 +7,41 @@ angular.module('challengeApp', [
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
-
-  $urlRouterProvider.otherwise('/signin');
-
+  // TODO: reroute to login/landing page
+  $urlRouterProvider.otherwise('/');
   $stateProvider
-    .state('signin', {
-      url: '/signin',
-      templateUrl: 'angular/client/challengerApp/auth/signin.html'
-    })
+    // .state('signin', {
+    //   url: '/signin',
+    //   templateUrl: 'angular/client/challengerApp/auth/signin.html'
+    // })
 
-    .state('signout', {
-      url: '/signout',
-      controller: function($scope, $state) {
-        $scope.logout();
-        $state.go('signin');
-      }
-    })
+    // .state('signout', {
+    //   url: '/signout',
+    //   controller: function($scope, $state) {
+    //     $scope.logout();
+    //     $state.go('signin');
+    //   }
+    // })
 
     .state('challenge_create', {
       url: '/challenge/create',
-      templateUrl: 'angular/client/challengerApp/create/create.html',
+      templateUrl: './html/create.html',
       controller: 'CreateChallengeController'
     })
     .state('challenge_view', {
       url: '/challenge/:id',
-      templateUrl: 'angular/client/challengerApp/challenge/challenge.html',
+      templateUrl: './html/challenge.html',
       controller: 'ChallengeController'
     })
     .state('challenge_list', {
       url: '/challenges',
-      templateUrl: 'angular/client/challengerApp/challenge/list.html',
+      templateUrl: './html/list.html',
       controller: 'ChallengeListController'
     })
 
     .state('user', {
       url: '/user',
-      templateUrl: 'angular/client/challengerApp/user/user.html',
+      templateUrl: './html/user.html',
       controller: 'UserChallengesController'
     });
 
@@ -98,6 +97,6 @@ angular.module('challengeApp', [
       'caption': '@'
     },
     'restrict': 'E',
-    'templateUrl': '/angular/client/challengerApp/user/challengeTable.html'
+    'templateUrl': './html/challengeTable.html'
   };
 });
