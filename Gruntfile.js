@@ -90,7 +90,7 @@ module.exports = function (grunt) {
 
     nodemon: {
       local: {
-        script: 'app.js'
+        script: 'server.js'
       }
     }
   });
