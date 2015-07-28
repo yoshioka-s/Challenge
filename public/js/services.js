@@ -1,19 +1,14 @@
 angular.module('challengeApp.services', [])
+
 .factory('Auth', function ($http) {
-  var getUserInfo = function(username, pw) {
-    $http.post('/auth/signup', {username: username, pw: pw})
-    .success(function(data) {
-      console.log("getUserInfo: ", data)
-    })
-    .error(function(error) {
-      console.log("getUserInfoError: ", error)
-    })
-    // return $http.get('/api/1/user_info').then(function(res) {
-    //   return res.data;
-    // }, function(error) {
-    //   throw Error(error);
-    // });
+  var getUserInfo = function() {
+    return $http.get('/api/1/user_info').then(function(res) {
+      return res.data;
+    }, function(error) {
+      throw Error(error);
+    });
   };
+
   var logout = function() {
     return $http.get('/auth/logout').then(function() {
       return true;
@@ -21,11 +16,13 @@ angular.module('challengeApp.services', [])
       throw Error(error);
     });
   };
+
   return {
     'getUserInfo': getUserInfo,
     'logout': logout
   };
 })
+
 .factory('ChallengeFactory', function($http){
   var getChallengeInfo = function(challengeId){
     return $http({
@@ -102,6 +99,16 @@ angular.module('challengeApp.services', [])
     });
   };
 
+  var upvoteUser = function(challengeId, targetUserId) {
+    return $http({
+      method: 'POST',
+      data: {'targetUserId': targetUserId},
+      url: 'api/challenge/' + challengeId + '/upvote'
+    }).then(function (resp) {
+      return resp.data;
+    });
+  };
+
   return {
     getChallengeInfo: getChallengeInfo,
     acceptChallenge: acceptChallenge,
@@ -110,7 +117,8 @@ angular.module('challengeApp.services', [])
     getUserChallenges: getUserChallenges,
     getChallengeList: getChallengeList,
     getChallengeComments: getChallengeComments,
-    postChallengeComment: postChallengeComment
+    postChallengeComment: postChallengeComment,
+    upvoteUser: upvoteUser
   };
 })
 

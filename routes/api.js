@@ -21,8 +21,8 @@ var requires_login = function(req, res, next) {
  *
  * Requires login
  */
-router.get('/user_info', requires_login, function(req, res) {
-console.log("userinfo", req.body)
+router.get('/user_info', requires_login, function(req) {
+  console.log('userinfo', req.body);
 });
 
 
@@ -448,7 +448,7 @@ router.post('/challenge/:id/comments', requires_login, function(req, res) {
 router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
   // FIXME mocking user
-  var userId = 1;
+  var userId = req.body.targetUserId;
 
   models.UserChallenge.findOne({
     where: {
