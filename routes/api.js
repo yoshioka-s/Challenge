@@ -22,15 +22,7 @@ var requires_login = function(req, res, next) {
  * Requires login
  */
 router.get('/user_info', requires_login, function(req, res) {
-
-  models.User.findOne({
-    where: {
-      id: req.user.id
-    }
-  })
-  .then(function(user) {
-    res.json(user.get({plain: true}));
-  });
+console.log("userinfo", req.body)
 });
 
 

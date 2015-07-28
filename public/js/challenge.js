@@ -1,5 +1,4 @@
 angular.module('challengeApp.challenge', [])
-
 .controller('ChallengeController', function ($scope, ChallengeFactory, $stateParams) {
   $scope.challengeData = {};
   $scope.creator = null;

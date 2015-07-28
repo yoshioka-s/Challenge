@@ -3,17 +3,19 @@ angular.module('challengeApp', [
   'challengeApp.createChallenge',
   'challengeApp.userChallenge',
   'challengeApp.services',
+  'challengeApp.dashboard',
+  'challengeApp.auth',
   'ui.router'
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
   // TODO: reroute to login/landing page
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/auth');
   $stateProvider
-    // .state('signin', {
-    //   url: '/signin',
-    //   templateUrl: 'angular/client/challengerApp/auth/signin.html'
-    // })
+    .state('signin', {
+      url: '/signin',
+      templateUrl: '/html/signin.html'
+    })
 
     // .state('signout', {
     //   url: '/signout',
@@ -22,7 +24,11 @@ angular.module('challengeApp', [
     //     $state.go('signin');
     //   }
     // })
-
+    .state('auth', {
+      url: '/auth',
+      templateUrl: 'html/auth.html',
+      controller: 'authController'
+    })
     .state('challenge_create', {
       url: '/challenge/create',
       templateUrl: './html/create.html',
@@ -33,12 +39,15 @@ angular.module('challengeApp', [
       templateUrl: './html/challenge.html',
       controller: 'ChallengeController'
     })
-    .state('challenge_list', {
-      url: '/challenges',
-      templateUrl: './html/list.html',
-      controller: 'ChallengeListController'
+    .state('dashboard.list', {
+      url: '/dashboard/list',
+      templateUrl: './html/allchallenges.html',
     })
-
+    .state('dashboard', {
+      url: '/dashboard',
+      templateUrl: './html/dashboard.html',
+      controller: 'dashboardController'
+    })
     .state('user', {
       url: '/user',
       templateUrl: './html/user.html',
@@ -46,21 +55,27 @@ angular.module('challengeApp', [
     });
 
 }).controller('ChallengeAppController', function($scope, $state, Auth) {
-  $scope.user = null;
+  $scope.user = {};
 
-  $scope.setCurrentUser = function() {
-    Auth.getUserInfo().then(function(user) {
-      $scope.user = user;
-    }, function() {
-      $state.go('signin');
-    });
-  };
+  $scope.signIn = function(username, pw) {
+    $scope.user.username = username;
+    $scope.user.password = pw;
+    Auth.getUserInfo(username, pw);
+  }
 
-  $scope.logout = function() {
-    Auth.logout().then(function() {
-      $scope.user = null;
-    });
-  };
+  // $scope.setCurrentUser = function() {
+  //   Auth.getUserInfo().then(function(user) {
+  //     $scope.user = user;
+  //   }, function() {
+  //     $state.go('signin');
+  //   });
+  // };
+
+  // $scope.logout = function() {
+  //   Auth.logout().then(function() {
+  //     $scope.user = null;
+  //   });
+  // };
 
   // $scope.setCurrentUser();
 }).filter('challengeFilter', function() {

@@ -1,0 +1,56 @@
+/*================= Auth =================*/
+
+.authForm{
+  margin-top: 100px;
+  margin-right: auto;
+  margin-left: auto;
+  height: 200px;
+  width: 500px;
+}
+
+.authForm input{
+  margin: 10px;
+}
+
+.authForm button{
+  margin: 10px;
+  text-align: center;
+}
+
+
+/*================= Dashboard =================*/
+
+.leftSide{
+  float: left;
+  width: 65%;
+}
+
+.rightSide{
+  float: right;
+  width: 35%;
+}
+
+#allChallenges{
+  height: 500px;
+  margin-top: 30px;
+  background-color: rgba(240,210,140,0.3);
+}
+
+
+.upRight{
+  margin-top: 30px;
+  height: 250px;
+  background-color: rgba(40,210,140,0.3);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.downRight{
+  height: 250px;
+  background-color: rgba(200,110,240,0.3);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+
