@@ -87,6 +87,10 @@ var UserChallenge = orm.define('usersChallenges', {
   accepted: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+  },
+  upvote: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 });
 

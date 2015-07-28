@@ -1,18 +1,19 @@
 var express = require('express');
 var router = express.Router();
-var models = require('../models');
+var models = require('../models/index.js');
 
 /**
  * Check if user is logged in and return an error otherwise
  */
 var requires_login = function(req, res, next) {
-  if (!req.isAuthenticated()) {
-      res.status(401).json({'error': 'ENOTAUTH', 'message':'Endpoint requires login.'});
-    } else {
-      next();
-    }
+  // if (!req.isAuthenticated()) {
+  //     res.status(401).json({'error': 'ENOTAUTH', 'message':'Endpoint requires login.'});
+  //   } else {
+  //     next();
+  //   }
+
   // Disabled for now
-  // next();
+  next();
 };
 
 /**
@@ -192,7 +193,8 @@ router.get('/challenge/:id', function(req, res) {
           first_name: rawParticipants[i].first_name,
           last_name: rawParticipants[i].last_name,
           profile_image: rawParticipants[i].profile_image,
-          accepted: rawParticipants[i].usersChallenges.accepted
+          accepted: rawParticipants[i].usersChallenges.accepted,
+          upvote: rawParticipants[i].usersChallenges.upvote
         });
       }
 
@@ -239,6 +241,8 @@ var challenge_form_is_valid = function(form) {
  */
 router.post('/challenge', requires_login, function(req, res) {
   var form = req.body;
+  console.log('POST CHALLENGE ');
+  console.log(form);
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -247,6 +251,8 @@ router.post('/challenge', requires_login, function(req, res) {
   }
 
   // Create the challenge
+  console.log('CREATE CHALLENGE!');
+  console.log(models.Challenge.create);
   models.Challenge.create({
     title: form.title,
     message: form.message,
@@ -255,6 +261,7 @@ router.post('/challenge', requires_login, function(req, res) {
     date_started: Date.now()
   })
   .then(function(challenge) {
+    console.log('CREATED!');
     challenge.addParticipants(form.participants); // form.participants should be an array
     challenge.addParticipant([req.user.id], {accepted: true}); // links creator of challenge
 
@@ -459,7 +466,6 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
       res.status(200).json({'success': true});
     });
   });
-
 });
 
 module.exports = {
