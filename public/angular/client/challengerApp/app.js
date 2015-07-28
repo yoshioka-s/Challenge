@@ -7,22 +7,22 @@ angular.module('challengeApp', [
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
-
-  $urlRouterProvider.otherwise('/signin');
+  // TODO: reroute to login/landing page
+  $urlRouterProvider.otherwise('/challenge_create');
 
   $stateProvider
-    .state('signin', {
-      url: '/signin',
-      templateUrl: 'angular/client/challengerApp/auth/signin.html'
-    })
+    // .state('signin', {
+    //   url: '/signin',
+    //   templateUrl: 'angular/client/challengerApp/auth/signin.html'
+    // })
 
-    .state('signout', {
-      url: '/signout',
-      controller: function($scope, $state) {
-        $scope.logout();
-        $state.go('signin');
-      }
-    })
+    // .state('signout', {
+    //   url: '/signout',
+    //   controller: function($scope, $state) {
+    //     $scope.logout();
+    //     $state.go('signin');
+    //   }
+    // })
 
     .state('challenge_create', {
       url: '/challenge/create',
