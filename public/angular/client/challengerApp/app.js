@@ -49,21 +49,23 @@ angular.module('challengeApp', [
 }).controller('ChallengeAppController', function($scope, $state, Auth) {
   $scope.user = null;
 
-  $scope.setCurrentUser = function() {
-    Auth.getUserInfo().then(function(user) {
-      $scope.user = user;
-    }, function() {
-      $state.go('signin');
-    });
-  };
+  
 
-  $scope.logout = function() {
-    Auth.logout().then(function() {
-      $scope.user = null;
-    });
-  };
+  // $scope.setCurrentUser = function() {
+  //   Auth.getUserInfo().then(function(user) {
+  //     $scope.user = user;
+  //   }, function() {
+  //     $state.go('signin');
+  //   });
+  // };
 
-  $scope.setCurrentUser();
+  // $scope.logout = function() {
+  //   Auth.logout().then(function() {
+  //     $scope.user = null;
+  //   });
+  // };
+
+  // $scope.setCurrentUser();
 }).filter('challengeFilter', function() {
   return function(input, accepted, started, complete, user) {
     user = (user !== undefined) ? parseInt(user) : undefined;
