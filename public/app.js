@@ -3,26 +3,20 @@ angular.module('challengeApp', [
   'challengeApp.createChallenge',
   'challengeApp.userChallenge',
   'challengeApp.services',
+  'challengeApp.dashboard',
+  'challengeApp.auth',
   'ui.router'
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
   // TODO: reroute to login/landing page
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/auth');
   $stateProvider
-    // .state('signin', {
-    //   url: '/signin',
-    //   templateUrl: 'angular/client/challengerApp/auth/signin.html'
-    // })
-
-    // .state('signout', {
-    //   url: '/signout',
-    //   controller: function($scope, $state) {
-    //     $scope.logout();
-    //     $state.go('signin');
-    //   }
-    // })
-
+    .state('auth', {
+      url: '/auth',
+      templateUrl: 'html/auth.html',
+      controller: 'authController'
+    })
     .state('challenge_create', {
       url: '/challenge/create',
       templateUrl: './html/create.html',
@@ -33,12 +27,15 @@ angular.module('challengeApp', [
       templateUrl: './html/challenge.html',
       controller: 'ChallengeController'
     })
-    .state('challenge_list', {
-      url: '/challenges',
-      templateUrl: './html/list.html',
-      controller: 'ChallengeListController'
+    .state('dashboard.list', {
+      url: '/dashboard/list',
+      templateUrl: './html/allchallenges.html',
     })
-
+    .state('dashboard', {
+      url: '/dashboard',
+      templateUrl: './html/dashboard.html',
+      controller: 'dashboardController'
+    })
     .state('user', {
       url: '/user',
       templateUrl: './html/user.html',
