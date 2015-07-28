@@ -12,6 +12,18 @@ angular.module('challengeApp', [
   // TODO: reroute to login/landing page
   $urlRouterProvider.otherwise('/auth');
   $stateProvider
+    .state('signin', {
+      url: '/signin',
+      templateUrl: '/html/signin.html'
+    })
+
+    // .state('signout', {
+    //   url: '/signout',
+    //   controller: function($scope, $state) {
+    //     $scope.logout();
+    //     $state.go('signin');
+    //   }
+    // })
     .state('auth', {
       url: '/auth',
       templateUrl: 'html/auth.html',
@@ -43,21 +55,27 @@ angular.module('challengeApp', [
     });
 
 }).controller('ChallengeAppController', function($scope, $state, Auth) {
-  $scope.user = null;
+  $scope.user = {};
 
-  $scope.setCurrentUser = function() {
-    Auth.getUserInfo().then(function(user) {
-      $scope.user = user;
-    }, function() {
-      $state.go('signin');
-    });
-  };
+  $scope.signIn = function(username, pw) {
+    $scope.user.username = username;
+    $scope.user.password = pw;
+    Auth.getUserInfo(username, pw);
+  }
 
-  $scope.logout = function() {
-    Auth.logout().then(function() {
-      $scope.user = null;
-    });
-  };
+  // $scope.setCurrentUser = function() {
+  //   Auth.getUserInfo().then(function(user) {
+  //     $scope.user = user;
+  //   }, function() {
+  //     $state.go('signin');
+  //   });
+  // };
+
+  // $scope.logout = function() {
+  //   Auth.logout().then(function() {
+  //     $scope.user = null;
+  //   });
+  // };
 
   // $scope.setCurrentUser();
 }).filter('challengeFilter', function() {
