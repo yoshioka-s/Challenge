@@ -1,5 +1,6 @@
 angular.module('challengeApp.auth', [])
-.controller('authController', ['$scope','$location', function($scope,$location){
+.controller('AuthController', ['$scope','$location', 'Auth', function($scope, $location, Auth){
+    $scope.user = {};
     $scope.showLogin = true;
     $scope.showSignup = false;
 
@@ -13,12 +14,18 @@ angular.module('challengeApp.auth', [])
     $scope.showSignup = true;
   }
 
-  $scope.login = function(username,password){
-     $location.path('/dashboard');
+  $scope.login = function(username, password){
+    $scope.user.username = username;
+    $scope.user.password = password;
+    Auth.login(username, password)
+     // $location.path('/dashboard');
   }
 
-  $scope.signup = function(username,password){
-     $location.path('/dashboard');
+  $scope.signup = function(username, password){
+    $scope.user.username = username;
+    $scope.user.password = password;
+    Auth.createUser(username, password);
+     // $location.path('/dashboard');
   }
 
 

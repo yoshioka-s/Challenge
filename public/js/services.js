@@ -1,7 +1,7 @@
 angular.module('challengeApp.services', [])
 .factory('Auth', function ($http) {
-  var getUserInfo = function(username, pw) {
-    $http.post('/auth/signup', {username: username, pw: pw})
+  var createUser = function(username, password) {
+    $http.post('/auth/signup', {username: username, password: password})
     .success(function(data) {
       console.log("getUserInfo: ", data)
     })
@@ -14,6 +14,16 @@ angular.module('challengeApp.services', [])
     //   throw Error(error);
     // });
   };
+
+  var login = function(username, password) {
+    $http.post('/auth/login', {username: username, password: password})
+    .success(function(data) {
+      console.log("login successful: ", data);
+    })
+    .error(function(error) {
+      console.log("login error, ", error);
+    })
+  }
   var logout = function() {
     return $http.get('/auth/logout').then(function() {
       return true;
@@ -22,7 +32,8 @@ angular.module('challengeApp.services', [])
     });
   };
   return {
-    'getUserInfo': getUserInfo,
+    'createUser': createUser,
+    login: login,
     'logout': logout
   };
 })

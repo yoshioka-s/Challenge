@@ -4,21 +4,19 @@ var models = require('../models');
 var bcrypt = require('bcrypt');
 // require crypto?
 
-var tempAuthPW = {};
+var tempAuthInfo = {};
 
 // routing to auth
 router.post('/signup', function(req, res) {
 	var username = req.body.username;
-	tempAuthPW[username] = {};
+	tempAuthInfo[username] = {};
 	bcrypt.genSalt(10, function(err, salt) {
 	  if(err) {
 	  	console.log(err);
 	  	return;
 	  }
-	  bcrypt.hash(req.body.pw, salt, function(err, hash) {
-	    tempAuthPW[username].password = hash;
-	    tempAuthPW[username].salt = salt;
-	    console.log(tempAuthPW);
+	  bcrypt.hash(req.body.password, salt, function(err, hash) {
+	    tempAuthInfo[username].password = hash;
 	  })
 	  
 	})
@@ -26,7 +24,13 @@ router.post('/signup', function(req, res) {
 });
 
 router.post('/login', function(req, res) {
-
+  var username = req.body.username;
+  var password = req.body.password;
+  var hashed = tempAuthInfo[username].password;
+  bcrypt.compare(password, hashed, function(err, res) {
+  	console.log("Logged in: ", res)
+  })
+  res.send("loggedin")
 })
 
 // router.get('/logout', function(req, res) {
