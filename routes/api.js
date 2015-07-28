@@ -429,6 +429,31 @@ router.post('/challenge/:id/comments', requires_login, function(req, res) {
   });
 });
 
+router.post('/challenge/:id/upvote', requires_login, function(req, res) {
+  var challengeId = parseInt(req.params.id);
+  var userId = req.body.userId;
+
+  models.UserChallenge.findOne({
+    where: {
+      challengeId: challengeId,
+      userId: userId
+    }
+  }).then(function (userChallenge) {
+    var upvote = userChallenge.get('upvote');
+    models.userChallenge.update({
+      upvote: upvote +1
+    }, {
+      where: {
+        challengeId: challengeId,
+        userId: userId
+      }
+    }).then(function () {
+      res.status(200).json({'success': true});
+    });
+  });
+
+});
+
 module.exports = {
   'router': router,
   'challenge_form_is_valid': challenge_form_is_valid
