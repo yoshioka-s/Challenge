@@ -510,7 +510,7 @@ function setWinner(challenge) {
   });
   // update the coin fo the winner
   models.User.update({
-    coin: Sequelize.literal('upvote +' + challenge.get('wager'))
+    coin: Sequelize.literal('coin +' + challenge.get('wager'))
   },{
     where: {
       id: newWinner
