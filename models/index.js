@@ -84,6 +84,10 @@ var Challenge = orm.define('challenges', {
 
   date_completed: {
     type: Sequelize.DATE
+  },
+
+  total_wager: {
+    type: Sequelize.INTEGER
   }
 });
 

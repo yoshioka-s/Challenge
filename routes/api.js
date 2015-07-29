@@ -249,7 +249,8 @@ router.post('/challenge', requires_login, function(req, res) {
     message: form.message,
     wager: form.wager,
     creator: userId,
-    date_started: Date.now()
+    date_started: Date.now(),
+    total_wager: form.wager
   })
   .then(function(challenge) {
     challenge.addParticipants(form.participants); // form.participants should be an array
@@ -506,7 +507,7 @@ function setWinner(challenge) {
   });
   // update the coin fo the winner
   models.User.update({
-    coin: Sequelize.literal('coin +' + challenge.get('wager'))
+    coin: Sequelize.literal('coin +' + challenge.get('total_wager'))
   },{
     where: {
       id: newWinner
