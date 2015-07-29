@@ -233,8 +233,10 @@ var challenge_form_is_valid = function(form) {
  * Requires login
  */
 router.post('/challenge', requires_login, function(req, res) {
+  console.log('challenge?');
   var form = req.body;
-  var userId = req.user.id;
+  var userId = 1;
+  // var userId = req.user.id;
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -243,6 +245,7 @@ router.post('/challenge', requires_login, function(req, res) {
   }
 
   // Create the challenge
+  console.log('CREATE!! ',form);
   models.Challenge.create({
     title: form.title,
     message: form.message,
@@ -251,6 +254,7 @@ router.post('/challenge', requires_login, function(req, res) {
     date_started: Date.now()
   })
   .then(function(challenge) {
+    console.log('CREATED!!!!!', challenge);
     challenge.addParticipants(form.participants); // form.participants should be an array
     challenge.addParticipant([userId], {accepted: true}); // links creator of challenge
     res.status(201).json({
