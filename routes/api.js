@@ -383,11 +383,29 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
       }
     })
     .then(function(userChallenge) {
-      if (userChallenge.get('accepted')) {
-        res.status(201).json({'success': true});
-      } else {
+      if (!userChallenge.get('accepted')) {
         res.status(200).json({'success': false});
       }
+      models.Challenge.findOne({
+        where: {
+          id: target_id
+        }
+      })
+      .then(function (challenge) {
+        models.User.update({
+          coin: Sequelize.literal('coin -' + challenge.get('wager'))
+        }, {
+          where: {
+            id: user_id
+          }
+        });
+        models.Challenge.update({
+          total_wager: Sequelize.literal('total_wager +' + challenge.get('wager'))
+        }, where: {
+          id: target_id
+        })
+      })
+      res.status(201).json({'success': true});
     });
   });
 });
