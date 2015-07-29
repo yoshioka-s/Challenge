@@ -8,11 +8,11 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
 
 
   $scope.modernBrowsers = [
-    { icon: "<img src=[..]/opera.png.. />",               name: "Opera",              maker: "(Opera Software)",        ticked: true  },
-    { icon: "<img src=[..]/internet_explorer.png.. />",   name: "Internet Explorer",  maker: "(Microsoft)",             ticked: false },
-    { icon: "<img src=[..]/firefox-icon.png.. />",        name: "Firefox",            maker: "(Mozilla Foundation)",    ticked: true  },
-    { icon: "<img src=[..]/safari_browser.png.. />",      name: "Safari",             maker: "(Apple)",                 ticked: false },
-    { icon: "<img src=[..]/chrome.png.. />",              name: "Chrome",             maker: "(Google)",                ticked: true  }
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Bob",                 ticked: false  },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Peter",               ticked: false },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Marry",               ticked: false  },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Alex",                ticked: false },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "John",                ticked: false  }
   ];
 
 
