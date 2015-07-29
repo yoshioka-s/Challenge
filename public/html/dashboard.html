@@ -1,16 +1,37 @@
-<div class="leftSide">
-  <div id="allChallenges">
-    <div ui-view></div>
+<div class="dashboard">
+  <div class="leftSide">
+      <div ui-view></div>
+  </div>
+
+
+  <div class="rightSide">
+    <div class="upRight">
+      <img id='profileImg' src="../img/placeholder.jpg">
+      <div id="greeting">Hello User</div>
+      <div id="coindev">
+        <img id="coinimg" src="./img/coin.png">
+        <span id='coin'>$1000</span>
+      </div>
+
+      <div id="profileButton">
+        <button class="dashboardButton" ng-click="createChallenge()">Challenge</button>
+        <button class="dashboardButton" ng-click="editProfile()">profile</button>
+      </div>
+    </div>
+
+    <div class="downRight">
+
+      <div>
+        <ul>
+          <li class="challengeBox" ng-repeat="challenge in challenges" ng-click="findDetail(challenge)">
+            <div class="challengeTitle challengeText"> {{challenge.title}} </div>
+            <div class="challengeTime challengeText"> {{challenge.time}} </div>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
   </div>
 </div>
 
-
-<div class="rightSide">
-  <div class="upRight">
-
-  </div>
-
-  <div class="downRight">
-
-  </div>
-</div>
