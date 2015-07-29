@@ -234,10 +234,7 @@ var challenge_form_is_valid = function(form) {
  */
 router.post('/challenge', requires_login, function(req, res) {
   var form = req.body;
-  // FIXME mocking user
-  var userId = 1;
-  console.log('POST CHALLENGE ');
-  console.log(form);
+  var userId = req.user.id;
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -246,14 +243,6 @@ router.post('/challenge', requires_login, function(req, res) {
   }
 
   // Create the challenge
-  console.log('CREATE CHALLENGE!');
-  console.log({
-    title: form.title,
-    message: form.message,
-    wager: form.wager,
-    creator: userId,
-    date_started: Date.now()
-  });
   models.Challenge.create({
     title: form.title,
     message: form.message,
@@ -262,11 +251,8 @@ router.post('/challenge', requires_login, function(req, res) {
     date_started: Date.now()
   })
   .then(function(challenge) {
-    console.log('CREATED!');
     challenge.addParticipants(form.participants); // form.participants should be an array
-    console.log('addParticipants 1');
     challenge.addParticipant([userId], {accepted: true}); // links creator of challenge
-console.log('addParticipants 2');
     res.status(201).json({
       id: challenge.id
     });
@@ -448,7 +434,6 @@ router.post('/challenge/:id/comments', requires_login, function(req, res) {
 
 router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
-  // FIXME mocking user
   var userId = req.body.targetUserId;
 
   models.UserChallenge.findOne({
