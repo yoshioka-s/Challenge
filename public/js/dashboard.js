@@ -1,6 +1,6 @@
 angular.module('challengeApp.dashboard', [])
-.controller('dashboardController', ['$scope','$location','$state',
-  function($scope,$location,$state){
+.controller('dashboardController', ['$scope','$location','$state','Auth',
+  function($scope,$location,$state,Auth){
     $state.transitionTo('dashboard.profile');
     $scope.challenges = [
     {
@@ -33,5 +33,13 @@ angular.module('challengeApp.dashboard', [])
         itemId: challenge.id,
       });
     };
+
+      $scope.logout = function() {
+      sessionStorage.removeItem("loggedIn")
+      console.log('logout');
+      Auth.logout();
+      $state.go('auth');
+  }
+
 
 }])
