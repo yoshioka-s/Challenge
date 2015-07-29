@@ -1,0 +1,14 @@
+<form class="authForm" id="loginForm" ng-show="showLogin">
+    <input class="authInput form-control" type="text" placeholder="username" ng-model="loginUsername">
+    <input class="authInput form-control" type="text" placeholder="password" ng-model="loginPassword">
+    <button class="btn btn-default" ng-click="login(loginUsername, loginPassword)">Login</button>
+    <a href="" ng-click="swapAuth()">Go to signup</a>
+</form>
+
+
+<form class="authForm" id="loginForm" ng-show="showSignup">
+  <input class="authInput form-control" type="text" placeholder="username" ng-model="signupUsername">
+  <input class="authInput form-control" type="text" placeholder="password" ng-model="signupPassword">
+  <button class="btn btn-default" ng-click="signup(signupUsername, signupPassword)">Signup</button>
+  <a href="" ng-click="swapAuth()">Go to Login</a>
+</form>

@@ -1,5 +1,4 @@
 angular.module('challengeApp.challenge', [])
-
 .controller('ChallengeController', function ($scope, ChallengeFactory, $stateParams) {
   $scope.challengeData = {};
   $scope.creator = null;
@@ -74,5 +73,14 @@ angular.module('challengeApp.challenge', [])
     });
   };
   $scope.getChallengeList();
-});
 
+  $scope.upvoteUser = function (targetUserId) {
+    ChallengeFactory.upvoteUser($scope.challengeData.id, targetUserId).then(function (upvote) {
+      $scope.challengeData.participants.forEach(function (participant) {
+        if(participant.id === targetUserId){
+          participant.upvote = upvote;
+        }
+      });
+    });
+  };
+});
