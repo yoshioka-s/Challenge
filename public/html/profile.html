@@ -1,0 +1,22 @@
+<div class="boxed-group">
+  <div class="pageTitle">Profile</div>
+  <div class="boxed-group-inner">
+
+    <div flow-init class="edit-profile-avatar">
+      <div>Profile picture</div>
+      <img ngf-src="files[0]" id='avatar' ngf-accept="'image/*'" ngf-default-src="../img/placeholder.jpg" >
+      <div class="avatar-upload">
+        <div class="btn btn-default" ngf-select ng-model="files">Upload Profile Image</div>
+      </div>
+
+    </div>
+
+    <div class="edit-profile">
+      <div>Name</div>
+      <input class="form-control profile-input" size="20" type="text" placeholder="Richie">
+    </div>
+
+
+    <button class="btn btn-success" ng-click="update(files[0])">SAVE</button>
+  </div>
+</div>

@@ -5,7 +5,6 @@
 
 <div class="challenge-participant-container" ng-show="isParticipant&&!hasAccepted&&user.id!==creator.id&&!started">
  <button type="button" class="btn btn-success" ng-click="challengeAccept()">Accept challenge</button>
- <!-- <button type="button" class="btn btn-danger" ng-click="challengeComplete()">Deny challenge</button> -->
 </div>
 
 <div class="challenge-info-container">
@@ -35,6 +34,7 @@
       <span class="glyphicon glyphicon-sunglasses text-muted" title="Declare them the winner"
       ng-hide="user.id!==creator.id||!started||complete||!participant.accepted" ng-click="challengeComplete(participant.id)">
       </span>
+      <button type="button" name="upvote" ng-click="upvoteUser(participant.id)">upvote!</button>
     </div>
   </div>
   <div class="challenge-comment-container col-lg-12">
@@ -63,4 +63,3 @@
     </div>
   </div>
 </div>
-
