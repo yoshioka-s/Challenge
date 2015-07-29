@@ -1,6 +1,6 @@
 <div class="dashboard">
   <div class="leftSide">
-      <div ui-view></div>
+      <div id="ui-view" ui-view></div>
   </div>
 
 
@@ -15,13 +15,14 @@
     </div>
 
       <div class="profileButton">
-        <div class="dashboardButton" ng-click="createChallenge()">Challenge</div>
+      <div class="dashboardButton" ng-click="logout()">Logout</div>
+        <div class="dashboardButton" ng-click="createChallenge()">Create</div>
         <div class="dashboardButton" ng-click="editProfile()">profile</div>
+
       </div>
 
 
     <div class="downRight">
-
       <div class="challengeDiv">
         <ul>
           <li class="challengeBox" ng-repeat="challenge in challenges" ng-click="findDetail(challenge)">

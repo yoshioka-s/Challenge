@@ -1,34 +1,46 @@
-<div class='center-block'>
-  <div id='container' class="createForm bigTitle">
-    Create a Challenge
-  </div>
-  <div id='container' class="createForm">
-    <form novalidate>
-      <div class="form-group">
-        <label for="challenge-title">Title:</label>
-        <input class="form-control" type="text" id="challenge-title" ng-model="challengeInfo.title">
-      </div>
-      <div class="form-group">
-        <label for="challenge-message">Description:</label>
-        <input class="form-control" type="text" id="challenge-message" ng-model="challengeInfo.message">
-      </div>
-      <div class="form-group">
-        <label for="participant-select">Add participants:</label>
-        <select class="form-control" ng-model="selectedParticipant" ng-options="user.first_name+' '+user.last_name for user in allUsers">
-          <option value="">-----</option>
-        </select>
-        <button type="button" class="btn btn-success addPart" ng-click="addParticipant()">Add</button>
-        <div class="participant-list">
-          <div class="participant-list-item" ng-repeat="participant in challengeInfo.participants">
-            {{participant.first_name}} {{participant.last_name}}
+<div class="boxed-group">
+  <div class="pageTitle">Create</div>
+  <div class="boxed-group-inner">
+
+    <div class="edit-profile">
+      <input class="form-control-1 profile-input" size="20" type="text" placeholder="Challenge Title">
+      <select class="form-control-1">
+        <option>5 mins</option>
+        <option>10 mins</option>
+        <option>30 mins</option>
+        <option>60 mins</option>
+      </select>
+    </div>
+
+    <div class="edit-profile">
+       <textarea class="form-control " rows="3" placeholder="Add Description"></textarea>
+    </div>
+
+    <div class="edit-profile coinbox">
+      <form class="form-inline coinbox">
+        <div class="form-group">
+          <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+          <div class="input-group">
+          <div class="input-group-addon">$</div>
+          <input type="text" class="form-control" id="exampleInputAmount" placeholder="Coin">
           </div>
         </div>
+      </form>
+    </div>
+
+      <div id="participantBox" class="edit-profile" isteven-multi-select
+      input-model="modernBrowsers"
+      output-model="outputBrowsers"
+      button-label="icon name"
+      item-label="icon name maker"
+      tick-property="ticked"
+      orientation="horizontal" >
       </div>
-      <div class="form-group">
-        <label for="challenge-wager">Wager:</label>
-        <input class="form-control" type="text" id="challenge-wager" ng-model="challengeInfo.wager">
-      </div>
-      <button type="button" class="btn btn-success" ng-click="postChallenge()">Create Challenge</button>
-    </form>
+
+
+
+
+
+    <button class="btn btn-success">CREATE</button>
   </div>
 </div>
