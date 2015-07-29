@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models/index.js');
+var Sequelize = require('sequelize');
 
 /**
  * Check if user is logged in and return an error otherwise
@@ -476,3 +477,48 @@ module.exports = {
   'router': router,
   'challenge_form_is_valid': challenge_form_is_valid
 };
+
+function updateWinner(req, res) {
+  models.Challenge.findAll({
+    limit: 10,
+    order: [['createdAt', 'DESC']], // must pass an array of tuples
+    where: {
+      winner: 0
+      // date_completed: {
+      //   lt: Sequelize.NOW
+      // }
+    },
+    include: [{
+      model: models.User,
+      as: 'participants'
+    }]
+  }).then(function (challenges) {
+
+    // set winner to each challenges
+    challenges.forEach(function (challenge) {
+      var newWinner = 0;
+
+      // compare each users upvote to get the winner
+      challenge.get('participants').reduce(function (max, participant) {
+
+        if (max < participant.usersChallenges.upvote){
+          newWinner = participant.id;
+          console.log('newWinner', newWinner);
+          return participant.upvote;
+        }
+        return max;
+      }, 0);
+      console.log('updated winner of challenge ' + challenge.get('id'));
+      console.log('newWinner', newWinner);
+      
+      models.Challenge.update({
+        winner: newWinner
+      },{
+        where: {
+          id: challenge.get('id')
+        }
+      });
+    });
+    res.status(200).send();
+  });
+}
