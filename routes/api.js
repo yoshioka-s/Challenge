@@ -235,9 +235,7 @@ var challenge_form_is_valid = function(form) {
 router.post('/challenge', requires_login, function(req, res) {
   console.log('challenge?');
   var form = req.body;
-  // FIXME mocking the user id
-  var userId = 1;
-  // var userId = req.user.id;
+  var userId = req.user.id;
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -245,15 +243,14 @@ router.post('/challenge', requires_login, function(req, res) {
     return;
   }
 
-  // TODO check if the user's coin is not less then the wager
-
   // Create the challenge
   models.Challenge.create({
     title: form.title,
     message: form.message,
     wager: form.wager,
     creator: userId,
-    date_started: Date.now()
+    date_started: Date.now(),
+    total_wager: form.wager
   })
   .then(function(challenge) {
     challenge.addParticipants(form.participants); // form.participants should be an array
@@ -449,7 +446,6 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
   var userId = req.body.targetUserId;
 
-
     models.UserChallenge.update({
       upvote: Sequelize.literal('upvote +1')
     }, {
@@ -469,7 +465,6 @@ module.exports = {
 
 function updateWinner(req, res) {
   models.Challenge.findAll({
-    limit: 10,
     order: [['createdAt', 'DESC']], // must pass an array of tuples
     where: {
       winner: 0
@@ -489,31 +484,54 @@ function updateWinner(req, res) {
 }
 
 function setWinner(challenge) {
+  var started = 'Completed';
   var newWinner = 0;
+  var tie = false;
+  var max = 0;
 
   // compare each users upvote to decide the winner
-  challenge.get('participants').reduce(function (max, participant) {
+  challenge.get('participants').forEach(function (participant) {
+    if (max === participant.usersChallenges.upvote){
+      newWinner = 0;
+      tie = true;
+    }
     if (max < participant.usersChallenges.upvote){
       newWinner = participant.id;
-      return participant.upvote;
+      max = participant.upvote;
+      tie = false;
     }
-    return max;
-  }, 0);
+  });
 
+  if (tie) {
+    started = 'Tie';
+  }
   // update the winner of the challenge
   models.Challenge.update({
-    winner: newWinner
-  },{
+    winner: newWinner,
+    started: started,
+    completed: true
+  }, {
     where: {
       id: challenge.get('id')
     }
   });
+
+  if (tie) {
+    challenge.get('participants').forEach(function (participant) {
+      giveCoin(participant.get('id'), challenge.get('wager'));
+    });
+    return;
+  }
   // update the coin fo the winner
+  giveCoin(newWinner, challenge.get('total_wager'));
+}
+
+function giveCoin(user_id, coin) {
   models.User.update({
-    coin: Sequelize.literal('coin +' + challenge.get('wager'))
+    coin: Sequelize.literal('coin +' + coin)
   },{
     where: {
-      id: newWinner
+      id: user_id
     }
   });
 }
