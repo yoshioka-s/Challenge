@@ -73,5 +73,14 @@ angular.module('challengeApp.challenge', [])
     });
   };
   $scope.getChallengeList();
-});
 
+  $scope.upvoteUser = function (targetUserId) {
+    ChallengeFactory.upvoteUser($scope.challengeData.id, targetUserId).then(function (upvote) {
+      $scope.challengeData.participants.forEach(function (participant) {
+        if(participant.id === targetUserId){
+          participant.upvote = upvote;
+        }
+      });
+    });
+  };
+});
