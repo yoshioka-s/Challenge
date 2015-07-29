@@ -1,7 +1,8 @@
 var express = require('express');
 var path = require('path');
-var logger = require('morgan');
+// var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session')
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
@@ -12,20 +13,24 @@ var session = require('express-session');
 var app = express();
 var RedisStore = require('connect-redis')(session);
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(session({
-  store: new RedisStore({
-    host: 'localhost',
-    port: 6379
-    // client: redis
-  }),
-  'secret': 'all along the watchtower',
-  'resave': false,
-  'saveUninitialized': false
+app.use(cookieSession({
+  secret: 'makersquare'
 }));
+// app.use(cookieParser());
+// app.use(session({
+//   store: new RedisStore({
+//     host: 'localhost',
+//     port: 3000
+//     // client: redis
+//   }),
+//   'secret': 'all along the watchtower',
+//   'resave': false,
+//   'saveUninitialized': false
+// }));
+
 // app.use(passport.initialize());
 // app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));

@@ -35,6 +35,8 @@ angular.module('challengeApp.auth', [])
       $scope.logout = function() {
         sessionStorage.removeItem("loggedIn")
         console.log('logout');
+        Auth.logout();
+        $location.path('/auth');
       }
 
     }
