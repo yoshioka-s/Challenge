@@ -20,7 +20,7 @@ router.post('/signup', function(req, res) {
 	    tempAuthPW[username].salt = salt;
 	    console.log(tempAuthPW);
 	  })
-	  
+
 	})
     res.send("good");
 });

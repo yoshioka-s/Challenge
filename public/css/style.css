@@ -138,11 +138,7 @@ label {
 
 .createForm {
  width: 75%;
- border-style: solid;
- border-width: 3px;
- border-radius: 20px;
  padding: 15px;
- background-color: #d3d3d3 ;
  margin: 0 auto;
 }
 
@@ -153,16 +149,12 @@ label {
 }
 
 .center-block {
- width: 800px;
  margin-left: auto;
  margin-right: auto;
  display: block;
 }
 
-.challengeTitle {
-  font-size: 25px;
-  color: black;
-}
+
 
 .userChallenges caption{
   font-size: 25px;
