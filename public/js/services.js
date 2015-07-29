@@ -127,7 +127,7 @@ angular.module('challengeApp.services', [])
       return $http({
         method: 'POST',
         data: {'targetUserId': targetUserId},
-        url: 'api/challenge/' + challengeId + '/upvote'
+        url: 'api/1/challenge/' + challengeId + '/upvote'
       }).then(function (resp) {
         return resp.data;
       });
