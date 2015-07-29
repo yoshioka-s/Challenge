@@ -17,15 +17,17 @@
     </div>
 
     <div class="edit-profile coinbox">
-      <form class="form-inline coinbox">
+      <form class="form-inline">
         <div class="form-group">
           <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
           <div class="input-group">
           <div class="input-group-addon">$</div>
-          <input type="text" class="form-control" id="exampleInputAmount" placeholder="Coin">
+          <input type="text" id="challenge-wager" ng-model="challengeInfo.wager"
+                 class="form-control" id="exampleInputAmount" placeholder="Coin">
           </div>
         </div>
       </form>
+
     </div>
 
       <div id="participantBox" class="edit-profile" isteven-multi-select
@@ -38,9 +40,7 @@
       </div>
 
 
-
-
-
-    <button class="btn btn-success">CREATE</button>
+    <button class="btn btn-success" ng-click="postChallenge()">CREATE</button>
+    <h5>{{errorMessage}}</h5>
   </div>
 </div>
