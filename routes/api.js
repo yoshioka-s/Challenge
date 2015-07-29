@@ -436,26 +436,17 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
   var userId = req.body.targetUserId;
 
-  models.UserChallenge.findOne({
-    where: {
-      challengeId: challengeId,
-      userId: userId
-    }
-  }).then(function (userChallenge) {
-    console.log(userChallenge);
-    var upvote = userChallenge.get('upvote');
-    console.log('upvote: ', upvote);
+
     models.UserChallenge.update({
-      upvote: upvote +1
+      upvote: Sequelize.literal('upvote +1')
     }, {
       where: {
         challengeId: challengeId,
         userId: userId
       }
-    }).then(function () {
-      res.status(200).json({'success': true});
+    }).then(function (userChallenge) {
+      res.status(200).json(userChallenge);
     });
-  });
 });
 
 module.exports = {
