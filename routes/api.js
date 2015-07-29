@@ -493,32 +493,30 @@ function updateWinner(req, res) {
       as: 'participants'
     }]
   }).then(function (challenges) {
-
     // set winner to each challenges
-    challenges.forEach(function (challenge) {
-      var newWinner = 0;
-
-      // compare each users upvote to get the winner
-      challenge.get('participants').reduce(function (max, participant) {
-
-        if (max < participant.usersChallenges.upvote){
-          newWinner = participant.id;
-          console.log('newWinner', newWinner);
-          return participant.upvote;
-        }
-        return max;
-      }, 0);
-      console.log('updated winner of challenge ' + challenge.get('id'));
-      console.log('newWinner', newWinner);
-      
-      models.Challenge.update({
-        winner: newWinner
-      },{
-        where: {
-          id: challenge.get('id')
-        }
-      });
-    });
+    challenges.forEach(setWinner);
     res.status(200).send();
+  });
+}
+
+function setWinner(challenge) {
+  var newWinner = 0;
+
+  // compare each users upvote to decide the winner
+  challenge.get('participants').reduce(function (max, participant) {
+    if (max < participant.usersChallenges.upvote){
+      newWinner = participant.id;
+      return participant.upvote;
+    }
+    return max;
+  }, 0);
+
+  // update the winner of the challenge
+  models.Challenge.update({
+    winner: newWinner
+  },{
+    where: {
+      id: challenge.get('id')
+    }
   });
 }
