@@ -5,6 +5,7 @@ angular.module('challengeApp', [
   'challengeApp.userChallenge',
   'challengeApp.services',
   'challengeApp.dashboard',
+  'challengeApp.profile',
   'challengeApp.auth',
   'ui.router'
 ])
@@ -32,7 +33,7 @@ angular.module('challengeApp', [
     })
     .state('dashboard.detail', {
       url: '/challenge/:itemId',
-      templateUrl: './html/detail.html',
+      templateUrl: './html/challenge.html',
       controller: 'DetailController',
       resolve: {authorize: isLoggedIn}
     })
@@ -45,8 +46,8 @@ angular.module('challengeApp', [
     .state('dashboard.profile', {
       url: '/profile',
       templateUrl: './html/profile.html',
+      controller: 'ProfileController',
       resolve: {authorize: isLoggedIn}
-      // controller: 'DetailController'
     })
     .state('dashboard', {
       url: '/dashboard',
