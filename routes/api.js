@@ -401,9 +401,11 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
         });
         models.Challenge.update({
           total_wager: Sequelize.literal('total_wager +' + challenge.get('wager'))
-        }, where: {
-          id: target_id
-        })
+        }, {
+          where: {
+            id: target_id
+          }
+        });
       })
       res.status(201).json({'success': true});
     });
