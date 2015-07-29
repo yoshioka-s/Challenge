@@ -7,19 +7,21 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var api = require('./routes/api');
 var auth = require('./routes/auth');
-
 var session = require('express-session');
-var FileStore = require('session-file-store')(session);
 // var passport = require('./middleware/passport');
-
 var app = express();
+var RedisStore = require('connect-redis')(session);
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  'store': new FileStore(),
+  store: new RedisStore({
+    host: 'localhost',
+    port: 6379
+    // client: redis
+  }),
   'secret': 'all along the watchtower',
   'resave': false,
   'saveUninitialized': false
