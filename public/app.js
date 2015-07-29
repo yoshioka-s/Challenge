@@ -13,11 +13,6 @@ angular.module('challengeApp', [
   // TODO: reroute to login/landing page
   $urlRouterProvider.otherwise('/auth');
   $stateProvider
-    .state('signin', {
-      url: '/signin',
-      templateUrl: '/html/signin.html'
-    })
-
     // .state('signout', {
     //   url: '/signout',
     //   controller: function($scope, $state) {
@@ -28,7 +23,7 @@ angular.module('challengeApp', [
     .state('auth', {
       url: '/auth',
       templateUrl: 'html/auth.html',
-      controller: 'authController'
+      controller: 'AuthController'
     })
     .state('challenge_create', {
       url: '/challenge/create',
