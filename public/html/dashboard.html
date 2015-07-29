@@ -12,16 +12,17 @@
         <img id="coinimg" src="./img/coin.png">
         <span id='coin'>$1000</span>
       </div>
-
-      <div id="profileButton">
-        <button class="dashboardButton" ng-click="createChallenge()">Challenge</button>
-        <button class="dashboardButton" ng-click="editProfile()">profile</button>
-      </div>
     </div>
+
+      <div class="profileButton">
+        <div class="dashboardButton" ng-click="createChallenge()">Challenge</div>
+        <div class="dashboardButton" ng-click="editProfile()">profile</div>
+      </div>
+
 
     <div class="downRight">
 
-      <div>
+      <div class="challengeDiv">
         <ul>
           <li class="challengeBox" ng-repeat="challenge in challenges" ng-click="findDetail(challenge)">
             <div class="challengeTitle challengeText"> {{challenge.title}} </div>
