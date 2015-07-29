@@ -235,6 +235,7 @@ var challenge_form_is_valid = function(form) {
 router.post('/challenge', requires_login, function(req, res) {
   console.log('challenge?');
   var form = req.body;
+  // FIXME mocking the user id
   var userId = 1;
   // var userId = req.user.id;
 
@@ -244,8 +245,9 @@ router.post('/challenge', requires_login, function(req, res) {
     return;
   }
 
+  // TODO check if the user's coin is not less then the wager
+
   // Create the challenge
-  console.log('CREATE!! ',form);
   models.Challenge.create({
     title: form.title,
     message: form.message,
@@ -254,11 +256,18 @@ router.post('/challenge', requires_login, function(req, res) {
     date_started: Date.now()
   })
   .then(function(challenge) {
-    console.log('CREATED!!!!!', challenge);
     challenge.addParticipants(form.participants); // form.participants should be an array
     challenge.addParticipant([userId], {accepted: true}); // links creator of challenge
-    res.status(201).json({
-      id: challenge.id
+    models.User.update({
+      coin: Sequelize.literal('coin -' + form.wager)
+    }, {
+      where: {
+        id: userId
+      }
+    }).then(function () {
+      res.status(201).json({
+        id: challenge.id
+      });
     });
   });
 });
@@ -497,6 +506,14 @@ function setWinner(challenge) {
   },{
     where: {
       id: challenge.get('id')
+    }
+  });
+  // update the coin fo the winner
+  models.User.update({
+    coin: Sequelize.literal('coin +' + challenge.get('wager'))
+  },{
+    where: {
+      id: newWinner
     }
   });
 }

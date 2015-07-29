@@ -30,6 +30,11 @@ var User = orm.define('users', {
   profile_image: {
     type: Sequelize.STRING,
     defaultValue: '/img/placeholder.jpg'
+  },
+
+  coin: {
+    type: Sequelize.INTEGER,
+    defaultValue: 100
   }
 });
 
@@ -49,7 +54,7 @@ var Challenge = orm.define('challenges', {
   },
 
   wager: {
-    type: Sequelize.STRING
+    type: Sequelize.INTEGER
   },
 
   creator: {
