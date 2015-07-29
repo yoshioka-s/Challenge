@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.4.3",
+    "angular-multi-select": "^5.4.1",
     "bcrypt": "^0.8.4",
     "bluebird": "^2.9.34",
     "body-parser": "~1.13",

@@ -1,11 +1,20 @@
-angular.module('challengeApp.createChallenge', [])
-
+angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
 .controller('CreateChallengeController', function ($scope, $state, CreateChallengeFactory) {
 
   $scope.allUsers = [];
   $scope.challengeInfo = {};
   $scope.challengeInfo.participants = [];
   $scope.selectedParticipant = null;
+
+
+  $scope.modernBrowsers = [
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Bob",                 ticked: false  },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Peter",               ticked: false },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Marry",               ticked: false  },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Alex",                ticked: false },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "John",                ticked: false  }
+  ];
+
 
   // get array of all users in the database
   CreateChallengeFactory.getAllUsers().then(function(res){

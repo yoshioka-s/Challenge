@@ -114,7 +114,6 @@ angular.module('challengeApp', [
           return (participant.accepted === accepted && participant.id === user);
         });
       }
-
       return (
         ((challenge.started === started) || started === null) && ((challenge.complete === complete) || complete === null) && has_accepted
       );
