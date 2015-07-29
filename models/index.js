@@ -70,7 +70,7 @@ var Challenge = orm.define('challenges', {
   },
 
   started: {
-    type: Sequelize.BOOLEAN, defaultValue: false
+    type: Sequelize.STRING, defaultValue: 'Not Started'
   },
 
   // sequelize or sqlite automatically makes a 'createdAt' attribute
