@@ -3,6 +3,8 @@
     <input class="authInput form-control" type="text" placeholder="password" ng-model="loginPassword">
     <button class="btn btn-default" ng-click="login(loginUsername, loginPassword)">Login</button>
     <a href="" ng-click="swapAuth()">Go to signup</a>
+  <a href="" ng-click="logout()">Logout</a>
+    
 </form>
 
 
@@ -10,5 +12,6 @@
   <input class="authInput form-control" type="text" placeholder="username" ng-model="signupUsername">
   <input class="authInput form-control" type="text" placeholder="password" ng-model="signupPassword">
   <button class="btn btn-default" ng-click="signup(signupUsername, signupPassword)">Signup</button>
+  <a href="" ng-click="logout()">Logout</a>
   <a href="" ng-click="swapAuth()">Go to Login</a>
 </form>

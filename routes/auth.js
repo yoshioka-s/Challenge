@@ -3,11 +3,18 @@ var router = express.Router();
 var models = require('../models');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt');
+var session = require('express-session');
 var compare = Promise.promisify(bcrypt.compare);
+// var cookieParser = require('cookie-parser');
+
+var app = express();
 // require crypto?
 
+//TODO link with db
 var tempAuthInfo = {};
 
+// app.use(express.cookieParser());
+// app.use(express.session({secret: "This is a secret"}));
 // routing to auth
 router.post('/signup', function(req, res) {
 	var username = req.body.username;
@@ -31,9 +38,21 @@ router.post('/login', function(req, res) {
   return compare(password, hashed)
   .then(function(data) {
   	console.log('bcrypt', data);
+  	if(data) {
+  	  // console.log(req);
+  	  req.session.user = username;
+  	  req.session.save()
+  	}
+  	console.log("req.sess", req.session);
   	res.send(data);
   })
 });
+
+router.get('/logout', function(req, res) {
+  delete req.session.user;
+  console.log("req.session", req.session);
+  // res.redirect('/');
+})
 
 // router.get('/logout', function(req, res) {
 //   req.logout();
