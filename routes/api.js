@@ -235,17 +235,13 @@ var challenge_form_is_valid = function(form) {
 router.post('/challenge', requires_login, function(req, res) {
   console.log('challenge?');
   var form = req.body;
-  // FIXME mocking the user id
-  var userId = 1;
-  // var userId = req.user.id;
+  var userId = req.user.id;
 
   // validate form
   if (!challenge_form_is_valid(form)) {
     res.status(400).json({'error': 'EINVALID', 'message': 'Submitted form is invalid.'});
     return;
   }
-
-  // TODO check if the user's coin is not less then the wager
 
   // Create the challenge
   models.Challenge.create({
