@@ -35,6 +35,7 @@
       <span class="glyphicon glyphicon-sunglasses text-muted" title="Declare them the winner"
       ng-hide="user.id!==creator.id||!started||complete||!participant.accepted" ng-click="challengeComplete(participant.id)">
       </span>
+      <button type="button" name="upvote" ng-click="upvoteUser(participant.id)">upvote!</button>
     </div>
   </div>
   <div class="challenge-comment-container col-lg-12">
@@ -63,4 +64,3 @@
     </div>
   </div>
 </div>
-
