@@ -123,6 +123,17 @@ angular.module('challengeApp.services', [])
       });
     };
 
+    var upvoteUser = function(challengeId, targetUserId) {
+      return $http({
+        method: 'POST',
+        data: {'targetUserId': targetUserId},
+        url: 'api/challenge/' + challengeId + '/upvote'
+      }).then(function (resp) {
+        return resp.data;
+      });
+    };
+
+
     return {
       getChallengeInfo: getChallengeInfo,
       acceptChallenge: acceptChallenge,
@@ -131,7 +142,8 @@ angular.module('challengeApp.services', [])
       getUserChallenges: getUserChallenges,
       getChallengeList: getChallengeList,
       getChallengeComments: getChallengeComments,
-      postChallengeComment: postChallengeComment
+      postChallengeComment: postChallengeComment,
+      upvoteUser: upvoteUser
     };
   })
 

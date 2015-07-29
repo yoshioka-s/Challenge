@@ -1,18 +1,20 @@
 var express = require('express');
 var router = express.Router();
-var models = require('../models');
+var models = require('../models/index.js');
+var Sequelize = require('sequelize');
 
 /**
  * Check if user is logged in and return an error otherwise
  */
 var requires_login = function(req, res, next) {
-  if (!req.isAuthenticated()) {
-      res.status(401).json({'error': 'ENOTAUTH', 'message':'Endpoint requires login.'});
-    } else {
-      next();
-    }
+  // if (!req.isAuthenticated()) {
+  //     res.status(401).json({'error': 'ENOTAUTH', 'message':'Endpoint requires login.'});
+  //   } else {
+  //     next();
+  //   }
+
   // Disabled for now
-  // next();
+  next();
 };
 
 /**
@@ -20,8 +22,8 @@ var requires_login = function(req, res, next) {
  *
  * Requires login
  */
-router.get('/user_info', requires_login, function(req, res) {
-console.log("userinfo", req.body)
+router.get('/user_info', requires_login, function(req) {
+  console.log('userinfo', req.body);
 });
 
 
@@ -184,7 +186,8 @@ router.get('/challenge/:id', function(req, res) {
           first_name: rawParticipants[i].first_name,
           last_name: rawParticipants[i].last_name,
           profile_image: rawParticipants[i].profile_image,
-          accepted: rawParticipants[i].usersChallenges.accepted
+          accepted: rawParticipants[i].usersChallenges.accepted,
+          upvote: rawParticipants[i].usersChallenges.upvote
         });
       }
 
@@ -231,6 +234,10 @@ var challenge_form_is_valid = function(form) {
  */
 router.post('/challenge', requires_login, function(req, res) {
   var form = req.body;
+  // FIXME mocking user
+  var userId = 1;
+  console.log('POST CHALLENGE ');
+  console.log(form);
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -239,17 +246,27 @@ router.post('/challenge', requires_login, function(req, res) {
   }
 
   // Create the challenge
+  console.log('CREATE CHALLENGE!');
+  console.log({
+    title: form.title,
+    message: form.message,
+    wager: form.wager,
+    creator: userId,
+    date_started: Date.now()
+  });
   models.Challenge.create({
     title: form.title,
     message: form.message,
     wager: form.wager,
-    creator: req.user.id,
+    creator: userId,
     date_started: Date.now()
   })
   .then(function(challenge) {
+    console.log('CREATED!');
     challenge.addParticipants(form.participants); // form.participants should be an array
-    challenge.addParticipant([req.user.id], {accepted: true}); // links creator of challenge
-
+    console.log('addParticipants 1');
+    challenge.addParticipant([userId], {accepted: true}); // links creator of challenge
+console.log('addParticipants 2');
     res.status(201).json({
       id: challenge.id
     });
@@ -429,7 +446,77 @@ router.post('/challenge/:id/comments', requires_login, function(req, res) {
   });
 });
 
+router.post('/challenge/:id/upvote', requires_login, function(req, res) {
+  var challengeId = parseInt(req.params.id);
+  // FIXME mocking user
+  var userId = req.body.targetUserId;
+
+  models.UserChallenge.findOne({
+    where: {
+      challengeId: challengeId,
+      userId: userId
+    }
+  }).then(function (userChallenge) {
+    console.log(userChallenge);
+    var upvote = userChallenge.get('upvote');
+    console.log('upvote: ', upvote);
+    models.UserChallenge.update({
+      upvote: upvote +1
+    }, {
+      where: {
+        challengeId: challengeId,
+        userId: userId
+      }
+    }).then(function () {
+      res.status(200).json({'success': true});
+    });
+  });
+});
+
 module.exports = {
   'router': router,
   'challenge_form_is_valid': challenge_form_is_valid
 };
+
+function updateWinner(req, res) {
+  models.Challenge.findAll({
+    limit: 10,
+    order: [['createdAt', 'DESC']], // must pass an array of tuples
+    where: {
+      winner: 0
+      // date_completed: {
+      //   lt: Sequelize.NOW
+      // }
+    },
+    include: [{
+      model: models.User,
+      as: 'participants'
+    }]
+  }).then(function (challenges) {
+    // set winner to each challenges
+    challenges.forEach(setWinner);
+    res.status(200).send();
+  });
+}
+
+function setWinner(challenge) {
+  var newWinner = 0;
+
+  // compare each users upvote to decide the winner
+  challenge.get('participants').reduce(function (max, participant) {
+    if (max < participant.usersChallenges.upvote){
+      newWinner = participant.id;
+      return participant.upvote;
+    }
+    return max;
+  }, 0);
+
+  // update the winner of the challenge
+  models.Challenge.update({
+    winner: newWinner
+  },{
+    where: {
+      id: challenge.get('id')
+    }
+  });
+}
