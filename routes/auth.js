@@ -2,12 +2,11 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 var Promise = require('bluebird');
-var bcrypt = Promise.promisifyAll(require('bcrypt'));
+var bcrypt = require('bcrypt');
+var compare = Promise.promisify(bcrypt.compare);
 // require crypto?
 
-var tempAuthInfo = {
-	a: '$2a$10$ndKatL6O1MdBqBGDHBfK9OjnKS0qavkFXj9Ygh6VtdC3uLr3ax4KO'
-};
+var tempAuthInfo = {};
 
 // routing to auth
 router.post('/signup', function(req, res) {
@@ -20,9 +19,7 @@ router.post('/signup', function(req, res) {
 	  }
 	  bcrypt.hash(req.body.password, salt, function(err, hash) {
 	    tempAuthInfo[username].password = hash;
-	    console.log(hash)
 	  })
-	  
 	})
     res.send("good");
 });
@@ -31,15 +28,12 @@ router.post('/login', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
   var hashed = tempAuthInfo[username].password;
-  bcrypt.compare(password, hashed, function(err, res) {
-  	console.log("Logged in: ", res)
-  	// return res;
-    })
-  res.send('hi');
-  // .then(function(data) {
-  // 	console.log('this is then', data);
-  // })
-})
+  return compare(password, hashed)
+  .then(function(data) {
+  	console.log('bcrypt', data);
+  	res.send(data);
+  })
+});
 
 // router.get('/logout', function(req, res) {
 //   req.logout();

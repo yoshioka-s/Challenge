@@ -1,5 +1,5 @@
 angular.module('challengeApp.auth', [])
-.controller('AuthController', ['$scope','$location', '$q', 'Auth', function($scope, $location, $q, Auth){
+.controller('AuthController', ['$scope','$location', 'Auth', function($scope, $location, Auth){
     $scope.user = {};
     $scope.showLogin = true;
     $scope.showSignup = false;
@@ -19,23 +19,12 @@ angular.module('challengeApp.auth', [])
     $scope.user.password = password;
     Auth.login(username, password)
     .then(function(data) {
-      console.log('login contr', data);
+      if (data) {
+         $location.path('/dashboard');    
+      } else {
+        console.log('Incorrect password');
+      }
     })
-    // var deferLogin = function() {
-    //   var defer = $q.defer();
-    //   Auth.login(username, password);
-    //   return defer.promise; 
-    // }
-
-    // deferLogin()
-    // .then(function(data) {
-    //   console.log('test q ', data);
-    // })
-    // .catch(function(fallback) {
-    //   console.log('fallback ', fallback);
-    // })
-
-     // $location.path('/dashboard');
   }
 
   $scope.signup = function(username, password){
