@@ -38,7 +38,7 @@ router.post('/login', function(req, res) {
   	userObj = obj
     hashedPw = obj[0].dataValues.password;
   }).then(function(obj) {
-  	console.log("obj", userObj)
+  	// console.log("obj", userObj)
     return compare(password, hashedPw)
       .then(function(data) {
         if (data) {
