@@ -11,7 +11,7 @@ angular.module('challengeApp', [
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/dashboard');
+  $urlRouterProvider.otherwise('/auth');
   $stateProvider
     .state('auth', {
       url: '/auth',
@@ -49,7 +49,7 @@ angular.module('challengeApp', [
       resolve: {authorize: isLoggedIn}
     })
     .state('dashboard', {
-      url: '/dashboard',
+      url: '/dashboard/:username',
       templateUrl: './html/dashboard.html',
       controller: 'dashboardController',
       resolve: {authorize: isLoggedIn}
@@ -63,6 +63,7 @@ angular.module('challengeApp', [
 
     function isLoggedIn($q, $timeout, $state, $window) {
       if($window.sessionStorage.loggedIn==='true') {
+        console.log('Login succeed!');
         return $q.when();
       } else {
         $timeout(function() {
