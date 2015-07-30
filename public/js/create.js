@@ -32,17 +32,18 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
   };
 
   // method that takes the challengeInfo object as argument and calls the factory POST call
-  $scope.postChallenge = function(challengeInfo){
-    console.log($scope.user);
-    console.log(challengeInfo);
-    if (Number($scope.user.coin) < Number(challengeInfo.wager)) {
+
+  $scope.postChallenge = function(){
+    console.log('id is',$scope.user.id);
+    if ($scope.user.coin < $scope.challengeInfo.wager) {
       console.log('the wager exceeds your coin');
       $scope.errorMessage = 'make sure the wager does not exceed your coin.';
       return;
     }
-    // CreateChallengeFactory.postChallenge(challengeInfo).then(function(res){
-    //   $state.go('challenge_view', {'id': res.id});
-    // });
+
+    CreateChallengeFactory.postChallenge($scope.challengeInfo, $scope.use.id).then(function(res){
+      $state.go('challenge_view', {'id': res.id});
+    });
   };
 
 

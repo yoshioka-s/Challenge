@@ -208,7 +208,7 @@ var challenge_form_is_valid = function(form) {
 router.post('/challenge', requires_login, function(req, res) {
   console.log('challenge?');
   var form = req.body;
-  var userId = req.user.id;
+  var userId = req.session.user[0].id;
 
   // validate form
   if (!challenge_form_is_valid(form)) {
