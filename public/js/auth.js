@@ -15,6 +15,7 @@ angular.module('challengeApp.auth', [])
         $scope.user.password = password;
         Auth.createUser(username, password);
         $scope.swapAuth();
+        // $location.path('/dashboard');
       }
 
       $scope.login = function(username, password) {
