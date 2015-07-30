@@ -4,7 +4,7 @@ angular.module('challengeApp.dashboard', [])
     $scope.user.username = $stateParams.username;
 
     UserFactory.getUserInfo($scope.user.username, function(data){
-      $scope.loginUser = data.data[0];
+      $scope.loginUser = data.data;
       console.log($scope.loginUser)
     });
 

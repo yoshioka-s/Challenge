@@ -13,10 +13,11 @@
 
     <div class="edit-profile">
       <div>Name</div>
-      <input class="form-control profile-input" size="20" type="text" placeholder="Richie">
+      <input class="form-control profile-input" size="20" type="text"
+            placeholder=" {{loginUser.username}}" ng-model="newname">
     </div>
 
 
-    <button class="btn btn-success" ng-click="update(files[0])">SAVE</button>
+    <button class="btn btn-success" ng-click="update(loginUser.id,files[0],newname)">SAVE</button>
   </div>
 </div>

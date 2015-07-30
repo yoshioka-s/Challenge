@@ -187,10 +187,20 @@ angular.module('challengeApp.services', [])
     }).then(function(data) {
       callback(data);
     })
-
   };
 
+  var updateUsername = function(userId,newName,callback){
+    $http.post('/api/1/update_username', {
+      userId: userId,
+      newName: newName
+    }).then(function(data) {
+      callback(data)
+    })
+
+  }
+
   return {
-    getUserInfo: getUserInfo
+    getUserInfo: getUserInfo,
+    updateUsername:updateUsername
   }
 }])

@@ -25,7 +25,7 @@ var requires_login = function(req, res, next) {
 
 router.post('/login_user_info', requires_login, function(req, res) {
   var username = req.body.username;
-  models.User.findAll({
+  models.User.findOne({
     where:{
       username:username
     }
@@ -33,6 +33,15 @@ router.post('/login_user_info', requires_login, function(req, res) {
     res.json(user);
   });
 });
+
+router.post('/update_username', requires_login, function(req, res) {
+  var userId = req.body.userId;
+  var newName = req.body.newName;
+  models.User.update({username:newName} , {where: {id:userId}})
+             .then(function(user){ res.json(user) });
+});
+
+
 
 /**
  * Endpoint to get a list of all users

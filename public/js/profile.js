@@ -1,18 +1,19 @@
 angular.module('challengeApp.profile', ['ngFileUpload'])
-.controller('ProfileController', ['$scope','$location','$state','Upload','ProfileImage',
-  function($scope,$location,$state,Upload,ProfileImage){
-    $scope.update = ProfileImage.upload;
-
-
-
+.controller('ProfileController', ['$scope','$location','$state','Upload','ProfileFactory',
+  function($scope,$location,$state,Upload,ProfileFactory){
+    $scope.update = ProfileFactory.upload;
 }])
-.factory('ProfileImage', ['Upload', function(Upload){
-  var upload = function(file){
+.factory('ProfileFactory', ['Upload','UserFactory', function(Upload,UserFactory){
+  var upload = function(userId,file,newname){
+    if(newname){
+      UserFactory.updateUsername(userId,newname,function(data){
+        // $scope.loginUser.username = data.data.username;
+      })
+    }
     if(file){
       console.log(file)
       Upload.upload({
         url: 'upload/url',
-        fields: {'username': 'username'},
         file: file
       }).progress(function (evt) {
         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
