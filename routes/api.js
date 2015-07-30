@@ -79,7 +79,8 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
       first_name: rawParticipants[i].first_name,
       last_name: rawParticipants[i].last_name,
       profile_image: rawParticipants[i].profile_image,
-      accepted: rawParticipants[i].usersChallenges.accepted
+      accepted: rawParticipants[i].usersChallenges.accepted,
+      upvote: rawParticipants[i].usersChallenges.upvote
     });
   }
 
