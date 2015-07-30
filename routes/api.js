@@ -24,7 +24,6 @@ var requires_login = function(req, res, next) {
  */
 
 router.post('/login_user_info', requires_login, function(req, res) {
-  console.log(req);
   var username = req.body.username;
   models.User.findAll({
     where:{
@@ -105,16 +104,11 @@ router.get('/challenge/user', requires_login, function(req, res) {
      })
     .then(function(challenges) {
       var data = [];  // Didn't want to use 'response' since that might be confused with http res
-
       for(var i = 0; i < challenges.length; i++) {
-
         var rawParticipants = challenges[i].get('participants', {plain: true});
         var challengeObj = makeChallengeObj(challenges[i], rawParticipants);
-        console.log('begin loop!!!!!!!!');
-
         data.push(challengeObj);
       }
-
       res.json(data);
     });
   });
