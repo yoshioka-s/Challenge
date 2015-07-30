@@ -20,7 +20,7 @@ var requires_login = function(req, res, next) {
 /**
  * Endpoint to get information about logged in user
  *
- * Requires login
+ * Requires login 
  */
 
 router.post('/login_user_info', requires_login, function(req, res) {
