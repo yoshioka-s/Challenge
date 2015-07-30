@@ -11,8 +11,7 @@ angular.module('challengeApp', [
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
-  // TODO: reroute to login/landing page
-  $urlRouterProvider.otherwise('/auth');
+  $urlRouterProvider.otherwise('/dashboard');
   $stateProvider
     .state('auth', {
       url: '/auth',
@@ -64,7 +63,6 @@ angular.module('challengeApp', [
 
     function isLoggedIn($q, $timeout, $state, $window) {
       if($window.sessionStorage.loggedIn==='true') {
-        console.log('Login succeed!');
         return $q.when();
       } else {
         $timeout(function() {
@@ -82,22 +80,6 @@ angular.module('challengeApp', [
     $scope.user.password = pw;
     Auth.getUserInfo(username, pw);
   }
-
-  // $scope.setCurrentUser = function() {
-  //   Auth.getUserInfo().then(function(user) {
-  //     $scope.user = user;
-  //   }, function() {
-  //     $state.go('signin');
-  //   });
-  // };
-
-  // $scope.logout = function() {
-  //   Auth.logout().then(function() {
-  //     $scope.user = null;
-  //   });
-  // };
-
-  // $scope.setCurrentUser();
 }).filter('challengeFilter', function() {
   return function(input, accepted, started, complete, user) {
     user = (user !== undefined) ? parseInt(user) : undefined;

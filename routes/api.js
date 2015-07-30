@@ -237,7 +237,8 @@ var challenge_form_is_valid = function(form) {
 router.post('/challenge', requires_login, function(req, res) {
   console.log('challenge?');
   var form = req.body;
-  // var userId = req.user.id;
+  console.log(req.session.user);
+  var userId = req.user.id;
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -410,11 +411,12 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
         models.UserChallenge.count({
           where: {
             challengeId: target_id,
-            accept: false
+            accepted: false
           }
         }).then(function (count) {
           if (!count) {
             // if there is no more participants to accept, start the challenge!
+            console.log('START THE CHALLENGE!');
             newData.started = 'Started';
             newData.date_started = Sequelize.literal('CURRENT_TIMESTAMP');
             newData.date_completed = Sequelize.literal('datetime("now", "+' + challenge.get('time') + ' Minute")');
