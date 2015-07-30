@@ -161,14 +161,14 @@ angular.module('challengeApp.services', [])
   };
 
   // POST method for creating a challenge
-  var postChallenge = function(challengeInfo, userId) {
+  var postChallenge = function(challengeInfo) {
     challengeInfo.participants = challengeInfo.participants.map(function(participant) {
       return participant.id;
     });
     return $http({
       method: 'POST',
       url: '/api/1/challenge',
-      data: {form: challengeInfo, id: userId}
+      data: challengeInfo
     }).then(function(resp) {
       return resp.data;
     });
@@ -186,11 +186,11 @@ angular.module('challengeApp.services', [])
       username: username
     }).then(function(data) {
       callback(data);
-    })
+    });
 
   };
 
   return {
     getUserInfo: getUserInfo
-  }
-}])
+  };
+}]);

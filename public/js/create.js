@@ -17,10 +17,13 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
 
   // get array of all users in the database
   CreateChallengeFactory.getAllUsers().then(function(res){
-     $scope.allUsers= res.filter(function(user) {
+     $scope.allUsers = res.filter(function(user) {
       console.log(user)
       return (user.id !== $scope.user.id);
     });
+    $scope.modernBrowsers = $scope.allUsers.map(function (user) {
+      return {icon: "<img src='../img/placeholder.jpg'/>"/* TODO use user.profile_image */, name: user.username, ticked: false}
+    })
      console.log($scope.allUsers);
   });
 
@@ -33,13 +36,12 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
 
   // method that takes the challengeInfo object as argument and calls the factory POST call
   $scope.postChallenge = function(){
-    console.log('id is',$scope.user.id);
     if ($scope.user.coin < $scope.challengeInfo.wager) {
       console.log('the wager exceeds your coin');
       $scope.errorMessage = 'make sure the wager does not exceed your coin.';
       return;
     }
-    CreateChallengeFactory.postChallenge($scope.challengeInfo, $scope.use.id).then(function(res){
+    CreateChallengeFactory.postChallenge($scope.challengeInfo).then(function(res){
       $state.go('challenge_view', {'id': res.id});
     });
   };

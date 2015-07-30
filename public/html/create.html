@@ -5,10 +5,10 @@
     <div class="edit-profile">
       <input class="form-control-1 profile-input" size="20" type="text" placeholder="Challenge Title" ng-model="challengeInfo.title">
       <select class="form-control-1" ng-model="challengeInfo.time">
-        <option>5 mins</option>
-        <option>10 mins</option>
-        <option>30 mins</option>
-        <option>60 mins</option>
+        <option>5 Minutes</option>
+        <option>10 Minutes</option>
+        <option>30 Minutes</option>
+        <option>60 Minutes</option>
       </select>
     </div>
 
@@ -32,7 +32,7 @@
 
       <div id="participantBox" class="edit-profile" isteven-multi-select
       input-model="modernBrowsers"
-      output-model="outputBrowsers"
+      output-model="challengeInfo.participants"
       button-label="icon name"
       item-label="icon name maker"
       tick-property="ticked"

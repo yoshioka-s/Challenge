@@ -7,7 +7,7 @@ orm.authenticate()
   //  })
   .catch(function(err) {
     console.log('Connection to db failed: ', err);
-  }) 
+  })
   .done();
 
 var User = orm.define('users', {

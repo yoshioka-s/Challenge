@@ -395,7 +395,7 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
             console.log('START THE CHALLENGE!');
             newData.started = 'Started';
             newData.date_started = Sequelize.literal('CURRENT_TIMESTAMP');
-            newData.date_completed = Sequelize.literal('datetime("now", "+' + challenge.get('time') + ' Minute")');
+            newData.date_completed = Sequelize.literal('datetime("now", "+' + challenge.get('time') + ' Seconds")');
           }
 
           models.Challenge.update(newData, {
