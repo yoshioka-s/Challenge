@@ -1,4 +1,43 @@
-<div class="bigTitle">Challenge</div>
 
-<div> {{challenge}} </div>
 
+<div class="boxed-group-detail">
+    <ul class="playContainer">
+      <li class="playerItem" ng-repeat="player in players">
+        <div class="playerName"> {{player.username}} </div>
+        <div>
+          <img src=" {{player.challengeImage}} " >
+        </div>
+        <div class="playerBotton">
+          <div class="playScore">SCORE: {{player.score}} </div>
+          <div class="playerUploadButton playerButton"> + </div>
+          <div class="playerVoteButton playerButton" ng-click="vote(player)"> VOTE </div>
+        </div>
+
+      </li>
+    </ul>
+</div>
+
+<div class="commentDiv">
+    <div class="challenge-comment-list">
+      <div class="challenge-comment-item" ng-repeat="comment in comments">
+        <div class="challenge-comment-profile col-lg-3 col-xs-1 col-sm-3">
+          <img ng-src="{{comment.user.profile_image}}">
+          <span class="hidden-xs">{{comment.user.first_name}} {{comment.user.last_name}}</span>
+        </div>
+        <div class="challenge-comment-text-container pull-right col-lg-9 col-xs-11 col-sm-9">
+          <small class="challenge-comment-date text-muted">{{comment.date_created|date:'MMM dd, yyyy hh:mm a:'}} </small>
+          <span class="challenge-comment-text">{{comment.text}}</span>
+        </div>
+      </div>
+    <div class="challenge-comment-post" ng-hide="user===null">
+      <form name="commentForm">
+        <div class="form-group">
+          <label for="challenge-comment-text">Make a comment:</label>
+          <textarea name="challenge-comment-text" id="challenge-comment-text" class="form-control challenge-comment-text" placeholder="Tell them what's what..."
+           ng-model="newComment" ng-required="true" ng-minlength="3"></textarea>
+        </div>
+        <button type="button" class="btn btn-success" ng-click="postChallengeComment()" ng-disabled="commentForm.$invalid">Post comment</button>
+      </form>
+    </div>
+  </div>
+</div>
