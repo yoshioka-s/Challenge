@@ -367,6 +367,7 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
   var target_id = parseInt(req.params.id);
   var user_id = req.user.id;
 
+  // update UsersChallenges.accepted to true
   models.UserChallenge.update({
     accepted: true
   }, {
@@ -392,6 +393,7 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
         }
       })
       .then(function (challenge) {
+        // update users.coin
         models.User.update({
           coin: Sequelize.literal('coin -' + challenge.get('wager'))
         }, {
@@ -399,15 +401,32 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
             id: user_id
           }
         });
-        models.Challenge.update({
+        // update challenges.total_wager
+        var newData = {
           total_wager: Sequelize.literal('total_wager +' + challenge.get('wager'))
-        }, {
+        };
+        // check if this is there is unparticipate users
+        models.UserChallenge.count({
           where: {
-            id: target_id
+            challengeId: target_id,
+            accept: false
           }
+        }).then(function (count) {
+          if (!count) {
+            // if there is no more participants to accept, start the challenge!
+            newData.started = 'Started';
+            newData.date_started = Sequelize.literal('CURRENT_TIMESTAMP');
+            newData.date_completed = Sequelize.literal('datetime("now", "+' + challenge.get('time') + ' Minute")');
+          }
+          models.Challenge.update(newData, {
+            where: {
+              id: target_id
+            }
+          }).then(function () {
+            res.status(201).json({'success': true});
+          });
         });
-      })
-      res.status(201).json({'success': true});
+      });
     });
   });
 });
@@ -487,16 +506,17 @@ function updateWinner(req, res) {
   models.Challenge.findAll({
     order: [['createdAt', 'DESC']], // must pass an array of tuples
     where: {
-      winner: 0
-      // date_completed: {
-      //   lt: Sequelize.NOW
-      // }
+      winner: 0,
+      date_completed: {
+        $lt: Sequelize.literal('CURRENT_TIMESTAMP') // I have no idea why Sequelize.NOW() doew not work...
+      }
     },
     include: [{
       model: models.User,
       as: 'participants'
     }]
   }).then(function (challenges) {
+    console.log('GOT IT!');
     // set winner to each challenges
     challenges.forEach(setWinner);
     res.status(200).send();
@@ -549,9 +569,13 @@ function setWinner(challenge) {
 function giveCoin(user_id, coin) {
   models.User.update({
     coin: Sequelize.literal('coin +' + coin)
-  },{
+  }, {
     where: {
       id: user_id
     }
   });
 }
+
+router.post('/challenge/:id/setwinner', requires_login, function(req, res) {
+  updateWinner(req, res);
+});
