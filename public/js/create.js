@@ -7,13 +7,13 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
   $scope.selectedParticipant = null;
 
 
-  // $scope.modernBrowsers = [
-  //   { icon: "<img src='../img/placeholder.jpg'/>",            name: "Bob",                 ticked: false  },
-  //   { icon: "<img src='../img/placeholder.jpg'/>",            name: "Peter",               ticked: false },
-  //   { icon: "<img src='../img/placeholder.jpg'/>",            name: "Marry",               ticked: false  },
-  //   { icon: "<img src='../img/placeholder.jpg'/>",            name: "Alex",                ticked: false },
-  //   { icon: "<img src='../img/placeholder.jpg'/>",            name: "John",                ticked: false  }
-  // ];
+  $scope.modernBrowsers = [
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Bob",                 ticked: false  },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Peter",               ticked: false },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Marry",               ticked: false  },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "Alex",                ticked: false },
+    { icon: "<img src='../img/placeholder.jpg'/>",            name: "John",                ticked: false  }
+  ];
 
   // get array of all users in the database
   CreateChallengeFactory.getAllUsers().then(function(res){
@@ -22,8 +22,8 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
       return (user.id !== $scope.user.id);
     });
     $scope.modernBrowsers = $scope.allUsers.map(function (user) {
-      return {icon: "<img src='../img/placeholder.jpg'/>"/* TODO use user.profile_image */, name: user.username, ticked: false};
-    });
+      return {icon: "<img src='../img/placeholder.jpg'/>"/* TODO use user.profile_image */, name: user.username, ticked: false}
+    })
      console.log($scope.allUsers);
   });
 
@@ -41,7 +41,6 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
       $scope.errorMessage = 'make sure the wager does not exceed your coin.';
       return;
     }
-    console.log($scope.challengeInfo.participants);
     CreateChallengeFactory.postChallenge($scope.challengeInfo).then(function(res){
       $state.go('challenge_view', {'id': res.id});
     });
