@@ -3,8 +3,8 @@
   <div class="boxed-group-inner">
 
     <div class="edit-profile">
-      <input class="form-control-1 profile-input" size="20" type="text" placeholder="Challenge Title">
-      <select class="form-control-1">
+      <input class="form-control-1 profile-input" size="20" type="text" placeholder="Challenge Title" ng-model="challengeInfo.title">
+      <select class="form-control-1" ng-model="challengeInfo.time">
         <option>5 mins</option>
         <option>10 mins</option>
         <option>30 mins</option>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="edit-profile">
-       <textarea class="form-control " rows="3" placeholder="Add Description"></textarea>
+       <textarea class="form-control " rows="3" placeholder="Add Description" ng-model="challengeInfo.message"></textarea>
     </div>
 
     <div class="edit-profile coinbox">
