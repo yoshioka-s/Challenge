@@ -36,9 +36,9 @@
 
 
 .dashboardButton{
+  position: fixed;
   text-align: center;
   padding: 5px;
-  width: 33.333%;
   height: 30px;
   display: inline;
   border: 0;
@@ -46,6 +46,19 @@
   color: white;
   background-color: rgba(115, 224, 164, 0.6);
   float: right;
+}
+
+.Button1{
+  width: 10%;
+  left:70%;
+}
+.Button2{
+  width: 10%;
+  left:80%;
+}
+.Button3{
+  width: 10%;
+  left:90%;
 }
 
 .dashboardButton:hover{
@@ -84,13 +97,12 @@
 }
 
 #profileImg{
-  position: relative;
+  position: fixed;
   border-radius: 20px;
-  float: right;
   width: 100px;
   height: 100px;
   padding: 10px;
-  margin-right: 30px;
+  margin-left: 17%;
   margin-top: 10px;
 }
 
@@ -98,18 +110,20 @@
 
 
 .leftSide{
+  position: absolute;
   float: left;
-  width: 65%;
+  width: 70%;
+  min-width: 65%;
   background-color: rgba(202, 216, 202, 0.16);
-  height: 100%;
 }
 
 .rightSide{
-  float: right;
+  left: 70%;
   width: 35%;
   height: inherit;
   height: 100%;
   z-index: 3;
+  position: fixed;
 
 }
 
@@ -136,7 +150,7 @@
     height: 60px;
     padding: 5px;
     padding-left: 20px;
-    width: 250px;
+    width: 200px;
     margin-top: 20px;
     background-color: rgba(41, 57, 74, 0.18);
     -webkit-box-shadow: 0 4px 5px -5px black;
@@ -178,6 +192,84 @@
   text-align: center;
 }
 
+.playContainer{
+  list-style-type: none;
+}
+
+.playerName{
+  border-radius: 10px 10px 0 0;
+  height: 30px;
+  font-size: 20px;
+  color: white;
+  background-color: rgb(162, 218, 191);
+}
+
+
+.playContainer img{
+  max-height: 180px;
+
+}
+
+.playerItem{
+  width: 300px;
+  border-radius: 12px;
+  float: left;
+  min-width: 45%;
+  height: 250px;
+  font-size: 10px;
+  text-align: center;
+  margin: 10px 10px 10px 10px;
+  padding: 0;
+  background-color: white;
+}
+.boxed-group-detail{
+  display: block;
+}
+
+.playerUploadButton{
+  float: left;
+  background-color: rgb(162, 218, 191);
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  margin-bottom: 40px;
+  border-radius: 0 0 0 12px;
+
+}
+.playerBotton{
+  height: 40px;
+  background-color: rgb(162, 218, 191);
+  border-radius: 0 0 12px 12px;
+}
+
+.playerVoteButton{
+  vertical-align: middle;
+  padding: 5px 10px 5px 5px;
+  color: white;
+  font-size: 20px;
+  height: 40px;
+  float: right;
+  border-radius: 0 0 12px 0;
+  background-color: rgb(162, 218, 191);
+}
+
+.playerButton:hover{
+  background-color: rgb(56, 199, 124);
+}
+
+.commentDiv{
+  margin: 40px;
+}
+
+.playScore{
+  float: left;
+  margin-left: 80px;
+  font-size: 20px;
+  padding: 5px;
+  color: white;
+}
 
 /*================= challengeCreate =================*/
 .coinbox{

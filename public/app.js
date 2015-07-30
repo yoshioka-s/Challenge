@@ -33,7 +33,7 @@ angular.module('challengeApp', [
     })
     .state('dashboard.detail', {
       url: '/challenge/:itemId',
-      templateUrl: './html/challenge.html',
+      templateUrl: './html/detail.html',
       controller: 'DetailController',
       resolve: {authorize: isLoggedIn}
     })
