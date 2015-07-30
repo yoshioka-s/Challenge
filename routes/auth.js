@@ -9,19 +9,35 @@ var compare = Promise.promisify(bcrypt.compare);
 var app = express();
 
 router.post('/signup', function(req, res) {
+  console.log('got in with test', req.body);
   var username = req.body.username;
-  bcrypt.genSalt(10, function(err, salt) {
-    if (err) {
-      console.log(err);
-      return;
+  // if username already exists in db, send ('username already exists')
+  var exists;
+  sequelize.User.findOne({
+    where: {
+      username: username
     }
-    bcrypt.hash(req.body.password, salt, function(err, hash) {
-      sequelize.User.create({
-          username: username,
-          password: hash
+  }).then(function(user) {
+    exists = user;
+  }).then(function() {
+    if(exists === null) {
+      return bcrypt.genSalt(10, function(err, salt) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+          sequelize.User.create({
+              username: username,
+              password: hash
+            }).then(function(obj) {
+              res.send('done');
+            })
         })
-        .then(function(obj) {});
-    })
+      })    
+    } else {
+      res.send('username already exists');
+    }
   })
 });
 

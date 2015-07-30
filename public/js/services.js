@@ -1,16 +1,18 @@
 angular.module('challengeApp.services', [])
-  .factory('Auth', function($http) {
+  .factory('Auth', function($http, $q) {
     var createUser = function(username, password) {
+      var deferred = $q.defer();
       $http.post('/auth/signup', {
           username: username,
           password: password
         })
         .success(function(data) {
-          return data;
+          deferred.resolve(data);
         })
         .error(function(error) {
-          console.log("getUserInfoError: ", error)
+          deferred.reject(error);
         })
+      return deferred.promise;
     };
 
     var login = function(username, password) {
