@@ -9,7 +9,6 @@ var routes = require('./routes/index');
 var api = require('./routes/api');
 var auth = require('./routes/auth');
 var session = require('express-session');
-// var passport = require('./middleware/passport');
 var app = express();
 var RedisStore = require('connect-redis')(session);
 
@@ -19,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieSession({
   secret: 'makersquare'
 }));
+
 // app.use(cookieParser());
 // app.use(session({
 //   store: new RedisStore({
@@ -31,8 +31,6 @@ app.use(cookieSession({
 //   'saveUninitialized': false
 // }));
 
-// app.use(passport.initialize());
-// app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
