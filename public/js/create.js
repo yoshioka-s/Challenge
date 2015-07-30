@@ -22,7 +22,7 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
     challengeInfo.message = challengeInfo.message || "no description";
     challengeInfo.userId = $scope.loginUser.id;
 
-    if ( Number($scope.loginUser.coin) < Number($scope.challengeInfo.wager)) {
+    if (Number($scope.user.coin) < Number(challengeInfo.wager)) {
       console.log('the wager exceeds your coin');
       $scope.errorMessage = 'make sure the wager does not exceed your coin.';
     }
@@ -33,6 +33,7 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
     }
 
 };
+
 
 
 });
