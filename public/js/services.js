@@ -180,4 +180,19 @@ angular.module('challengeApp.services', [])
     getCreatorInfo: getCreatorInfo,
     postChallenge: postChallenge
   };
-});
+})
+.factory('UserFactory', ['$http', function($http){
+  var getUserInfo = function(username){
+    return $http({
+      method: 'GET',
+      url: '/api/1/login_user_info',
+      data:username
+    }).then(function(resp) {
+      return resp.data;
+    });
+  };
+
+  return {
+    getUserInfo: getUserInfo
+  }
+}])
