@@ -35,10 +35,9 @@ router.post('/login', function(req, res) {
       username: username
     }
   }).then(function(obj) {
-  	userObj = obj
+  	userObj = obj;
     hashedPw = obj[0].dataValues.password;
   }).then(function(obj) {
-  	console.log("obj", userObj)
     return compare(password, hashedPw)
       .then(function(data) {
         if (data) {
@@ -51,7 +50,8 @@ router.post('/login', function(req, res) {
 });
 
 router.get('/logout', function(req, res) {
-  delete req.session.user;
+  req.session = null;
+  res.send('yo delete dat cookie');
 })
 
 module.exports = {
