@@ -10,6 +10,9 @@
 <form class="authForm" id="loginForm" ng-show="showSignup">
   <input class="authInput form-control" type="text" placeholder="username" ng-model="signupUsername">
   <input class="authInput form-control" type="password" placeholder="password" ng-model="signupPassword">
-  <button class="btn btn-default" ng-click="signup(signupUsername, signupPassword)">Signup</button>
-  <a href="" ng-click="swapAuth()">Go to Login</a>
+  <div>
+	<button class="btn btn-default" ng-click="signup(signupUsername, signupPassword)">Signup</button>
+	<a href="" ng-click="swapAuth()">Go to Login</a>
+  </div>
+  <span>{{signUpError}}</span>
 </form>

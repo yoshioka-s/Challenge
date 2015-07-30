@@ -21,7 +21,6 @@ router.post('/signup', function(req, res) {
     exists = user;
   }).then(function() {
     if(exists === null) {
-      console.log('====entering if=====');
       return bcrypt.genSalt(10, function(err, salt) {
         if (err) {
           console.log(err);
@@ -34,11 +33,9 @@ router.post('/signup', function(req, res) {
             }).then(function(obj) {
               res.send('done');
             })
-            // .then(function(obj) {});
         })
       })    
     } else {
-      console.log('====entering else statement');
       res.send('username already exists');
     }
   })

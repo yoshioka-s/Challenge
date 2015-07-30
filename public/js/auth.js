@@ -13,9 +13,14 @@ angular.module('challengeApp.auth', [])
       $scope.signup = function(username, password) {
         $scope.user.username = username;
         $scope.user.password = password;
-        Auth.createUser(username, password);
-        $scope.swapAuth();
-        // $location.path('/dashboard');
+        Auth.createUser(username, password)
+        .then(function(data) {
+          if(data === 'username already exists') {
+            $scope.signUpError = data + '!';
+          } else {
+            $scope.swapAuth();
+          }
+        })
       }
 
       $scope.login = function(username, password) {
