@@ -18,9 +18,12 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
 
   // get array of all users in the database
   CreateChallengeFactory.getAllUsers().then(function(res){
-    $scope.allUsers = res.filter(function(user) {
+     $scope.allUsers= res.filter(function(user) {
+      console.log(user)
       return (user.id !== $scope.user.id);
     });
+     console.log($scope.allUsers);
+
   });
 
   $scope.addParticipant = function() {

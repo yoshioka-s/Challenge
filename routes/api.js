@@ -31,23 +31,16 @@ router.get('/user_info', requires_login, function(req) {
  * Endpoint to get a list of all users
  */
 router.get('/allUsers', function(req, res) {
-
   models.User.findAll()
     .then(function(users) {
       var data = [];
       for(var i = 0; i < users.length; i++) {
         data.push({
           id: users[i].get('id'),
-          first_name: users[i].get('first_name'),
-          last_name: users[i].get('last_name'),
-          email: users[i].get('email'),
-          fb_id: users[i].get('fb_id'),
-          date_created: users[i].get('createdAt'),
+          username: users[i].get('username'),
           profile_image: users[i].get('profile_image'),
-          updatedAt: users[i].get('updatedAt')
         });
       }
-
       res.json(data);
     })
     .catch(function(err) {
@@ -235,7 +228,7 @@ var challenge_form_is_valid = function(form) {
 router.post('/challenge', requires_login, function(req, res) {
   console.log('challenge?');
   var form = req.body;
-  var userId = req.user.id;
+  // var userId = req.user.id;
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -272,7 +265,6 @@ router.post('/challenge', requires_login, function(req, res) {
 
 /**
  * Endpoint to set a challenge to started
- *
  * Requires login
  */
 router.put('/challenge/:id/started', requires_login, function(req, res) {

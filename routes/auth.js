@@ -5,93 +5,53 @@ var Promise = require('bluebird');
 var bcrypt = require('bcrypt');
 var session = require('express-session');
 var compare = Promise.promisify(bcrypt.compare);
-// var cookieParser = require('cookie-parser');
+var sequelize = require('../models/index.js')
 
 var app = express();
-// require crypto?
 
-//TODO link with db
-var tempAuthInfo = {};
-
-// app.use(express.cookieParser());
-// app.use(express.session({secret: "This is a secret"}));
-// routing to auth
 router.post('/signup', function(req, res) {
-	var username = req.body.username;
-	tempAuthInfo[username] = {};
-	bcrypt.genSalt(10, function(err, salt) {
-	  if(err) {
-	  	console.log(err);
-	  	return;
-	  }
-	  bcrypt.hash(req.body.password, salt, function(err, hash) {
-	    tempAuthInfo[username].password = hash;
-	  })
-	})
-    res.send("good");
+  var username = req.body.username;
+  bcrypt.genSalt(10, function(err, salt) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    bcrypt.hash(req.body.password, salt, function(err, hash) {
+      sequelize.User.create({
+          username: username,
+          password: hash
+        })
+        .then(function(obj) {});
+    })
+  })
 });
 
 router.post('/login', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  var hashed = tempAuthInfo[username].password;
-  return compare(password, hashed)
-  .then(function(data) {
-  	console.log('bcrypt', data);
-  	if(data) {
-  	  // console.log(req);
-  	  req.session.user = username;
-  	  req.session.save()
-  	}
-  	console.log("req.sess", req.session);
-  	res.send(data);
+  var hashedPw;
+  sequelize.User.findAll({
+    where: {
+      username: username
+    }
+  }).then(function(obj) {
+    hashedPw = obj[0].dataValues.password;
+  }).then(function() {
+    return compare(password, hashedPw)
+      .then(function(data) {
+        if (data) {
+          req.session.user = username;
+          req.session.save()
+        }
+        res.send(data);
+      })
   })
 });
 
 router.get('/logout', function(req, res) {
   delete req.session.user;
-  console.log("req.session", req.session);
-  // res.redirect('/');
 })
 
-// router.get('/logout', function(req, res) {
-//   req.logout();
-//   if (req.xhr) {
-//     res.json({'success': true});
-//   } else {
-//     res.redirect('/');
-//   }
-// });
-
-// router.get('/login', function(req, res, next) {
-//   if (process.env.TESTING) {
-//     req.login({id:1}, function() {
-//       res.send();
-//     });
-//     return;
-//   }
-//   next();
-// }, passport.authenticate('facebook', {'scope': ['email', 'user_friends']}));
-
-// router.get('/facebook/callback', passport.authenticate('facebook'), function(req, res) {
-//   var query = {
-//     'include': {
-//       'model': models.User,
-//       'as': 'participants',
-//       'where': {
-//         'id': req.user.id
-//       }
-//     }
-//   };
-
-//   models.Challenge.count(query).then(function(count) {
-//     if (count > 0) {
-//       res.redirect('/#/user');
-//     } else {
-//       res.redirect('/#/challenges');
-//     }
-//   });
-// });
 
 module.exports = {
   'router': router
