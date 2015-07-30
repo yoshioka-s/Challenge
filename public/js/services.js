@@ -21,9 +21,7 @@ angular.module('challengeApp.services', [])
         .then(function(data) {
           return data;
         })
-        // .error(function(error) {
-        //   console.log("login error, ", error);
-        // })
+
     }
     var logout = function() {
       return $http.get('/auth/logout').then(function() {
@@ -87,6 +85,7 @@ angular.module('challengeApp.services', [])
         return resp.data;
       });
     };
+
 
     var getChallengeList = function() {
       return $http({
@@ -182,14 +181,13 @@ angular.module('challengeApp.services', [])
   };
 })
 .factory('UserFactory', ['$http', function($http){
-  var getUserInfo = function(username){
-    return $http({
-      method: 'GET',
-      url: '/api/1/login_user_info',
-      data:username
-    }).then(function(resp) {
-      return resp.data;
-    });
+  var getUserInfo = function(username,callback){
+    $http.post('/api/1/login_user_info', {
+      username: username
+    }).then(function(data) {
+      callback(data);
+    })
+
   };
 
   return {
