@@ -15,7 +15,6 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
     { icon: "<img src='../img/placeholder.jpg'/>",            name: "John",                ticked: false  }
   ];
 
-
   // get array of all users in the database
   CreateChallengeFactory.getAllUsers().then(function(res){
      $scope.allUsers= res.filter(function(user) {
@@ -23,7 +22,6 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
       return (user.id !== $scope.user.id);
     });
      console.log($scope.allUsers);
-
   });
 
   $scope.addParticipant = function() {
