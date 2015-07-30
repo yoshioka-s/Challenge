@@ -11,11 +11,6 @@ angular.module('challengeApp.services', [])
         .error(function(error) {
           console.log("getUserInfoError: ", error)
         })
-        // return $http.get('/api/1/user_info').then(function(res) {
-        //   return res.data;
-        // }, function(error) {
-        //   throw Error(error);
-        // });
     };
 
     var login = function(username, password) {

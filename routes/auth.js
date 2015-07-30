@@ -37,22 +37,17 @@ router.post('/login', function(req, res) {
   var hashed = tempAuthInfo[username].password;
   return compare(password, hashed)
   .then(function(data) {
-  	console.log('bcrypt', data);
   	if(data) {
-  	  // console.log(req);
   	  req.session.user = username;
   	  req.session.save()
   	}
-  	console.log("req.sess", req.session);
   	res.send(data);
   })
 });
 
 router.get('/logout', function(req, res) {
   delete req.session.user;
-  console.log("req.session", req.session);
 })
-
 
 module.exports = {
   'router': router
