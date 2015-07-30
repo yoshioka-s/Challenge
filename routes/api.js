@@ -95,7 +95,7 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
  * Requires login
  */
 router.get('/challenge/user', requires_login, function(req, res) {
-  models.User.findOne({where: {id: req.user.id}})
+  models.User.findOne({where: {id: req.session.user[0].id}})
   .then(function(user) {
     user.getChallenges({
         include: [{
