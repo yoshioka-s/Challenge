@@ -46,9 +46,11 @@ router.get('/allUsers', function(req, res) {
         data.push({
           id: users[i].get('id'),
           username: users[i].get('username'),
-          profile_image: users[i].get('profile_image'),
+          profile_image: users[i].get('image'),
+          coin: users[i].get('coin')
         });
       }
+      console.log(data);
       res.json(data);
     })
     .catch(function(err) {
