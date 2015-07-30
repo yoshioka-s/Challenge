@@ -7,7 +7,7 @@ orm.authenticate()
   //  })
   .catch(function(err) {
     console.log('Connection to db failed: ', err);
-  })
+  }) 
   .done();
 
 var User = orm.define('users', {
@@ -27,7 +27,8 @@ var Challenge = orm.define('challenges', {
   started:  { type: Sequelize.STRING, defaultValue: 'Not Started' },
   date_started:   { type: Sequelize.DATE },
   date_completed: { type: Sequelize.DATE },
-  total_wager: { type: Sequelize.INTEGER }
+  total_wager: { type: Sequelize.INTEGER },
+  time:     { type: Sequelize.INTEGER, defaultValue: 0 }
 });
 
 // Define the join table which joins Users and Challenges

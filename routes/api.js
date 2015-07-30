@@ -45,9 +45,11 @@ router.get('/allUsers', function(req, res) {
         data.push({
           id: users[i].get('id'),
           username: users[i].get('username'),
-          profile_image: users[i].get('profile_image'),
+          profile_image: users[i].get('image'),
+          coin: users[i].get('coin')
         });
       }
+      console.log(data);
       res.json(data);
     })
     .catch(function(err) {
@@ -94,7 +96,7 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
  * Requires login
  */
 router.get('/challenge/user', requires_login, function(req, res) {
-  models.User.findOne({where: {id: req.user.id}})
+  models.User.findOne({where: {id: req.session.user[0].id}})
   .then(function(user) {
     user.getChallenges({
         include: [{
@@ -204,7 +206,6 @@ router.post('/challenge', requires_login, function(req, res) {
     res.status(400).json({'error': 'EINVALID', 'message': 'Submitted form is invalid.'});
     return;
   }
-  console.log('WOKING?');
 
   // Create the challenge
   models.Challenge.create({
@@ -213,11 +214,15 @@ router.post('/challenge', requires_login, function(req, res) {
     wager: form.wager,
     creator: userId,
     date_started: Date.now(),
-    total_wager: form.wager
+    total_wager: form.wager,
+    time: form.time
   })
   .then(function(challenge) {
+    // insert into usersChallenges
     challenge.addParticipants(form.participants); // form.participants should be an array
     challenge.addParticipant([userId], {accepted: true}); // links creator of challenge
+
+    // take the wager from creater
     models.User.update({
       coin: Sequelize.literal('coin -' + form.wager)
     }, {
@@ -349,12 +354,14 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
       if (!userChallenge.get('accepted')) {
         res.status(200).json({'success': false});
       }
+
       models.Challenge.findOne({
         where: {
           id: target_id
         }
       })
       .then(function (challenge) {
+
         // update users.coin
         models.User.update({
           coin: Sequelize.literal('coin -' + challenge.get('wager'))
@@ -363,10 +370,12 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
             id: user_id
           }
         });
+
         // update challenges.total_wager
         var newData = {
           total_wager: Sequelize.literal('total_wager +' + challenge.get('wager'))
         };
+
         // check if this is there is unparticipate users
         models.UserChallenge.count({
           where: {
@@ -374,6 +383,7 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
             accepted: false
           }
         }).then(function (count) {
+
           if (!count) {
             // if there is no more participants to accept, start the challenge!
             console.log('START THE CHALLENGE!');
@@ -381,6 +391,7 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
             newData.date_started = Sequelize.literal('CURRENT_TIMESTAMP');
             newData.date_completed = Sequelize.literal('datetime("now", "+' + challenge.get('time') + ' Minute")');
           }
+
           models.Challenge.update(newData, {
             where: {
               id: target_id
@@ -416,8 +427,7 @@ router.get('/challenge/:id/comments', function(req, res) {
         'date_created': comment.createdAt,
         'user': {
           'id': comment.user.id,
-          'first_name': comment.user.first_name,
-          'last_name': comment.user.last_name,
+          'username': comment.user.username,
           'profile_image': comment.user.profile_image
         }
       });
@@ -459,11 +469,6 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
       res.status(200).json(userChallenge);
     });
 });
-
-module.exports = {
-  'router': router,
-  'challenge_form_is_valid': challenge_form_is_valid
-};
 
 function updateWinner(req, res) {
   models.Challenge.findAll({
@@ -507,6 +512,7 @@ function setWinner(challenge) {
 
   if (tie) {
     started = 'Tie';
+    newWinner = -1;
   }
   // update the winner of the challenge
   models.Challenge.update({
@@ -542,3 +548,8 @@ function giveCoin(user_id, coin) {
 router.post('/challenge/:id/setwinner', requires_login, function(req, res) {
   updateWinner(req, res);
 });
+
+module.exports = {
+  'router': router,
+  'challenge_form_is_valid': challenge_form_is_valid
+};
