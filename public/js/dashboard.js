@@ -1,7 +1,9 @@
 angular.module('challengeApp.dashboard', [])
-.controller('dashboardController', ['$scope','$location','$state','Auth',
-  function($scope,$location,$state,Auth){
-    $state.transitionTo('dashboard.profile');
+.controller('dashboardController', ['$scope','$location','$state','Auth','UserFactory','$stateParams',
+  function($scope,$location,$state,Auth,UserFactory,$stateParams){
+    $scope.user.username = $stateParams.username;
+    // var user = UserFactory.getUserInfo($scope.username);
+    // $state.transitionTo('dashboard.profile');
     $scope.challenges = [
     {
       id:"1",
@@ -30,7 +32,7 @@ angular.module('challengeApp.dashboard', [])
 
     $scope.findDetail = function(challenge) {
       $state.go("dashboard.detail", {
-        itemId: challenge.id,
+        itemId: challenge.id
       });
     };
 

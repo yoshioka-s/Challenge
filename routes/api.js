@@ -22,8 +22,17 @@ var requires_login = function(req, res, next) {
  *
  * Requires login
  */
-router.get('/user_info', requires_login, function(req) {
-  console.log('userinfo', req.body);
+router.get('/login_user_info', requires_login, function(req, res) {
+  models.User.findAll({
+    where:{
+      username:'daichuqi'
+    }
+  }).then(function(user){
+    res.json(user);
+  })
+
+
+
 });
 
 

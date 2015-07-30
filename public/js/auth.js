@@ -1,6 +1,6 @@
 angular.module('challengeApp.auth', [])
-  .controller('AuthController', ['$scope', '$rootScope', '$location', '$window', 'Auth',
-    function($scope, $rootScope, $location, $window, Auth) {
+  .controller('AuthController', ['$scope', '$rootScope', '$location', '$window', 'Auth','$state',
+    function($scope, $rootScope, $location, $window, Auth,$state) {
       $scope.user = {};
       $scope.showLogin = true;
       $scope.showSignup = false;
@@ -21,11 +21,16 @@ angular.module('challengeApp.auth', [])
       $scope.login = function(username, password) {
         $scope.user.username = username;
         $scope.user.password = password;
+        var name = username;
         Auth.login(username, password)
           .then(function(data) {
             if (data.data === "true") {
               sessionStorage.setItem("loggedIn", "true")
-              $location.path('/dashboard');
+
+              $state.go("dashboard", {
+                username: username
+              });
+
             } else {
               console.log('Incorrect password');
             }
