@@ -56,18 +56,42 @@ describe('API Integration', function() {
       })
     });
 
-    // after(function(done) {
-    //   models.orm.drop().then(function() {
+    after(function(done) {
+      models.orm.drop().then(function() {
+        done();
+      })
+    });
+
+    it('should retrieve values from users table', function() {
+      var uri = 'http://localhost:3030/api/1/allUsers';
+      request({'uri': uri, 'json': true}, function(err, res, body) {
+        console.log('========= obj 1=========', body);
+        expect(body).to.be.an('array');
+        expect(body[0].username).to.be.eql('suz');
+        expect(body[0]).to.contain.all.keys([
+          'username', 'coin', 'id', 'profile_image'
+          // 'title', 'message','wager', 'creator', 
+          // 'winner', 'complete', 'started', 'total_wager'
+        ])
+        done();
+      })
+    });
+
+    // it('should find created challenges', function() {
+    //   var uri = 'http://localhost:3030/api/1/challenge/public';
+    //   request({'uri':uri, 'json': true}, function(err, res, body) {
+    //     console.log('======= obj 2========', body);
+    //     expect(body).to.be.an('array');
+    //     expect(body[0]).to.be.an('object');
+    //     expect(body[0]).to.contain.all.keys([
+    //       'title', 'message', 'wager', 'creator', 'winner', 
+    //       'complete', 'started', 'total_wager'
+    //     ]);
     //     done();
     //   })
     // });
-
-    it('should retrieve values', function() {
-      var uri = 'http://localhost:3030/api/1/allUsers';
-      request({uri: uri, json: true}, function(err, res, body) {
-        console.log('---------**********this is body of req********-------: ',body);
-        expect(body).to.be.an('object');
-      })
+  });
+});
     // })
 
     // request({'uri':uri, 'json':true}, function(err, res, body) {
@@ -87,9 +111,12 @@ describe('API Integration', function() {
     //     done();
     //   });
 
-    })
-  })
-});
+
+
+    // it('should find challenges in db', function() {
+    //   var uri = ''
+    // })
+
 // })
 
 // describe('Api integration tests', function() {
