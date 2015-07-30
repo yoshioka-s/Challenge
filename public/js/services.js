@@ -161,14 +161,14 @@ angular.module('challengeApp.services', [])
   };
 
   // POST method for creating a challenge
-  var postChallenge = function(challengeInfo) {
+  var postChallenge = function(challengeInfo, userId) {
     challengeInfo.participants = challengeInfo.participants.map(function(participant) {
       return participant.id;
     });
     return $http({
       method: 'POST',
       url: '/api/1/challenge',
-      data: challengeInfo
+      data: {form: challengeInfo, id: userId}
     }).then(function(resp) {
       return resp.data;
     });
