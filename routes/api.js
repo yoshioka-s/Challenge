@@ -58,6 +58,35 @@ router.get('/allUsers', function(req, res) {
 });
 
 
+var makeChallengeObj = function (challengeModel, rawParticipants) {
+  var participants = [];
+
+  for(var i = 0; i < rawParticipants.length; i++) {
+    participants.push({
+      id: rawParticipants[i].id,
+      first_name: rawParticipants[i].first_name,
+      last_name: rawParticipants[i].last_name,
+      profile_image: rawParticipants[i].profile_image,
+      accepted: rawParticipants[i].usersChallenges.accepted
+    });
+  }
+
+  return {
+    id: challengeModel.get('id'),
+    title: challengeModel.get('title'),
+    message: challengeModel.get('message'),
+    wager: challengeModel.get('wager'),
+    creator: challengeModel.get('creator'),
+    winner: challengeModel.get('winner'),
+    complete: challengeModel.get('complete'),
+    started: challengeModel.get('started'),
+    date_created: challengeModel.get('createdAt'),
+    date_completed: challengeModel.get('date_completed'),
+    date_started: challengeModel.get('date_started'),
+    participants: participants
+  };
+}
+
 /**
  * Endpoint to get a list of challenges associated with currently logged in user
  *
@@ -77,9 +106,12 @@ router.get('/challenge/user', requires_login, function(req, res) {
 
       for(var i = 0; i < challenges.length; i++) {
 
+        var rawParticipants = challenges[i].get('participants', {plain: true});
         var participants = [];
+        console.log('begin loop!!!!!!!!');
 
-        for(var j = 0; j < challenges[i].participants.length; j++) {
+        for(var j = 0; j < rawParticipants.length; j++) {
+          console.log(rawParticipants[j].id);
           participants.push({
             first_name: challenges[i].participants[j].get('first_name'),
             id: challenges[i].participants[j].get('id'),
@@ -128,32 +160,10 @@ router.get('/challenge/public', function(req, res) {
       var data = [];
       for(var i = 0; i < challenges.length; i++) {
         var rawParticipants = challenges[i].get('participants', {plain: true});
-        var participants = [];
 
-        for(var j = 0; j < rawParticipants.length; j++) {
-          participants.push({
-            id: rawParticipants[i].id,
-            first_name: rawParticipants[i].first_name,
-            last_name: rawParticipants[i].last_name,
-            profile_image: rawParticipants[i].profile_image,
-            accepted: rawParticipants[i].usersChallenges.accepted
-          });
-        }
+        var challengeObj = makeChallengeObj(challenges[i], rawParticipants);
 
-        data.push({
-          id: challenges[i].get('id'),
-          title: challenges[i].get('title'),
-          message: challenges[i].get('message'),
-          wager: challenges[i].get('wager'),
-          creator: challenges[i].get('creator'),
-          winner: challenges[i].get('winner'),
-          complete: challenges[i].get('complete'),
-          started: challenges[i].get('started'),
-          date_created: challenges[i].get('createdAt'),
-          date_completed: challenges[i].get('date_completed'),
-          date_started: challenges[i].get('date_started'),
-          participants: participants
-        });
+        data.push(challengeObj);
       }
 
       res.json(data);
@@ -180,33 +190,10 @@ router.get('/challenge/:id', function(req, res) {
     })
     .then(function(challenge) {
       var rawParticipants = challenge.get('participants', {plain: true});
-      var participants = [];
 
-      for(var i = 0; i < rawParticipants.length; i++) {
-        participants.push({
-          id: rawParticipants[i].id,
-          first_name: rawParticipants[i].first_name,
-          last_name: rawParticipants[i].last_name,
-          profile_image: rawParticipants[i].profile_image,
-          accepted: rawParticipants[i].usersChallenges.accepted,
-          upvote: rawParticipants[i].usersChallenges.upvote
-        });
-      }
+      var challengeObj = makeChallengeObj(challenge, rawParticipants);
 
-      res.json({
-        id: challenge.get('id'),
-        title: challenge.get('title'),
-        message: challenge.get('message'),
-        wager: challenge.get('wager'),
-        creator: challenge.get('creator'),
-        winner: challenge.get('winner'),
-        complete: challenge.get('complete'),
-        started: challenge.get('started'),
-        date_created: challenge.get('createdAt'),
-        date_started: challenge.get('date_started'),
-        date_completed: challenge.get('date_completed'),
-        participants: participants
-      });
+      res.json(challengeObj);
     });
 });
 
