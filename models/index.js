@@ -56,6 +56,11 @@ var Comment = orm.define('comments', {
 Comment.belongsTo(Challenge);
 Comment.belongsTo(User);
 
+var Upvote = orm.define('upvote', {
+  vote: { type: Sequelize.INTEGER, defaultValue: 0 }
+});
+Upvote.belongsTo(Challenge);
+Upvote.belongsTo(User);
 
 // make the database
 // delete database file to clear database
@@ -65,4 +70,5 @@ exports.User = User;
 exports.Challenge = Challenge;
 exports.UserChallenge = UserChallenge;
 exports.Comment = Comment;
+exports.Upvote = Upvote;
 exports.orm = orm;
