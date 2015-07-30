@@ -24,9 +24,8 @@ var requires_login = function(req, res, next) {
  */
 
 router.post('/login_user_info', requires_login, function(req, res) {
-  console.log(req);
   var username = req.body.username;
-  models.User.findAll({
+  models.User.findOne({
     where:{
       username:username
     }
@@ -34,6 +33,15 @@ router.post('/login_user_info', requires_login, function(req, res) {
     res.json(user);
   });
 });
+
+router.post('/update_username', requires_login, function(req, res) {
+  var userId = req.body.userId;
+  var newName = req.body.newName;
+  models.User.update({username:newName} , {where: {id:userId}})
+             .then(function(user){ res.json(user) });
+});
+
+
 
 /**
  * Endpoint to get a list of all users
@@ -107,16 +115,11 @@ router.get('/challenge/user', requires_login, function(req, res) {
      })
     .then(function(challenges) {
       var data = [];  // Didn't want to use 'response' since that might be confused with http res
-
       for(var i = 0; i < challenges.length; i++) {
-
         var rawParticipants = challenges[i].get('participants', {plain: true});
         var challengeObj = makeChallengeObj(challenges[i], rawParticipants);
-        console.log('begin loop!!!!!!!!');
-
         data.push(challengeObj);
       }
-
       res.json(data);
     });
   });
