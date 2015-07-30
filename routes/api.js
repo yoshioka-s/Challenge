@@ -29,7 +29,7 @@ router.get('/login_user_info', requires_login, function(req, res) {
     }
   }).then(function(user){
     res.json(user);
-  })
+  });
 
 
 
@@ -58,6 +58,9 @@ router.get('/allUsers', function(req, res) {
 });
 
 
+/**
+ * helper function to get challenge obj from challenge model and participants obj
+ */
 var makeChallengeObj = function (challengeModel, rawParticipants) {
   var participants = [];
 
@@ -85,7 +88,7 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
     date_started: challengeModel.get('date_started'),
     participants: participants
   };
-}
+};
 
 /**
  * Endpoint to get a list of challenges associated with currently logged in user
@@ -107,34 +110,10 @@ router.get('/challenge/user', requires_login, function(req, res) {
       for(var i = 0; i < challenges.length; i++) {
 
         var rawParticipants = challenges[i].get('participants', {plain: true});
-        var participants = [];
+        var challengeObj = makeChallengeObj(challenges[i], rawParticipants);
         console.log('begin loop!!!!!!!!');
 
-        for(var j = 0; j < rawParticipants.length; j++) {
-          console.log(rawParticipants[j].id);
-          participants.push({
-            first_name: challenges[i].participants[j].get('first_name'),
-            id: challenges[i].participants[j].get('id'),
-            last_name: challenges[i].participants[j].get('last_name'),
-            profile_image: challenges[i].participants[j].get('profile_image'),
-            accepted: challenges[i].participants[j].usersChallenges.accepted
-          });
-        }
-
-        data.push({
-          complete: challenges[i].get('complete'),
-          creator: challenges[i].get('creator'),
-          date_completed: challenges[i].get('date_completed'),
-          date_created: challenges[i].get('createdAt'),
-          date_started: challenges[i].get('date_started'),
-          id: challenges[i].get('id'),
-          message: challenges[i].get('message'),
-          started: challenges[i].get('started'),
-          title: challenges[i].get('title'),
-          wager: challenges[i].get('wager'),
-          winner: challenges[i].get('winner'),
-          participants: participants
-        });
+        data.push(challengeObj);
       }
 
       res.json(data);
@@ -207,6 +186,7 @@ var challenge_form_is_valid = function(form) {
   var min_text_length = 3;
 
   required_fields.forEach(function(field) {
+    console.log(form[field]);
     if (form[field] === '' || form[field].length < min_text_length) {
       valid = false;
     }
@@ -224,7 +204,6 @@ var challenge_form_is_valid = function(form) {
 router.post('/challenge', requires_login, function(req, res) {
   console.log('challenge?');
   var form = req.body;
-  console.log(req.session.user);
   var userId = req.user.id;
 
   // validate form
@@ -232,6 +211,7 @@ router.post('/challenge', requires_login, function(req, res) {
     res.status(400).json({'error': 'EINVALID', 'message': 'Submitted form is invalid.'});
     return;
   }
+  console.log('WOKING?');
 
   // Create the challenge
   models.Challenge.create({
