@@ -187,7 +187,6 @@ angular.module('challengeApp.services', [])
     }).then(function(data) {
       callback(data)
     })
-
   }
 
   var getUserChallenges = function() {
@@ -198,7 +197,6 @@ angular.module('challengeApp.services', [])
       return resp.data;
     });
   };
-
 
   return {
     getUserChallenges:getUserChallenges,

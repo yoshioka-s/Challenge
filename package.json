@@ -32,7 +32,6 @@
     "express": "~4.13",
     "express-session": "~1.11",
     "morgan": "~1.6",
-    "ng-imgur": "^0.1.5",
     "node-crontab": "0.0.8",
     "pg": "^4.4.0",
     "pg-hstore": "^2.3.2",

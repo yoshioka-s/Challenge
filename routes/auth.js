@@ -74,11 +74,9 @@ router.get('/logout', function(req, res) {
 router.post('/userImage', function(req, res) {
   var base64Img = req.body.image;
   sequelize.User.create({
-    image: "TEST"
+    image: base64Img
   }).then(function(obj) {
-    // console.log("reqbody", req.body)
-    // console.log("returned obj: ", obj.dataValues.image)
-    res.send(base64Img)
+    res.send("Image successfully stored")
   })
   // res.send("good")
 })
