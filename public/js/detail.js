@@ -34,6 +34,7 @@ angular.module('challengeApp.detail', [])
     .then(function () {
       $scope.getChallengeInfo($scope.challenge);
     });
+    $scope.hasAccepted = true;
   };
 
 }]);
