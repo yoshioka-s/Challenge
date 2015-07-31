@@ -23,6 +23,26 @@ var requires_login = function(req, res, next) {
  * Requires login
  */
 
+
+
+
+  router.post('/user_challenge', requires_login, function(req, res) {
+  var userId = req.body.id;
+  var challengeId = []
+  models.UserChallenge.findAll({
+    where:{
+      userId:userId
+    }
+  }).then(function(challenge){
+    for(var i = 0; i<challenge.length;i++){
+      challengeId.push(challenge[i].dataValues.challengeId);
+    }
+    res.json(challenge);
+  });
+});
+
+
+
 router.post('/login_user_info', requires_login, function(req, res) {
   var username = req.body.username;
   models.User.findOne({
@@ -99,6 +119,9 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
     participants: participants
   };
 };
+
+
+
 
 /**
  * Endpoint to get a list of challenges associated with currently logged in user

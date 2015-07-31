@@ -5,10 +5,14 @@ angular.module('challengeApp.dashboard', [])
 
     UserFactory.getUserInfo($scope.user.username, function(data){
       $scope.loginUser = data.data;
-      console.log($scope.loginUser)
+      UserFactory.getUserChallenges($scope.loginUser.id,function(data){
+        console.log(data);
+      })
     });
+
     // $state.transitionTo('dashboard.profile');
     $scope.challenges = [];
+
 
     $scope.editProfile = function(){
       $state.go("dashboard.profile");
