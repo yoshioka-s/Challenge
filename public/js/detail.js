@@ -10,29 +10,29 @@ angular.module('challengeApp.detail', [])
         $scope.started = res.started;
         $scope.canUpvote = $scope.started === 'Started';
         $scope.complete = res.complete;
-        $scope.isParticipant = res.participants.some(function(participant) { return participant.id === $scope.user.id; });
-        $scope.hasAccepted = res.participants.some(function(participant) { return participant.id === $scope.user.id && participant.accepted; });
+        $scope.isParticipant = res.participants.some(function(participant) { return participant.id === $scope.loginUser.id; });
+        $scope.hasAccepted = res.participants.some(function(participant) { return participant.id === $scope.loginUser.id && participant.accepted; });
         callback(res.participants);
 
       });
     };
 
-      $scope.getChallengeInfo($stateParams.itemId,function(players){
-          ChallengeFactory.getChallengeUser($stateParams.itemId,function(data){
-          $scope.userChallenges = data.data;
+    $scope.getChallengeInfo($stateParams.itemId,function(players){
+        ChallengeFactory.getChallengeUser($stateParams.itemId,function(data){
+        $scope.userChallenges = data.data;
 
-          for(var i=0;i<$scope.userChallenges.length;i++){
-            for(var j=0;j<players.length;j++){
-              if(players[j].id === $scope.userChallenges[i].userId){
-                $scope.userChallenges[i].player = players[j];
-              }
+        for(var i=0;i<$scope.userChallenges.length;i++){
+          for(var j=0;j<players.length;j++){
+            if(players[j].id === $scope.userChallenges[i].userId){
+              $scope.userChallenges[i].player = players[j];
             }
           }
-          console.log($scope.userChallenges)
-          console.log($scope.loginUser)
+        }
+        console.log($scope.userChallenges)
+        console.log($scope.loginUser)
 
-        });
       });
+    });
 
     $scope.uploadimage = function(myPic,userId,challengeid){
       UserFactory.uploadChallengeImage(myPic.base64,userId,challengeid)
@@ -44,9 +44,10 @@ angular.module('challengeApp.detail', [])
     if ($scope.loginUser.id === player.id) {
       return;
     }
+    console.log('VOTE');
     ChallengeFactory.upvoteUser($scope.challenge, player.id, $scope.loginUser.id)
     .then(function () {
-      $scope.getChallengeInfo($scope.challenge);
+      $state.reload();
     });
   };
 
@@ -54,7 +55,7 @@ angular.module('challengeApp.detail', [])
     console.log('accept clicked!');
     ChallengeFactory.acceptChallenge($scope.challenge, $scope.loginUser.id)
     .then(function () {
-      $scope.getChallengeInfo($scope.challenge);
+      $state.reload();
     });
     $scope.hasAccepted = true;
   };
