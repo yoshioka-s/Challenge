@@ -298,9 +298,8 @@ button.ng-binding {
 }
 
 #avatar{
-    margin-top: 10px;
     float: left;
-    height: 70px;
+    height: 100px;
     display: inline-block;
     overflow: hidden;
     line-height: 1;
@@ -368,7 +367,7 @@ select.form-control-1 {
 }
 .edit-profile-avatar{
   margin: 15px 0;
-  height: 100px;
+  height: 150px;
 }
 .profile-input{
   width: 56%;

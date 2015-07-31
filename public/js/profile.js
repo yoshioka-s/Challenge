@@ -1,18 +1,17 @@
 angular.module('challengeApp.profile', ['naif.base64'])
-  .controller('ProfileController', ['$scope', '$location', '$state', 'Upload', 'ProfileFactory',
-    function($scope, $location, $state, Upload, ProfileFactory) {
+  .controller('ProfileController', ['$scope', '$location', '$state', 'ProfileFactory',
+    function($scope, $location, $state, ProfileFactory) {
       $scope.update = ProfileFactory.upload;
-      $scope.uploadImg = function() {
-        console.log($scope.myPic.base64)
-        $scope.picture = $scope.myPic.base64;
-      }
+      $scope.myPic = {};
     }
   ])
-.factory('ProfileFactory', ['Upload','UserFactory', function(Upload,UserFactory){
-  var upload = function(userId,file,newname){
+.factory('ProfileFactory', ['UserFactory', function(UserFactory){
+  var upload = function(userId,newname,image){
     if(newname){
         UserFactory.updateUsername(userId,newname,function(data){});
-        UserFactoryuploadImage(base64Img, $scope.loginUser.id);
+    }
+    if(image.base64){
+      UserFactory.uploadImage(image.base64, userId);
     }
   }
   return {

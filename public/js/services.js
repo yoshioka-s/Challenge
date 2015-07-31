@@ -35,7 +35,7 @@ angular.module('challengeApp.services', [])
     return {
       createUser: createUser,
       login: login,
-      logout: logout,
+      logout: logout
     };
   })
 .factory('ChallengeFactory', function($http) {
@@ -172,16 +172,6 @@ angular.module('challengeApp.services', [])
   };
 })
 .factory('UserFactory', ['$http', function($http){
-  var uploadImage = function(image, userId) {
-  $http.post('/auth/userImage', {
-      image: image,
-      userId: userId
-    })
-    .then(function(data) {
-      return data;
-    })
-};
-
   var getUserInfo = function(username,callback){
     $http.post('/api/1/login_user_info', {
       username: username
@@ -199,13 +189,22 @@ angular.module('challengeApp.services', [])
     })
   }
 
-  var getUserChallenges = function() {
-    return $http({
-      method: 'GET',
-      url: '/api/1/challenge/user'
-    }).then(function(resp) {
-      return resp.data;
-    });
+  var getUserChallenges = function(userId,callback) {
+  $http.post('/api/1/challenge/user', {
+      userId:userId
+    }).then(function(data) {
+      callback(data);
+    })
+  };
+
+  var uploadImage = function(image,userId) {
+  $http.post('/api/1/userImage', {
+      image: image,
+      userId:userId
+    })
+    .success(function(data) {
+      return data;
+    })
   };
 
   return {

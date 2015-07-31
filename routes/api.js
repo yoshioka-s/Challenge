@@ -23,7 +23,18 @@ var requires_login = function(req, res, next) {
  * Requires login
  */
 
-
+router.post('/userImage', function(req, res) {
+  var base64Img = req.body.image;
+  var userId = req.body.userId;
+  sequelize.User.update({
+    image: base64Img
+  }, {
+    where: {id: userId}
+  }).then(function(obj) {
+    res.send("Image successfully stored")
+  })
+  // res.send("good")
+})
 
 
   router.post('/user_challenge', requires_login, function(req, res) {
@@ -127,8 +138,8 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
  *
  * Requires login
  */
-router.get('/challenge/user', requires_login, function(req, res) {
-  models.User.findOne({where: {id: req.session.user[0].id}})
+router.post('/challenge/user', requires_login, function(req, res) {
+  models.User.findOne({where: {id: req.body.userId}})
   .then(function(user) {
     user.getChallenges({
         include: [{
