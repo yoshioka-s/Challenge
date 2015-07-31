@@ -95,9 +95,9 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
   for(var i = 0; i < rawParticipants.length; i++) {
     participants.push({
       id: rawParticipants[i].id,
-      first_name: rawParticipants[i].first_name,
-      last_name: rawParticipants[i].last_name,
-      profile_image: rawParticipants[i].profile_image,
+      username: rawParticipants[i].username,
+      coin: rawParticipants[i].coin,
+      image: rawParticipants[i].image,
       accepted: rawParticipants[i].usersChallenges.accepted,
       upvote: rawParticipants[i].usersChallenges.upvote
     });
