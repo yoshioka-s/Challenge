@@ -20,15 +20,12 @@ var User = orm.define('users', {
 var Challenge = orm.define('challenges', {
   title:    { type: Sequelize.STRING, allowNull: false },
   message:  { type: Sequelize.STRING, allowNull: false },
-  wager:    { type: Sequelize.INTEGER },
-  creator:  { type: Sequelize.INTEGER, allowNull: false },
-  winner:   { type: Sequelize.INTEGER, defaultValue: 0 },
-  complete: { type: Sequelize.BOOLEAN, defaultValue: false },
   started:  { type: Sequelize.STRING, defaultValue: 'Not Started' },
-  date_started:   { type: Sequelize.DATE },
-  date_completed: { type: Sequelize.DATE },
-  total_wager: { type: Sequelize.INTEGER },
-  time:     { type: Sequelize.INTEGER, defaultValue: 0 }
+  wager:    { type: Sequelize.INTEGER, defaultValue: 0},
+  winner:   { type: Sequelize.INTEGER, allowNull: true },
+  time:     { type: Sequelize.INTEGER, defaultValue: 300 },
+  date_started:   { type: Sequelize.DATE,allowNull: false },
+  date_completed: { type: Sequelize.DATE,allowNull: true},
 });
 
 // Define the join table which joins Users and Challenges

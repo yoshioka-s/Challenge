@@ -23,6 +23,25 @@ var requires_login = function(req, res, next) {
  * Requires login
  */
 
+
+
+
+  router.post('/user_challenge', requires_login, function(req, res) {
+  var userId = req.body.id;
+  var challengeId = []
+  models.UserChallenge.findAll({
+    where:{
+      userId:userId
+    }
+  }).then(function(challenge){
+    for(var i = 0; i<challenge.length;i++){
+      challengeId.push(challenge[i].dataValues.challengeId);// 1 2 3 10
+    }
+    res.json(challenge);
+  })
+});
+
+
 router.post('/login_user_info', requires_login, function(req, res) {
   var username = req.body.username;
   models.User.findOne({
@@ -99,6 +118,9 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
     participants: participants
   };
 };
+
+
+
 
 /**
  * Endpoint to get a list of challenges associated with currently logged in user
@@ -207,10 +229,10 @@ var challenge_form_is_valid = function(form) {
  *
  * Requires login
  */
-router.post('/challenge', requires_login, function(req, res) {
-  console.log('challenge?');
-  var form = req.body;
-  var userId = req.session.user[0].id;
+router.post('/create_challenge', requires_login, function(req, res) {
+  var form = req.body.challengeInfo;
+
+  console.log(req.body.challengeInfo);
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -218,31 +240,25 @@ router.post('/challenge', requires_login, function(req, res) {
     return;
   }
 
-  // Create the challenge
   models.Challenge.create({
     title: form.title,
     message: form.message,
     wager: form.wager,
-    creator: userId,
     date_started: Date.now(),
-    total_wager: form.wager,
     time: form.time
   })
   .then(function(challenge) {
     // insert into usersChallenges
     challenge.addParticipants(form.participants); // form.participants should be an array
-    challenge.addParticipant([userId], {accepted: true}); // links creator of challenge
+    challenge.addParticipant([form.userId], {accepted: true}); // links creator of challenge
 
     // take the wager from creater
     models.User.update({
       coin: Sequelize.literal('coin -' + form.wager)
-    }, {
-      where: {
-        id: userId
-      }
-    }).then(function () {
-      res.status(201).json({
-        id: challenge.id
+    }, { where: { id: form.userId }})
+    .then(function () {
+      res.status(200).json({
+        challenge: challenge
       });
     });
   });
