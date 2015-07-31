@@ -79,7 +79,8 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
       first_name: rawParticipants[i].first_name,
       last_name: rawParticipants[i].last_name,
       profile_image: rawParticipants[i].profile_image,
-      accepted: rawParticipants[i].usersChallenges.accepted
+      accepted: rawParticipants[i].usersChallenges.accepted,
+      upvote: rawParticipants[i].usersChallenges.upvote
     });
   }
 
@@ -161,6 +162,7 @@ router.get('/challenge/public', function(req, res) {
  * Endpoint to get single challenge specified by id
  */
 router.get('/challenge/:id', function(req, res) {
+  console.log('GET A CHALLENGE');
   var target_id = parseInt(req.params.id);
   // var data = req.db.Challenge.findById(req.params.id);
 
@@ -467,7 +469,7 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
   var targetId = req.body.targetUserId;
   var userId = req.session.user[0].id;
-
+  console.log('START!!');
   models.Upvote.findOne({
     where: {
       userId: userId,
@@ -476,13 +478,22 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
     if (upvote) {
       models.Upvote.update({
         vote: targetId
-      }).then(function () {
+      }, {
+        where: {
+          id: upvote.get('id')
+        }
+      }
+      ).then(function () {
         // update userschallenge
         // substract and add
-        updateUserChallengeUpvote(challengeId, upvote.get('vote'), -1);
+        updateUserChallengeUpvote(challengeId, upvote.get('vote'), -1)
+        .then(function (vote) {
+          console.log('after subs: ',vote);
+        });
         updateUserChallengeUpvote(challengeId, targetId, 1)
-        .then(function () {
+        .then(function (vote) {
           // TODO return all userschallenge records of the challenge
+          console.log('after add: ',vote);
           res.status(200).json();
         });
       });
@@ -494,6 +505,7 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
       }).then(function () {
         // update userschallenge
         // add 1
+        console.log('CREATED!!', upvote);
         updateUserChallengeUpvote(challengeId, targetId, 1)
         .then(function () {
           // TODO return all userschallenge records of the challenge
@@ -505,7 +517,7 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
 });
 
 function updateUserChallengeUpvote(challengeId, userId, number) {
-  var numString = number < 0 ? '-' + number : '+' + number;
+  var numString = number < 0 ? '' + number : '+' + number;
   return models.UserChallenge.update({
     upvote: Sequelize.literal('upvote ' + numString)
   }, {
