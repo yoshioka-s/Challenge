@@ -17,7 +17,6 @@
     "angular": "~1.2.18",
     "angular-route": "~1.2.18",
     "angular-mocks": "~1.2.18",
-    "angular-ui-router": "~0.2.15",
-    "ng-imgur": "~0.1.5"
+    "angular-ui-router": "~0.2.15"
   }
 }
