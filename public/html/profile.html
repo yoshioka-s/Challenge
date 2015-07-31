@@ -4,13 +4,13 @@
 
     <div flow-init class="edit-profile-avatar">
       <div>Profile picture</div>
-     <img data-ng-src="data:image/png;base64,{{picture}}">
 
       <input type="file" ng-model="myPic" base-sixty-four-input>
-      <button class="btn btn-success" ng-click="uploadImage()">display base64</button>
-      <img ngf-src="files[0]" id='avatar' ngf-accept="'image/*'" ngf-default-src="../img/placeholder.jpg" >
+       <img id="avatar" data-ng-src="data:image/png;base64,{{picture}}">
+      <!-- <img ngf-src="files[0]" id='avatar' ngf-accept="'image/*'" ngf-default-src="../img/placeholder.jpg" > -->
       <div class="avatar-upload">
-        <div class="btn btn-default" ngf-select ng-model="files">Upload Profile Image</div>
+        <button class="btn btn-success" ng-click="uploadImage()">upload base64</button>
+        <!-- <div class="btn btn-default" ngf-select ng-model="files">Upload Profile Image</div> -->
       </div>
 
     </div>

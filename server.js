@@ -13,25 +13,11 @@ var app = express();
 var RedisStore = require('connect-redis')(session);
 
 // app.use(logger('dev'));
-// app.use(express.json());
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
-// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieSession({
   secret: 'makersquare'
 }));
-
-// app.use(cookieParser());
-// app.use(session({
-//   store: new RedisStore({
-//     host: 'localhost',
-//     port: 3000
-//     // client: redis
-//   }),
-//   'secret': 'all along the watchtower',
-//   'resave': false,
-//   'saveUninitialized': false
-// }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
