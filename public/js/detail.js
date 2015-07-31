@@ -11,10 +11,9 @@ angular.module('challengeApp.detail', [])
         $scope.started = res.started;
         $scope.canUpvote = $scope.started === 'Started';
         $scope.complete = res.complete;
-
-        $scope.isParticipant = res.participants.some(function(participant) { return participant.id === $scope.user.id; });
+        $scope.isParticipant = res.participants.some(function(participant) { return participant.id === $scope.loginUser.id; });
         console.log(res.participants);
-        $scope.hasAccepted = res.participants.some(function(participant) { return participant.id === $scope.user.id && participant.accepted; });
+        $scope.hasAccepted = res.participants.some(function(participant) { return participant.id === $scope.loginUser.id && participant.accepted; });
         console.log($scope.hasAccepted);
         $scope.players = res.participants;
       });
@@ -22,7 +21,7 @@ angular.module('challengeApp.detail', [])
     $scope.getChallengeInfo($stateParams.itemId);
 
   $scope.vote = function(player){
-    if ($scope.user.id === player.id) {
+    if ($scope.loginUser.id === player.id) {
       return;
     }
     ChallengeFactory.upvoteUser($scope.challenge, player.id)
