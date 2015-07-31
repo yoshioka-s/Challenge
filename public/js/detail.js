@@ -25,9 +25,15 @@ angular.module('challengeApp.detail', [])
     }
     ChallengeFactory.upvoteUser($scope.challenge, player.id)
     .then(function () {
-      $scope.getChallengeInfo($scope.challenge)
+      $scope.getChallengeInfo($scope.challenge);
     });
-  }
+  };
 
+  $scope.accept = function () {
+    ChallengeFactory.acceptChallenge($scope.challenge)
+    .then(function () {
+      $scope.getChallengeInfo($scope.challenge);
+    });
+  };
 
-}])
+}]);
