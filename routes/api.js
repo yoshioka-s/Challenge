@@ -280,8 +280,8 @@ router.post('/create_challenge', requires_login, function(req, res) {
   })
   .then(function(challenge) {
     // insert into usersChallenges
+    challenge.addParticipant([form.userId], {accepted: true}); // links creator of challenge
     challenge.addParticipants(form.participants); // form.participants should be an array
-    // challenge.addParticipant([form.userId], {accepted: true}); // links creator of challenge
 
     // take the wager from creater
     models.User.update({
@@ -294,99 +294,6 @@ router.post('/create_challenge', requires_login, function(req, res) {
     });
   });
 });
-
-
-/**
- * Endpoint to set a challenge to started
- * Requires login
- */
-// router.put('/challenge/:id/started', requires_login, function(req, res) {
-//   var target_id = parseInt(req.params.id);
-//   var user_id = req.session.user[0].id;
-//
-//   models.Challenge.update({
-//     started: true,
-//     date_started: Date.now()
-//   }, {
-//     where: {
-//       id: target_id,
-//       creator: user_id,
-//       started: false,
-//       complete: false
-//     }
-//   })
-//   .then(function(numChallenges) { // Returns an array with element '0' being number of
-//     if(numChallenges[0] > 0) {    // rows affected (should not be greater than 1 in our case)
-//       models.Challenge.findOne({
-//         where: {
-//           id: target_id,
-//           started: true
-//         }
-//       })
-//       .then(function(/*challenge*/) { // May want to do something with newly started challenge
-//           res.status(201).json({'success': true});
-//       });
-//     } else {
-//       res.status(400).json({'error': 'error at /challenge/:id/started',
-//         'message': 'Could not update challenge to "started" or could not find challenge'});
-//     }
-//   })
-//   .catch(function(error) {
-//     if(error) {
-//       res.status(400).json({'error': error,
-//         'message': 'database update failed at /challenge/:id/started'});
-//     }
-//   });
-// });
-//
-//
-// /**
-//  * Endpoint to set a winner and complete challenge
-//  *
-//  * Requires login
-//  */
-// router.put('/challenge/:id/complete', requires_login, function(req, res) {
-//   var target_id = parseInt(req.params.id);
-//   var winner;
-//   if(req.body.winner === undefined) {
-//     winner = null;
-//   } else {
-//     winner = parseInt(req.body.winner);
-//   }
-//
-//   models.Challenge.update({
-//     winner: winner,
-//     complete: true
-//   }, {
-//     where: {
-//       id: target_id,
-//       creator: req.user.id,
-//       started: true,
-//       complete: false
-//     }
-//   })
-//   .then(function(numChallenges) {
-//     if(numChallenges[0] > 0) {
-//       models.Challenge.findOne({
-//         where: {id: target_id},
-//         complete: true
-//       })
-//       .then(function(/*challenge*/) {  // May want to do something with newly created challenge
-//           res.status(201).json({'success': true});
-//       });
-//     } else {
-//       res.status(400).json({
-//         'error': 'error at /challenge/:id/complete',
-//         'message': 'could not update challenge to complete or could not find challenge'
-//       });
-//     }
-//   })
-//   .catch(function(error) {
-//     res.status(400).json({'error': error,
-//       'message': 'Database update failed at /challenge/:id/complete'
-//     });
-//   });
-// });
 
 router.post('/challenge/:id/accept', requires_login, function(req, res) {
   var target_id = parseInt(req.params.id);
@@ -521,6 +428,7 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
   var targetId = req.body.targetUserId;
   var userId = req.body.user_id;
+  console.log('UPVOTE!! ', userId);
   // var userId = req.session.user[0].id;
   models.Upvote.findOne({
     where: {
@@ -541,7 +449,6 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
         updateUserChallengeUpvote(challengeId, upvote.get('vote'), -1);
         updateUserChallengeUpvote(challengeId, targetId, 1)
         .then(function (vote) {
-          // TODO return all userschallenge records of the challenge
           res.status(200).json();
         });
       });
@@ -555,7 +462,6 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
         // add 1
         updateUserChallengeUpvote(challengeId, targetId, 1)
         .then(function () {
-          // TODO return all userschallenge records of the challenge
           res.status(200).json();
         });
       });
