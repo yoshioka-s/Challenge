@@ -21,7 +21,7 @@ angular.module('challengeApp.detail', [])
     if ($scope.loginUser.id === player.id) {
       return;
     }
-    ChallengeFactory.upvoteUser($scope.challenge, player.id)
+    ChallengeFactory.upvoteUser($scope.challenge, player.id, $scope.loginUser.id)
     .then(function () {
       $scope.getChallengeInfo($scope.challenge);
     });
@@ -29,7 +29,7 @@ angular.module('challengeApp.detail', [])
 
   $scope.accept = function () {
     console.log('accept clicked!');
-    ChallengeFactory.acceptChallenge($scope.challenge)
+    ChallengeFactory.acceptChallenge($scope.challenge, $scope.loginUser.id)
     .then(function () {
       $scope.getChallengeInfo($scope.challenge);
     });

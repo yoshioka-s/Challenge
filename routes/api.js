@@ -264,7 +264,7 @@ router.post('/create_challenge', requires_login, function(req, res) {
   .then(function(challenge) {
     // insert into usersChallenges
     challenge.addParticipants(form.participants); // form.participants should be an array
-    challenge.addParticipant([form.userId], {accepted: true}); // links creator of challenge
+    // challenge.addParticipant([form.userId], {accepted: true}); // links creator of challenge
 
     // take the wager from creater
     models.User.update({
@@ -283,97 +283,99 @@ router.post('/create_challenge', requires_login, function(req, res) {
  * Endpoint to set a challenge to started
  * Requires login
  */
-router.put('/challenge/:id/started', requires_login, function(req, res) {
+// router.put('/challenge/:id/started', requires_login, function(req, res) {
+//   var target_id = parseInt(req.params.id);
+//   var user_id = req.session.user[0].id;
+//
+//   models.Challenge.update({
+//     started: true,
+//     date_started: Date.now()
+//   }, {
+//     where: {
+//       id: target_id,
+//       creator: user_id,
+//       started: false,
+//       complete: false
+//     }
+//   })
+//   .then(function(numChallenges) { // Returns an array with element '0' being number of
+//     if(numChallenges[0] > 0) {    // rows affected (should not be greater than 1 in our case)
+//       models.Challenge.findOne({
+//         where: {
+//           id: target_id,
+//           started: true
+//         }
+//       })
+//       .then(function(/*challenge*/) { // May want to do something with newly started challenge
+//           res.status(201).json({'success': true});
+//       });
+//     } else {
+//       res.status(400).json({'error': 'error at /challenge/:id/started',
+//         'message': 'Could not update challenge to "started" or could not find challenge'});
+//     }
+//   })
+//   .catch(function(error) {
+//     if(error) {
+//       res.status(400).json({'error': error,
+//         'message': 'database update failed at /challenge/:id/started'});
+//     }
+//   });
+// });
+//
+//
+// /**
+//  * Endpoint to set a winner and complete challenge
+//  *
+//  * Requires login
+//  */
+// router.put('/challenge/:id/complete', requires_login, function(req, res) {
+//   var target_id = parseInt(req.params.id);
+//   var winner;
+//   if(req.body.winner === undefined) {
+//     winner = null;
+//   } else {
+//     winner = parseInt(req.body.winner);
+//   }
+//
+//   models.Challenge.update({
+//     winner: winner,
+//     complete: true
+//   }, {
+//     where: {
+//       id: target_id,
+//       creator: req.user.id,
+//       started: true,
+//       complete: false
+//     }
+//   })
+//   .then(function(numChallenges) {
+//     if(numChallenges[0] > 0) {
+//       models.Challenge.findOne({
+//         where: {id: target_id},
+//         complete: true
+//       })
+//       .then(function(/*challenge*/) {  // May want to do something with newly created challenge
+//           res.status(201).json({'success': true});
+//       });
+//     } else {
+//       res.status(400).json({
+//         'error': 'error at /challenge/:id/complete',
+//         'message': 'could not update challenge to complete or could not find challenge'
+//       });
+//     }
+//   })
+//   .catch(function(error) {
+//     res.status(400).json({'error': error,
+//       'message': 'Database update failed at /challenge/:id/complete'
+//     });
+//   });
+// });
+
+router.post('/challenge/:id/accept', requires_login, function(req, res) {
   var target_id = parseInt(req.params.id);
-  var user_id = req.session.user[0].id;
-
-  models.Challenge.update({
-    started: true,
-    date_started: Date.now()
-  }, {
-    where: {
-      id: target_id,
-      creator: user_id,
-      started: false,
-      complete: false
-    }
-  })
-  .then(function(numChallenges) { // Returns an array with element '0' being number of
-    if(numChallenges[0] > 0) {    // rows affected (should not be greater than 1 in our case)
-      models.Challenge.findOne({
-        where: {
-          id: target_id,
-          started: true
-        }
-      })
-      .then(function(/*challenge*/) { // May want to do something with newly started challenge
-          res.status(201).json({'success': true});
-      });
-    } else {
-      res.status(400).json({'error': 'error at /challenge/:id/started',
-        'message': 'Could not update challenge to "started" or could not find challenge'});
-    }
-  })
-  .catch(function(error) {
-    if(error) {
-      res.status(400).json({'error': error,
-        'message': 'database update failed at /challenge/:id/started'});
-    }
-  });
-});
-
-
-/**
- * Endpoint to set a winner and complete challenge
- *
- * Requires login
- */
-router.put('/challenge/:id/complete', requires_login, function(req, res) {
-  var target_id = parseInt(req.params.id);
-  var winner;
-  if(req.body.winner === undefined) {
-    winner = null;
-  } else {
-    winner = parseInt(req.body.winner);
-  }
-
-  models.Challenge.update({
-    winner: winner,
-    complete: true
-  }, {
-    where: {
-      id: target_id,
-      creator: req.user.id,
-      started: true,
-      complete: false
-    }
-  })
-  .then(function(numChallenges) {
-    if(numChallenges[0] > 0) {
-      models.Challenge.findOne({
-        where: {id: target_id},
-        complete: true
-      })
-      .then(function(/*challenge*/) {  // May want to do something with newly created challenge
-          res.status(201).json({'success': true});
-      });
-    } else {
-      res.status(400).json({
-        'error': 'error at /challenge/:id/complete',
-        'message': 'could not update challenge to complete or could not find challenge'
-      });
-    }
-  })
-  .catch(function(error) {
-    res.status(400).json({'error': error,
-      'message': 'Database update failed at /challenge/:id/complete'
-    });
-  });
-});
-
-router.put('/challenge/:id/accept', requires_login, function(req, res) {
-  var target_id = parseInt(req.params.id);
-  var user_id = req.session.user[0].id;
+  console.log('ACCEPT!!!!!!!!');
+  console.log(req.body);
+  var user_id = req.body.user_id;
 
   // update UsersChallenges.accepted to true
   models.UserChallenge.update({
@@ -395,6 +397,7 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
       if (!userChallenge.get('accepted')) {
         res.status(200).json({'success': false});
       }
+      console.log('updated: ', userChallenge);
 
       models.Challenge.findOne({
         where: {
@@ -404,6 +407,8 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
       .then(function (challenge) {
 
         // update users.coin
+        console.log('found: ', challenge);
+
         models.User.update({
           coin: Sequelize.literal('coin -' + challenge.get('wager'))
         }, {
@@ -414,7 +419,6 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
 
         // update challenges.total_wager
         var newData = {
-          total_wager: Sequelize.literal('total_wager +' + challenge.get('wager'))
         };
 
         // check if this is there is unparticipate users
@@ -439,6 +443,7 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
             }
           }).then(function () {
             res.status(201).json({'success': true});
+            console.log('SUCCESS');
           });
         });
       });
@@ -498,7 +503,8 @@ router.post('/challenge/:id/comments', requires_login, function(req, res) {
 router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
   var targetId = req.body.targetUserId;
-  var userId = req.session.user[0].id;
+  var userId = req.body.user_id;
+  // var userId = req.session.user[0].id;
   models.Upvote.findOne({
     where: {
       userId: userId,
