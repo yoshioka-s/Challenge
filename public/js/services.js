@@ -38,7 +38,7 @@ angular.module('challengeApp.services', [])
       'logout': logout
     };
   })
-  .factory('ChallengeFactory', function($http) {
+.factory('ChallengeFactory', function($http) {
     var getChallengeInfo = function(challengeId) {
       return $http({
         method: 'GET',
