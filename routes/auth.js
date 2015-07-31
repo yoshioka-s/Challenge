@@ -63,6 +63,7 @@ console.log('matching!!');
           req.session.user = userObj;
           req.session.save()
         }
+console.log('data', data);
         res.send(data);
       })
   })
