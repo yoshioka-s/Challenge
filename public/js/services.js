@@ -1,8 +1,9 @@
 angular.module('challengeApp.services', [])
   .factory('Auth', function($http, $q) {
-    var uploadImage = function(image) {
+    var uploadImage = function(image, userId) {
       $http.post('/auth/userImage', {
-          image: image
+          image: image,
+          userId: userId
         })
         .success(function(data) {
           // data is stored base64 string
@@ -12,7 +13,7 @@ angular.module('challengeApp.services', [])
           console.log("Error with image upload: ", error)
         })
     };
-    
+
     var createUser = function(username, password) {
       var deferred = $q.defer();
       $http.post('/auth/signup', {
@@ -46,9 +47,10 @@ angular.module('challengeApp.services', [])
       });
     };
     return {
-      'createUser': createUser,
+      createUser: createUser,
       login: login,
-      'logout': logout
+      logout: logout,
+      uploadImage: uploadImage
     };
   })
 .factory('ChallengeFactory', function($http) {

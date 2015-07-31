@@ -2,10 +2,10 @@ angular.module('challengeApp.profile', ['ngFileUpload'])
   .controller('ProfileController', ['$scope', '$location', '$state', 'Upload', 'ProfileFactory', 'Auth',
     function($scope, $location, $state, Upload, ProfileFactory, Auth) {
       $scope.update = ProfileFactory.upload;
-      $scope.uploadImage = function() {
+      $scope.uploadImg = function() {
         var base64Img = $scope.myPic.base64;
         $scope.picture = base64Img;
-        // Auth.uploadImage(base64Img);
+        Auth.uploadImage(base64Img, $scope.loginUser.id);
       }
     }
   ])
