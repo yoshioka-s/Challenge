@@ -4,21 +4,20 @@ angular.module('challengeApp.profile', ['ngFileUpload'])
       $scope.update = ProfileFactory.upload;
       $scope.uploadImg = function() {
         var base64Img = $scope.myPic.base64;
-        console.log("loginUser: ", $scope.loginUser.id)
         $scope.picture = base64Img;
         Auth.uploadImage(base64Img, $scope.loginUser.id);
       }
     }
   ])
-.factory('ProfileFactory', ['Upload','UserFactory', function(Upload,UserFactory){
+.factory('ProfileFactory', ['Upload', 'UserFactory', function(Upload, UserFactory){
   var upload = function(userId,file,newname){
     if(newname){
-        UserFactory.updateUsername(userId,newname,function(data){
+        UserFactory.updateUsername(userId, newname, function(data){
       })
     }
   }
   return {
-    upload:upload
+    upload: upload
   };
 }])
 
