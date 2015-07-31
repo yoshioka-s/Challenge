@@ -36,6 +36,7 @@ angular.module('challengeApp.detail', [])
 
     $scope.uploadimage = function(myPic,userId,challengeid){
       UserFactory.uploadChallengeImage(myPic.base64,userId,challengeid)
+      $state.reload();
     }
 
 
