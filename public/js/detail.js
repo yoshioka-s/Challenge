@@ -43,9 +43,10 @@ angular.module('challengeApp.detail', [])
     if ($scope.loginUser.id === player.id) {
       return;
     }
+    console.log('VOTE');
     ChallengeFactory.upvoteUser($scope.challenge, player.id, $scope.loginUser.id)
     .then(function () {
-      $scope.getChallengeInfo($scope.challenge);
+      $state.reload();
     });
   };
 
@@ -53,7 +54,7 @@ angular.module('challengeApp.detail', [])
     console.log('accept clicked!');
     ChallengeFactory.acceptChallenge($scope.challenge, $scope.loginUser.id)
     .then(function () {
-      $scope.getChallengeInfo($scope.challenge);
+      $state.reload();
     });
     $scope.hasAccepted = true;
   };
