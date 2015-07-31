@@ -22,7 +22,6 @@ angular.module('challengeApp.detail', [])
     $scope.getChallengeInfo($stateParams.itemId);
 
   $scope.vote = function(player){
-    // player.score += 100;
     if ($scope.user.id === player.id) {
       return;
     }

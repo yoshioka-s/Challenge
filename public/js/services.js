@@ -38,7 +38,7 @@ angular.module('challengeApp.services', [])
       'logout': logout
     };
   })
-  .factory('ChallengeFactory', function($http) {
+.factory('ChallengeFactory', function($http) {
     var getChallengeInfo = function(challengeId) {
       return $http({
         method: 'GET',
@@ -187,18 +187,7 @@ angular.module('challengeApp.services', [])
     }).then(function(data) {
       callback(data)
     })
-
   }
-
-
-  // var getUserChallenges = function(id,callback) {
-  //   $http.post('/api/1/user_challenge', {
-  //     id: id
-  //   }).then(function(data) {
-  //     callback(data);
-  //   })
-  // };
-
 
   var getUserChallenges = function() {
     return $http({
@@ -208,8 +197,6 @@ angular.module('challengeApp.services', [])
       return resp.data;
     });
   };
-
-
 
   return {
     getUserChallenges:getUserChallenges,

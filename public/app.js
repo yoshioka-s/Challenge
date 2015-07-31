@@ -2,12 +2,15 @@ angular.module('challengeApp', [
   'challengeApp.detail',
   'challengeApp.challenge',
   'challengeApp.createChallenge',
+  'challengeApp.allChallenges',
   'challengeApp.userChallenge',
   'challengeApp.services',
   'challengeApp.dashboard',
+  'challengeApp.ranking',
   'challengeApp.profile',
   'challengeApp.auth',
-  'ui.router'
+  'ui.router',
+  'naif.base64'
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -22,56 +25,82 @@ angular.module('challengeApp', [
       url: '/challenge/create',
       templateUrl: './html/create.html',
       controller: 'CreateChallengeController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('challenge_view', {
       url: '/challenge/:id',
       templateUrl: './html/challenge.html',
       controller: 'ChallengeController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('dashboard.detail', {
       url: '/challenge/:itemId',
       templateUrl: './html/detail.html',
       controller: 'DetailController',
+      resolve: {
+        authorize: isLoggedIn
+      }
+    })
+    .state('dashboard.ranking', {
+      url: '/ranking',
+      templateUrl: './html/ranking.html',
+      controller: 'RankingController',
+      resolve: {authorize: isLoggedIn}
+    })
+    .state('dashboard.allChallenges', {
+      url: '/allChallenges',
+      templateUrl: './html/allChallenges.html',
+      controller: 'AllChallengesController',
       resolve: {authorize: isLoggedIn}
     })
     .state('dashboard.create', {
       url: '/create',
       templateUrl: './html/create.html',
       controller: 'CreateChallengeController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('dashboard.profile', {
       url: '/profile',
       templateUrl: './html/profile.html',
       controller: 'ProfileController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('dashboard', {
       url: '/dashboard/:username',
       templateUrl: './html/dashboard.html',
       controller: 'dashboardController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('user', {
       url: '/user',
       templateUrl: './html/user.html',
       controller: 'UserChallengesController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     });
 
-    function isLoggedIn($q, $timeout, $state, $window) {
-      if($window.sessionStorage.loggedIn==='true') {
-        console.log('Login succeed!');
-        return $q.when();
-      } else {
-        $timeout(function() {
-          $state.go('auth');
-        });
-        return $q.reject();
-      }
+  function isLoggedIn($q, $timeout, $state, $window) {
+    if ($window.sessionStorage.loggedIn === 'true') {
+      console.log('Login succeed!');
+      return $q.when();
+    } else {
+      $timeout(function() {
+        $state.go('auth');
+      });
+      return $q.reject();
     }
+  }
 
 }).controller('ChallengeAppController', function($scope, $state, Auth) {
   $scope.user = {};

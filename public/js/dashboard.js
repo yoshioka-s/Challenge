@@ -16,6 +16,14 @@ angular.module('challengeApp.dashboard', [])
     $scope.challenges = [];
 
 
+    $scope.showAllChallenges = function(){
+      $state.go("dashboard.allChallenges");
+    }
+
+    $scope.showRanking = function(){
+      $state.go("dashboard.ranking");
+    }
+
     $scope.editProfile = function(){
       $state.go("dashboard.profile");
     }

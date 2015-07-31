@@ -49,16 +49,24 @@
 }
 
 .Button1{
-  width: 10%;
+  width: 6%;
   left:70%;
 }
 .Button2{
-  width: 10%;
-  left:80%;
+  width: 6%;
+  left:76%;
 }
 .Button3{
-  width: 10%;
-  left:90%;
+  width: 6%;
+  left:82%;
+}
+.Button4{
+  width: 6%;
+  left:88%;
+}
+.Button5{
+  width: 6%;
+  left:94%;
 }
 
 .dashboardButton:hover{

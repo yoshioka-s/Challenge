@@ -1,0 +1,17 @@
+<div class="boxed-group">
+  <div class="pageTitle">Ranking</div>
+  <div class="boxed-group-inner">
+
+    <table>
+      <tr>
+        <td>USER</td>
+        <td>COIN</td>
+      </tr>
+      <tr ng-repeat="user in users" ng-class="rowClass(user)">
+          <td>{{ user.username }}</td>
+          <td>{{ user.coin }}</td>
+      </tr>
+    </table>
+
+  </div>
+</div>
