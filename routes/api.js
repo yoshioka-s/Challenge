@@ -35,12 +35,11 @@ var requires_login = function(req, res, next) {
     }
   }).then(function(challenge){
     for(var i = 0; i<challenge.length;i++){
-      challengeId.push(challenge[i].dataValues.challengeId);
+      challengeId.push(challenge[i].dataValues.challengeId);// 1 2 3 10
     }
     res.json(challenge);
-  });
+  })
 });
-
 
 
 router.post('/login_user_info', requires_login, function(req, res) {
@@ -486,7 +485,6 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
   var targetId = req.body.targetUserId;
   var userId = req.session.user[0].id;
-  console.log('START!!');
   models.Upvote.findOne({
     where: {
       userId: userId,
@@ -503,14 +501,10 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
       ).then(function () {
         // update userschallenge
         // substract and add
-        updateUserChallengeUpvote(challengeId, upvote.get('vote'), -1)
-        .then(function (vote) {
-          console.log('after subs: ',vote);
-        });
+        updateUserChallengeUpvote(challengeId, upvote.get('vote'), -1);
         updateUserChallengeUpvote(challengeId, targetId, 1)
         .then(function (vote) {
           // TODO return all userschallenge records of the challenge
-          console.log('after add: ',vote);
           res.status(200).json();
         });
       });
@@ -522,7 +516,6 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
       }).then(function () {
         // update userschallenge
         // add 1
-        console.log('CREATED!!', upvote);
         updateUserChallengeUpvote(challengeId, targetId, 1)
         .then(function () {
           // TODO return all userschallenge records of the challenge

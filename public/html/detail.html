@@ -1,8 +1,9 @@
 
 
 <div class="boxed-group-detail">
+  <button ng-click="accept()" disabled="{hasAccepted}">ACCEPT</button>
     <ul class="playContainer">
-      <li class="playerItem" ng-repeat="player in players">
+      <li class="playerItem" ng-repeat="player in players">""
         <div class="playerName"> {{player.username}} </div>
         <div>
           <img src=" {{player.challengeImage}} " >

@@ -191,13 +191,25 @@ angular.module('challengeApp.services', [])
   }
 
 
-  var getUserChallenges = function(id,callback) {
-    $http.post('/api/1/user_challenge', {
-      id: id
-    }).then(function(data) {
-      callback(data);
-    })
+  // var getUserChallenges = function(id,callback) {
+  //   $http.post('/api/1/user_challenge', {
+  //     id: id
+  //   }).then(function(data) {
+  //     callback(data);
+  //   })
+  // };
+
+
+  var getUserChallenges = function() {
+    return $http({
+      method: 'GET',
+      url: '/api/1/challenge/user'
+    }).then(function(resp) {
+      return resp.data;
+    });
   };
+
+
 
   return {
     getUserChallenges:getUserChallenges,
