@@ -13,7 +13,7 @@ orm.authenticate()
 var User = orm.define('users', {
   username: { type: Sequelize.STRING },
   password: { type: Sequelize.STRING },
-  image:    { type: Sequelize.STRING, defaultValue: '/public/img/placeholder.jpg' },
+  image:    { type: Sequelize.TEXT, defaultValue: '/public/img/placeholder.jpg' },
   coin:     { type: Sequelize.INTEGER, defaultValue: 1000 }
 });
 
