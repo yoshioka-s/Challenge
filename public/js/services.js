@@ -1,5 +1,18 @@
 angular.module('challengeApp.services', [])
   .factory('Auth', function($http, $q) {
+    var uploadImage = function(image) {
+      $http.post('/auth/userImage', {
+          image: image
+        })
+        .success(function(data) {
+          // data is stored base64 string
+          return data;
+        })
+        .error(function(error) {
+          console.log("Error with image upload: ", error)
+        })
+    };
+    
     var createUser = function(username, password) {
       var deferred = $q.defer();
       $http.post('/auth/signup', {
