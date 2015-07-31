@@ -5,10 +5,10 @@
   <h3 ng-show="started==='Completed'">Winner is {{winner.username}}</h3>
   <button ng-click="accept()" ng-show="!hasAccepted && isParticipant">ACCEPT</button>
     <ul class="playContainer">
-      <li class="playerItem" ng-repeat="player in players">""
+      <li class="playerItem" ng-repeat="player in players">
         <div class="playerName"> {{player.username}} </div>
         <div>
-          <img src=" {{player.challengeImage}} " >
+          <img src=" {{player.image}} " >
         </div>
         <div class="playerBotton">
           <div class="playScore">SCORE: {{player.upvote}} </div>

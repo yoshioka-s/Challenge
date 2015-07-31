@@ -1,16 +1,13 @@
-<div class="boxed-group">
+<div class="boxed-group-profile">
   <div class="pageTitle">Profile</div>
   <div class="boxed-group-inner">
 
-    <div flow-init class="edit-profile-avatar">
+    <div class="edit-profile-avatar">
       <div>Profile picture</div>
-
-      <input type="file" ng-model="myPic" base-sixty-four-input>
-       <img id="avatar" data-ng-src="data:image/png;base64,{{picture}}">
-      <!-- <img ngf-src="files[0]" id='avatar' ngf-accept="'image/*'" ngf-default-src="../img/placeholder.jpg" > -->
-      <div class="avatar-upload">
-        <button class="btn btn-success" ng-click="uploadImage()">upload base64</button>
-        <!-- <div class="btn btn-default" ngf-select ng-model="files">Upload Profile Image</div> -->
+       <img id="avatar" data-ng-src="data:image/png;base64,{{myPic.base64}}">
+       <div class="fileUpload btn btn-success">
+          <span>Choose Pic</span>
+          <input type="file" class="upload" ng-model="myPic" base-sixty-four-input />
       </div>
 
     </div>
@@ -22,6 +19,8 @@
     </div>
 
 
-    <button class="btn btn-success" ng-click="update(loginUser.id,files[0],newname)">SAVE</button>
+    <button class="btn btn-success" ng-click="update(loginUser.username,loginUser.id,newname,myPic)">SAVE</button>
   </div>
 </div>
+
+

@@ -9,8 +9,7 @@ angular.module('challengeApp', [
   'challengeApp.ranking',
   'challengeApp.profile',
   'challengeApp.auth',
-  'ui.router',
-  'naif.base64'
+  'ui.router'
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -49,13 +48,17 @@ angular.module('challengeApp', [
       url: '/ranking',
       templateUrl: './html/ranking.html',
       controller: 'RankingController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('dashboard.allChallenges', {
       url: '/allChallenges',
       templateUrl: './html/allChallenges.html',
       controller: 'AllChallengesController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('dashboard.create', {
       url: '/create',

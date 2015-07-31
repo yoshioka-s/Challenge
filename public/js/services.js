@@ -33,9 +33,9 @@ angular.module('challengeApp.services', [])
       });
     };
     return {
-      'createUser': createUser,
+      createUser: createUser,
       login: login,
-      'logout': logout
+      logout: logout
     };
   })
 .factory('ChallengeFactory', function($http) {
@@ -189,16 +189,26 @@ angular.module('challengeApp.services', [])
     })
   }
 
-  var getUserChallenges = function() {
-    return $http({
-      method: 'GET',
-      url: '/api/1/challenge/user'
-    }).then(function(resp) {
-      return resp.data;
-    });
+  var getUserChallenges = function(userId,callback) {
+  $http.post('/api/1/challenge/user', {
+      userId:userId
+    }).then(function(data) {
+      callback(data);
+    })
+  };
+
+  var uploadImage = function(image,userId) {
+  $http.post('/api/1/userImage', {
+      image: image,
+      userId:userId
+    })
+    .success(function(data) {
+      return data;
+    })
   };
 
   return {
+    uploadImage:uploadImage,
     getUserChallenges:getUserChallenges,
     getUserInfo: getUserInfo,
     updateUsername:updateUsername

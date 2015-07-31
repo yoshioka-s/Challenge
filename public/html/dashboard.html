@@ -6,7 +6,7 @@
 
   <div class="rightSide">
     <div class="upRight">
-      <img id='profileImg' src="../img/placeholder.jpg">
+    <img id="profileImg" data-ng-src="data:image/png;base64,{{loginUser.image}}">
       <div id="greeting"> {{loginUser.username}} </div>
       <div id="coindev">
         <img id="coinimg" src="./img/coin.png">
@@ -15,20 +15,18 @@
     </div>
 
       <div class="profileButton">
-
         <div class="dashboardButton Button1" ng-click="showAllChallenges()">Public</div>
         <div class="dashboardButton Button2" ng-click="showRanking()">Ranking</div>
         <div class="dashboardButton Button3" ng-click="createChallenge()">Create</div>
         <div class="dashboardButton Button4" ng-click="editProfile()">Profile</div>
         <div class="dashboardButton Button5" ng-click="logout()">Logout</div>
-
       </div>
 
 
     <div class="downRight">
       <div class="challengeDiv">
         <ul>
-          <li class="challengeBox" ng-repeat="challenge in challenges" ng-click="findDetail(challenge)">
+          <li class="challengeBox" ng-repeat="challenge in challenges | limitTo:challengeNumber"  ng-click="findDetail(challenge)">
             <div class="challengeTitle challengeText"> {{challenge.title}} </div>
             <div class="challengeTime challengeText"> {{challenge.message}} </div>
           </li>
