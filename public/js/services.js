@@ -1,19 +1,5 @@
 angular.module('challengeApp.services', [])
   .factory('Auth', function($http, $q) {
-    var uploadImage = function(image, userId) {
-      $http.post('/auth/userImage', {
-          image: image,
-          id: userId
-        })
-        .success(function(data) {
-          // data is stored base64 string
-          return data;
-        })
-        .error(function(error) {
-          console.log("Error with image upload: ", error)
-        })
-    };
-
     var createUser = function(username, password) {
       var deferred = $q.defer();
       $http.post('/auth/signup', {
@@ -49,8 +35,7 @@ angular.module('challengeApp.services', [])
     return {
       createUser: createUser,
       login: login,
-      logout: logout,
-      uploadImage: uploadImage
+      logout: logout
     };
   })
 .factory('ChallengeFactory', function($http) {
@@ -204,16 +189,26 @@ angular.module('challengeApp.services', [])
     })
   }
 
-  var getUserChallenges = function() {
-    return $http({
-      method: 'GET',
-      url: '/api/1/challenge/user'
-    }).then(function(resp) {
-      return resp.data;
-    });
+  var getUserChallenges = function(userId,callback) {
+  $http.post('/api/1/challenge/user', {
+      userId:userId
+    }).then(function(data) {
+      callback(data);
+    })
+  };
+
+  var uploadImage = function(image,userId) {
+  $http.post('/api/1/userImage', {
+      image: image,
+      userId:userId
+    })
+    .success(function(data) {
+      return data;
+    })
   };
 
   return {
+    uploadImage:uploadImage,
     getUserChallenges:getUserChallenges,
     getUserInfo: getUserInfo,
     updateUsername:updateUsername

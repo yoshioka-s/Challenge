@@ -1,20 +1,18 @@
 angular.module('challengeApp.dashboard', [])
-  .controller('dashboardController', ['$scope', '$location', '$state', 'Auth', 'UserFactory', '$stateParams', 'ChallengeFactory',
-    function($scope, $location, $state, Auth, UserFactory, $stateParams, ChallengeFactory) {
-      $scope.challenges = [];
-      $scope.user.username = $stateParams.username;
+.controller('dashboardController', ['$scope','$location','$state','Auth','UserFactory','$stateParams','ChallengeFactory',
+  function($scope,$location,$state,Auth,UserFactory,$stateParams,ChallengeFactory){
+    $scope.challengeNumber = 4;
+    $scope.challenges = [];
+    $scope.user.username = $stateParams.username;
 
-      UserFactory.getUserInfo($scope.user.username, function(data) {
-        $scope.loginUser = data.data;
-      });
-
-      UserFactory.getUserChallenges().then(function(data) {
-        $scope.challenges = data;
+    UserFactory.getUserInfo($scope.user.username, function(data){
+      $scope.loginUser = data.data;
+      UserFactory.getUserChallenges($scope.loginUser.id, function(data){
+        $scope.challenges = data.data;
       })
+    });
 
-      // $state.transitionTo('dashboard.profile');
-      $scope.challenges = [];
-
+    $scope.challenges = [];
 
       $scope.showAllChallenges = function() {
         $state.go("dashboard.allChallenges");

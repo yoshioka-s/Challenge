@@ -23,6 +23,20 @@ var requires_login = function(req, res, next) {
  * Requires login
  */
 
+router.post('/userImage',requires_login, function(req, res) {
+  var image = req.body.image;
+  var userId = req.body.userId;
+  models.User.update({image: image}, {where: {id: userId}})
+                .then(function(user) { res.json(user) })
+})
+
+
+router.post('/update_username', requires_login, function(req, res) {
+  var userId = req.body.userId;
+  var newName = req.body.newName;
+  models.User.update({username:newName} , {where: {id:userId}})
+             .then(function(user){ res.json(user) });
+});
 
 
 
@@ -127,8 +141,8 @@ var makeChallengeObj = function (challengeModel, rawParticipants) {
  *
  * Requires login
  */
-router.get('/challenge/user', requires_login, function(req, res) {
-  models.User.findOne({where: {id: req.session.user[0].id}})
+router.post('/challenge/user', requires_login, function(req, res) {
+  models.User.findOne({where: {id: req.body.userId}})
   .then(function(user) {
     user.getChallenges({
         include: [{
