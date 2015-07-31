@@ -1,7 +1,8 @@
 
 
 <div class="boxed-group-detail">
-  <button ng-click="accept()" disabled="{hasAccepted}">ACCEPT</button>
+  <h3>State: {{started}}</h3>
+  <button ng-click="accept()" ng-disabled="{hasAccepted}">ACCEPT</button>
     <ul class="playContainer">
       <li class="playerItem" ng-repeat="player in players">""
         <div class="playerName"> {{player.username}} </div>
@@ -11,7 +12,7 @@
         <div class="playerBotton">
           <div class="playScore">SCORE: {{player.upvote}} </div>
           <div class="playerUploadButton playerButton"> + </div>
-          <div class="playerVoteButton playerButton" ng-click="vote(player)"> VOTE </div>
+          <div class="playerVoteButton playerButton" ng-click="vote(player)" ng-disabled="{{'started != Started'}}"> VOTE </div>
         </div>
 
       </li>

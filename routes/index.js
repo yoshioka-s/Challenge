@@ -20,7 +20,7 @@ function updateWinner() {
   models.Challenge.findAll({
     order: [['createdAt', 'DESC']], // must pass an array of tuples
     where: {
-      winner: 0,
+      winner: null,
       date_completed: {
         $lt: Sequelize.literal('CURRENT_TIMESTAMP') // I have no idea why Sequelize.NOW() doew not work...
       }
@@ -30,7 +30,7 @@ function updateWinner() {
       as: 'participants'
     }]
   }).then(function (challenges) {
-    console.log('GOT IT!');
+    console.log('GOT IT!', challenges);
     // set winner to each challenges
     challenges.forEach(setWinner);
   });
@@ -77,7 +77,7 @@ function setWinner(challenge) {
     return;
   }
   // update the coin fo the winner
-  giveCoin(newWinner, challenge.get('total_wager'));
+  giveCoin(newWinner, challenge.get('wager') * challenge.get('participants').length);
 }
 
 function giveCoin(user_id, coin) {
