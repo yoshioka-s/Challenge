@@ -2,9 +2,11 @@ angular.module('challengeApp', [
   'challengeApp.detail',
   'challengeApp.challenge',
   'challengeApp.createChallenge',
+  'challengeApp.allChallenges',
   'challengeApp.userChallenge',
   'challengeApp.services',
   'challengeApp.dashboard',
+  'challengeApp.ranking',
   'challengeApp.profile',
   'challengeApp.auth',
   'ui.router',
@@ -42,6 +44,18 @@ angular.module('challengeApp', [
       resolve: {
         authorize: isLoggedIn
       }
+    })
+    .state('dashboard.ranking', {
+      url: '/ranking',
+      templateUrl: './html/ranking.html',
+      controller: 'RankingController',
+      resolve: {authorize: isLoggedIn}
+    })
+    .state('dashboard.allChallenges', {
+      url: '/allChallenges',
+      templateUrl: './html/allChallenges.html',
+      controller: 'AllChallengesController',
+      resolve: {authorize: isLoggedIn}
     })
     .state('dashboard.create', {
       url: '/create',

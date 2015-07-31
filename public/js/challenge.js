@@ -8,7 +8,6 @@ angular.module('challengeApp.challenge', [])
   $scope.canBeStarted = false;
   $scope.isParticipant = false;
   $scope.hasAccepted = false;
-
   $scope.comments = [];
   $scope.newComment = '';
 
