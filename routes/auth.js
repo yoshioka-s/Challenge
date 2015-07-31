@@ -34,7 +34,7 @@ router.post('/signup', function(req, res) {
               res.send('done');
             })
         })
-      })    
+      })
     } else {
       res.send('username already exists');
     }
@@ -71,18 +71,6 @@ router.get('/logout', function(req, res) {
   res.send('yo delete dat cookie');
 })
 
-router.post('/userImage', function(req, res) {
-  var base64Img = req.body.image;
-  var userId = req.body.id;
-  sequelize.User.update({
-    image: base64Img
-  }, {
-    where: {id: userId}
-  }).then(function(obj) {
-    res.send("Image successfully stored")
-  })
-  // res.send("good")
-})
 
 module.exports = {
   'router': router

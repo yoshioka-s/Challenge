@@ -1,20 +1,24 @@
-angular.module('challengeApp.profile', ['ngFileUpload'])
-  .controller('ProfileController', ['$scope', '$location', '$state', 'Upload', 'ProfileFactory', 'Auth',
-    function($scope, $location, $state, Upload, ProfileFactory, Auth) {
+angular.module('challengeApp.profile', ['naif.base64'])
+  .controller('ProfileController', ['$scope', '$location', '$state', 'ProfileFactory',
+    function($scope, $location, $state, ProfileFactory) {
       $scope.update = ProfileFactory.upload;
-      $scope.uploadImg = function() {
-        var base64Img = $scope.myPic.base64;
-        console.log("loginUser: ", $scope.loginUser.id)
-        $scope.picture = base64Img;
-        Auth.uploadImage(base64Img, $scope.loginUser.id);
-      }
+      $scope.myPic = {};
     }
   ])
-.factory('ProfileFactory', ['Upload','UserFactory', function(Upload,UserFactory){
-  var upload = function(userId,file,newname){
+.factory('ProfileFactory', ['UserFactory','$state', function(UserFactory,$state){
+  var upload = function(username,userId,newname,image){
     if(newname){
-        UserFactory.updateUsername(userId,newname,function(data){
-      })
+        console.log('update name')
+        UserFactory.updateUsername(userId, newname);
+    }
+    if(image){
+      console.log(image)
+      UserFactory.uploadImage(image.base64, userId);
+    }
+    if(newname){
+      $state.go("dashboard", {username: newname});
+    }else if(image){
+      $state.go("dashboard",{username: username});
     }
   }
   return {

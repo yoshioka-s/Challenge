@@ -9,8 +9,7 @@ angular.module('challengeApp', [
   'challengeApp.ranking',
   'challengeApp.profile',
   'challengeApp.auth',
-  'ui.router',
-  'naif.base64'
+  'ui.router'
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
