@@ -12,7 +12,9 @@ angular.module('challengeApp.detail', [])
         $scope.complete = res.complete;
 
         $scope.isParticipant = res.participants.some(function(participant) { return participant.id === $scope.user.id; });
+        console.log(res.participants);
         $scope.hasAccepted = res.participants.some(function(participant) { return participant.id === $scope.user.id && participant.accepted; });
+        console.log($scope.hasAccepted);
         $scope.players = res.participants;
       });
     };
@@ -30,6 +32,7 @@ angular.module('challengeApp.detail', [])
   };
 
   $scope.accept = function () {
+    console.log('accept clicked!');
     ChallengeFactory.acceptChallenge($scope.challenge)
     .then(function () {
       $scope.getChallengeInfo($scope.challenge);
