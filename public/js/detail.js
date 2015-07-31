@@ -23,8 +23,10 @@ angular.module('challengeApp.detail', [])
     if ($scope.user.id === player.id) {
       return;
     }
-    ChallengeFactory.upvoteUser($scope.challengeData.id, player.id)
-    .then($scope.getChallengeInfo);
+    ChallengeFactory.upvoteUser($scope.challenge, player.id)
+    .then(function () {
+      $scope.getChallengeInfo($scope.challenge)
+    });
   }
 
 
