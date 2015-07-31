@@ -280,8 +280,11 @@ router.post('/create_challenge', requires_login, function(req, res) {
   })
   .then(function(challenge) {
     // insert into usersChallenges
-    challenge.addParticipant([form.userId], {accepted: true}); // links creator of challenge
+    form.participants = form.participants.filter(function (id) {
+      return id !== form.userId;
+    });
     challenge.addParticipants(form.participants); // form.participants should be an array
+    challenge.addParticipant([form.userId], {accepted: true}); // links creator of challenge
 
     // take the wager from creater
     models.User.update({
