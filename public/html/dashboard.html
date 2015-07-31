@@ -26,7 +26,7 @@
     <div class="downRight">
       <div class="challengeDiv">
         <ul>
-          <li class="challengeBox" ng-repeat="challenge in challenges | limitTo:5"  ng-click="findDetail(challenge)">
+          <li class="challengeBox" ng-repeat="challenge in challenges | limitTo:challengeNumber"  ng-click="findDetail(challenge)">
             <div class="challengeTitle challengeText"> {{challenge.title}} </div>
             <div class="challengeTime challengeText"> {{challenge.message}} </div>
           </li>

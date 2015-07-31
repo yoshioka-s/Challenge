@@ -120,10 +120,10 @@
 
 
 .leftSide{
+  min-height: 100%;
   position: absolute;
   float: left;
   width: 70%;
-  height: 100%;
   min-width: 65%;
   background-color: rgba(255, 246, 193, 0.64);
 }
@@ -217,7 +217,7 @@
 
 
 .playContainer img{
-  max-height: 180px;
+  min-height: 180px;
 
 }
 
