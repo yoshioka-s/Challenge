@@ -39,6 +39,17 @@ angular.module('challengeApp.services', [])
     };
   })
 .factory('ChallengeFactory', function($http) {
+
+      var getChallengeUser = function(challengeId,callback){
+      $http.post('/api/1/getChallengeUser', {
+        challengeId: challengeId
+      }).then(function(data) {
+        callback(data);
+      })
+    };
+
+
+
     var getChallengeInfo = function(challengeId) {
       return $http({
         method: 'GET',
@@ -122,6 +133,7 @@ angular.module('challengeApp.services', [])
 
 
     return {
+      getChallengeUser:getChallengeUser,
       getChallengeInfo: getChallengeInfo,
       acceptChallenge: acceptChallenge,
       challengeStart: challengeStart,
@@ -207,7 +219,19 @@ angular.module('challengeApp.services', [])
     })
   };
 
+  var uploadChallengeImage = function(image,userId,challengeId) {
+    $http.post('/api/1/ChallengeImage', {
+      image: image,
+      userId:userId,
+      challengeId:challengeId
+    })
+    .success(function(data) {
+      return data;
+    })
+  };
+
   return {
+    uploadChallengeImage:uploadChallengeImage,
     uploadImage:uploadImage,
     getUserChallenges:getUserChallenges,
     getUserInfo: getUserInfo,

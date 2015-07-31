@@ -17,11 +17,28 @@ var requires_login = function(req, res, next) {
   next();
 };
 
-/**
- * Endpoint to get information about logged in user
- *
- * Requires login
- */
+
+router.post('/getChallengeUser',requires_login, function(req, res) {
+  var challengeId = req.body.challengeId;
+  models.UserChallenge.findAll({
+    where: {challengeId: challengeId}
+  }).then(function(data) { res.json(data) })
+})
+
+router.post('/ChallengeImage',requires_login, function(req, res) {
+  var image = req.body.image;
+  var userId = req.body.userId;
+  var challengeId = req.body.challengeId;
+  models.UserChallenge.update({image: image}, {
+      where: {
+        userId: userId,
+        challengeId:challengeId
+      }}).then(function(user) { res.json(user) })
+})
+
+
+
+
 
 router.post('/userImage',requires_login, function(req, res) {
   var image = req.body.image;

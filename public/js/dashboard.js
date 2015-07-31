@@ -12,38 +12,37 @@ angular.module('challengeApp.dashboard', [])
       })
     });
 
-    // $state.transitionTo('dashboard.profile');
     $scope.challenges = [];
 
+      $scope.showAllChallenges = function() {
+        $state.go("dashboard.allChallenges");
+      }
 
-    $scope.showAllChallenges = function(){
-      $state.go("dashboard.allChallenges");
-    }
+      $scope.showRanking = function() {
+        $state.go("dashboard.ranking");
+      }
 
-    $scope.showRanking = function(){
-      $state.go("dashboard.ranking");
-    }
+      $scope.editProfile = function() {
+        $state.go("dashboard.profile");
+      }
 
-    $scope.editProfile = function(){
-      $state.go("dashboard.profile");
-    }
+      $scope.createChallenge = function() {
+        $state.go("dashboard.create");
+      }
 
-    $scope.createChallenge = function(){
-      $state.go("dashboard.create");
-    }
-
-    $scope.findDetail = function(challenge) {
-      $state.go("dashboard.detail", {
-        itemId: challenge.id
-      });
-    };
+      $scope.findDetail = function(challenge) {
+        $state.go("dashboard.detail", {
+          itemId: challenge.id
+        });
+      };
 
       $scope.logout = function() {
-      sessionStorage.removeItem("loggedIn")
-      console.log('logout');
-      Auth.logout();
-      $state.go('auth');
-  }
+        sessionStorage.removeItem("loggedIn")
+        console.log('logout');
+        Auth.logout();
+        $state.go('auth');
+      }
 
 
-}])
+    }
+  ])

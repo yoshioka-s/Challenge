@@ -227,6 +227,9 @@ body {  min-width:1000px; }
   text-align: center;
 }
 
+.challengeTop{
+  height: 100px;
+}
 .playContainer{
   list-style-type: none;
 }
@@ -242,6 +245,8 @@ body {  min-width:1000px; }
 
 .playContainer img{
   min-height: 180px;
+  max-height: 180px;
+  max-width: 320px;
 
 }
 

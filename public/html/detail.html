@@ -1,19 +1,25 @@
 
 
 <div class="boxed-group-detail">
+
+<div class="challengeTop">
+   <input type="file" ng-model="imageChallenge" base-sixty-four-input>
+    <img id="avatar" data-ng-src="data:image/png;base64,{{imageChallenge.base64}}">
+</div>
+
   <h3>State: {{started}}</h3>
   <h3 ng-show="started==='Completed'">Winner is {{winner.username}}</h3>
   <button ng-click="accept()" ng-show="!hasAccepted && isParticipant">ACCEPT</button>
-  <input type="file" ng-model="myPic" base-sixty-four-input>
+
+  <button ng-click="uploadimage(imageChallenge,loginUser.id,challengeData.id)">UPLOAD</button>
     <ul class="playContainer">
-      <li class="playerItem" ng-repeat="player in players">
-        <div class="playerName"> {{player.username}} </div>
+      <li class="playerItem" ng-repeat="player in userChallenges">
+        <div class="playerName"> {{player.player.username}} </div>
         <div>
-          <img src=" {{player.image}} " >
+          <img data-ng-src="data:image/png;base64,{{player.image}}">
         </div>
         <div class="playerBotton">
-          <div class="playScore">SCORE: {{player.upvote}} </div>
-          <div class="playerUploadButton playerButton" ng-click="uploadChallengeImg()"> + </div>
+          <div class="playScore">SCORE: {{player.player.upvote}} </div>
           <div class="playerVoteButton playerButton" ng-show="canUpvote" ng-click="vote(player)"> VOTE </div>
         </div>
 

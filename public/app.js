@@ -48,13 +48,17 @@ angular.module('challengeApp', [
       url: '/ranking',
       templateUrl: './html/ranking.html',
       controller: 'RankingController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('dashboard.allChallenges', {
       url: '/allChallenges',
       templateUrl: './html/allChallenges.html',
       controller: 'AllChallengesController',
-      resolve: {authorize: isLoggedIn}
+      resolve: {
+        authorize: isLoggedIn
+      }
     })
     .state('dashboard.create', {
       url: '/create',
