@@ -23,18 +23,21 @@ var requires_login = function(req, res, next) {
  * Requires login
  */
 
-router.post('/userImage', function(req, res) {
-  var base64Img = req.body.image;
+router.post('/userImage',requires_login, function(req, res) {
+  var image = req.body.image;
   var userId = req.body.userId;
-  sequelize.User.update({
-    image: base64Img
-  }, {
-    where: {id: userId}
-  }).then(function(obj) {
-    res.send("Image successfully stored")
-  })
-  // res.send("good")
+  models.User.update({image: image}, {where: {id: userId}})
+                .then(function(user) { res.json(user) })
 })
+
+
+router.post('/update_username', requires_login, function(req, res) {
+  var userId = req.body.userId;
+  var newName = req.body.newName;
+  models.User.update({username:newName} , {where: {id:userId}})
+             .then(function(user){ res.json(user) });
+});
+
 
 
   router.post('/user_challenge', requires_login, function(req, res) {

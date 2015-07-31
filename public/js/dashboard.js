@@ -11,8 +11,6 @@ angular.module('challengeApp.dashboard', [])
       })
     });
 
-
-
     // $state.transitionTo('dashboard.profile');
     $scope.challenges = [];
 

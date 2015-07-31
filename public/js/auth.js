@@ -31,7 +31,6 @@ angular.module('challengeApp.auth', [])
           .then(function(data) {
             if (data.data === "true") {
               sessionStorage.setItem("loggedIn", "true")
-
               $state.go("dashboard", {
                 username: username
               });

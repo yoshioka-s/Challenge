@@ -5,13 +5,20 @@ angular.module('challengeApp.profile', ['naif.base64'])
       $scope.myPic = {};
     }
   ])
-.factory('ProfileFactory', ['UserFactory', function(UserFactory){
-  var upload = function(userId,newname,image){
+.factory('ProfileFactory', ['UserFactory','$state', function(UserFactory,$state){
+  var upload = function(username,userId,newname,image){
     if(newname){
-        UserFactory.updateUsername(userId,newname,function(data){});
+        console.log('update name')
+        UserFactory.updateUsername(userId, newname);
     }
-    if(image.base64){
+    if(image){
+      console.log(image)
       UserFactory.uploadImage(image.base64, userId);
+    }
+    if(newname){
+      $state.go("dashboard", {username: newname});
+    }else if(image){
+      $state.go("dashboard",{username: username});
     }
   }
   return {
