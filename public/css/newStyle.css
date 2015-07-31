@@ -44,7 +44,7 @@
   border: 0;
   text-transform: uppercase;
   color: white;
-  background-color: rgba(115, 224, 164, 0.6);
+  background-color: #ee6e3d;
   float: right;
 }
 
@@ -71,7 +71,7 @@
 
 .dashboardButton:hover{
   transition: background-color .1s;
-  background-color: rgba(53, 189, 109, 0.47);
+  background-color: #9A3E1B;
 }
 
 .profileButton{
@@ -123,8 +123,9 @@
   position: absolute;
   float: left;
   width: 70%;
+  height: 100%;
   min-width: 65%;
-  background-color: rgba(202, 216, 202, 0.16);
+  background-color: rgba(255, 246, 193, 0.64);
 }
 
 .rightSide{
@@ -149,7 +150,7 @@
 .downRight{
     width: 100%;
     height: 70%;
-    background-color: rgba(48, 146, 99, 0.3);
+    background-color: #8bcec1;
     margin-right: auto;
     margin-left: auto;
 }
@@ -170,7 +171,7 @@
 
 .challengeBox:hover{
   transition: background-color .3s;
-  background-color: rgba(53, 189, 109, 0.47);
+  background-color: rgba(3, 4, 6, 0.31);
   -webkit-box-shadow: 0 4px 5px -5px black;
      -moz-box-shadow: 0 4px 5px -5px black;
           box-shadow: 0 4px 5px -5px black;
@@ -297,6 +298,21 @@ button.ng-binding {
     margin: 50px;
 }
 
+.boxed-group-ranking{
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+}
+
+.boxed-group-profile{
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+}
+
+
 #avatar{
     float: left;
     height: 100px;
@@ -350,7 +366,7 @@ select.form-control-1 {
 }
 
 .pageTitle{
-    background-color: rgba(53, 189, 109, 0.47);
+    background-color: #7c7869;
     color: white;
     margin: 0;
     border-radius: 3px 3px 0 0;
@@ -375,5 +391,27 @@ select.form-control-1 {
   min-width: 180px;
 }
 
+/*===================== Public =====================*/
 
+.allChallengeDiv{
+  width: 500px;
+  height: 300px;
+}
+
+.AllchallengeBox{
+    position: relative;
+    list-style-type: none;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 60px;
+    padding: 5px;
+    padding-left: 20px;
+    width: 200px;
+    margin-top: 20px;
+    background-color: rgba(41, 57, 74, 0.18);
+    -webkit-box-shadow: 0 4px 5px -5px black;
+    -moz-box-shadow: 0 4px 5px -5px black;
+    box-shadow: 0 4px 5px -5px black;
+    display: inline-block;
+}
 
