@@ -73,6 +73,7 @@ router.get('/logout', function(req, res) {
 
 router.post('/userImage', function(req, res) {
   var base64Img = req.body.image;
+  var userId = req.body.id;
   sequelize.User.update({
     image: base64Img
   }, {
