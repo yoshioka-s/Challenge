@@ -13,22 +13,26 @@
 
     <button ng-show="imageChallenge" ng-click="uploadimage(imageChallenge,loginUser.id,challengeData.id)">Update</button>
 
+  <div class="challengeStatus">
+    <span>State: {{started}}</span>
+    <span ng-show="started==='Completed'">Winner is {{winner.username}}</span>
+  </div>
 
-   <h3>State: {{started}}</h3>
 </div>
 
-  <h3 ng-show="started==='Completed'">Winner is {{winner.username}}</h3>
+
   <button ng-click="accept()" ng-show="!hasAccepted && isParticipant">ACCEPT</button>
 
 
     <ul class="playContainer">
-      <li class="playerItem" ng-repeat="player in userChallenges">
+      <li class="playerItem"
+      ng-repeat="player in userChallenges">
         <div class="playerName"> {{player.player.username}} </div>
         <div>
           <img data-ng-src="data:image/png;base64,{{player.image}}">
         </div>
         <div class="playerBotton">
-          <div class="playScore">SCORE: {{player.player.upvote}} </div>
+          <div class="playScore">VOTE: {{player.player.upvote}} </div>
           <div class="playerVoteButton playerButton" ng-show="canUpvote" ng-click="vote(player.player)"> VOTE </div>
         </div>
 

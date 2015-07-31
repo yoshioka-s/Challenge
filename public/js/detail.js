@@ -25,6 +25,8 @@ angular.module('challengeApp.detail', [])
           for(var j=0;j<players.length;j++){
             if(players[j].id === $scope.userChallenges[i].userId){
               $scope.userChallenges[i].player = players[j];
+              console.log()
+              // $scope.accept = $scope.userChallenges[i]
             }
           }
         }
@@ -38,6 +40,15 @@ angular.module('challengeApp.detail', [])
       UserFactory.uploadChallengeImage(myPic.base64,userId,challengeid)
       $state.reload();
     }
+
+    $scope.acceptFunc = function(accept){
+      if(accept){
+        return 'red'
+      }else{
+        return 'green'
+      }
+    }
+
 
 
   $scope.vote = function(player){

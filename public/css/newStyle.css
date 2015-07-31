@@ -185,7 +185,7 @@ body {  min-width:1000px; }
     height: 60px;
     padding: 5px;
     padding-left: 20px;
-    width: 200px;
+    width: 250px;
     margin-top: 20px;
     background-color: rgba(41, 57, 74, 0.18);
     -webkit-box-shadow: 0 4px 5px -5px black;
@@ -227,6 +227,12 @@ body {  min-width:1000px; }
   text-align: center;
 }
 
+.challengeStatus{
+  font-size: 20px;
+  margin-left: 30px;
+  color: #885111;
+}
+
 .challengeTop{
   height: 100px;
   background-color:rgba(216, 208, 164, 0.64);
@@ -251,6 +257,7 @@ body {  min-width:1000px; }
 }
 
 .playerName{
+  text-transform: uppercase;
   border-radius: 10px 10px 0 0;
   height: 30px;
   font-size: 20px;
