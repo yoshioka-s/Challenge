@@ -53,10 +53,12 @@ router.post('/login', function(req, res) {
   }).then(function(obj) {
   	userObj = obj;
     hashedPw = obj[0].dataValues.password;
+console.log('found!!');
   }).then(function(obj) {
     return compare(password, hashedPw)
       .then(function(data) {
         // data is boolean returned from bcrypt compare
+console.log('matching!!');
         if (data) {
           req.session.user = userObj;
           req.session.save()
