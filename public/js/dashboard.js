@@ -1,7 +1,7 @@
 angular.module('challengeApp.dashboard', [])
 .controller('dashboardController', ['$scope','$location','$state','Auth','UserFactory','$stateParams','ChallengeFactory',
   function($scope,$location,$state,Auth,UserFactory,$stateParams,ChallengeFactory){
-    $scope.challengeNumber = 5;
+    $scope.challengeNumber = 4;
     $scope.challenges = [];
     $scope.user.username = $stateParams.username;
 
