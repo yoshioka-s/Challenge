@@ -190,16 +190,6 @@ angular.module('challengeApp.services', [])
 
   }
 
-
-  // var getUserChallenges = function(id,callback) {
-  //   $http.post('/api/1/user_challenge', {
-  //     id: id
-  //   }).then(function(data) {
-  //     callback(data);
-  //   })
-  // };
-
-
   var getUserChallenges = function() {
     return $http({
       method: 'GET',
@@ -208,7 +198,6 @@ angular.module('challengeApp.services', [])
       return resp.data;
     });
   };
-
 
 
   return {
