@@ -3,7 +3,7 @@ angular.module('challengeApp.services', [])
     var uploadImage = function(image, userId) {
       $http.post('/auth/userImage', {
           image: image,
-          userId: userId
+          id: userId
         })
         .success(function(data) {
           // data is stored base64 string
