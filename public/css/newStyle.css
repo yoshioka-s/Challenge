@@ -5,6 +5,7 @@
   min-width: 550px;
   z-index: 4;
 }
+body {  min-width:1000px; }
 
 /*================= Auth =================*/
 
