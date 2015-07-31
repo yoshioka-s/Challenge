@@ -25,6 +25,29 @@ body {  min-width:1000px; }
   margin: 10px;
   text-align: center;
 }
+/*================= ranking =================*/
+.boxed-group-inner-ranking{
+    position: relative;
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    color: #666;
+    font-size: 13px;
+    height: 400px;
+}
+.rankingTable{
+  width: 100%;
+
+}
+.rankingRow{
+
+}
+.rankingCol{
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
 
 /*================= Dashboard =================*/
@@ -394,8 +417,19 @@ select.form-control-1 {
 
 /*===================== Public =====================*/
 
+.boxed-group-inner-public{
+    position: relative;
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    color: #666;
+    font-size: 13px;
+    height: 400px;
+}
+
 .allChallengeDiv{
-  width: 500px;
+  width: inherit;
   height: 300px;
 }
 
@@ -406,8 +440,7 @@ select.form-control-1 {
     margin-right: 10px;
     height: 60px;
     padding: 5px;
-    padding-left: 20px;
-    width: 200px;
+    width: 250px;
     margin-top: 20px;
     background-color: rgba(41, 57, 74, 0.18);
     -webkit-box-shadow: 0 4px 5px -5px black;
