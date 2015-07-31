@@ -1,11 +1,12 @@
 angular.module('challengeApp.profile', ['naif.base64'])
   .controller('ProfileController', ['$scope', '$location', '$state', 'ProfileFactory',
     function($scope, $location, $state, ProfileFactory) {
-      $scope.update = ProfileFactory.upload;
+      $scope.update = ProfileFactory.upload
       $scope.myPic = {};
     }
   ])
 .factory('ProfileFactory', ['UserFactory','$state', function(UserFactory,$state){
+  var returnImage;
   var upload = function(username,userId,newname,image){
     if(newname){
         console.log('update name')
@@ -18,11 +19,10 @@ angular.module('challengeApp.profile', ['naif.base64'])
     if(newname){
       $state.go("dashboard", {username: newname});
     }else if(image){
-      $state.go("dashboard",{username: username});
     }
   }
   return {
-    upload:upload
+    upload:upload,
   };
 }])
 
