@@ -2,11 +2,10 @@ angular.module('challengeApp.services', [])
   .factory('Auth', function($http) {
     var uploadImage = function(image) {
       $http.post('/auth/userImage', {
-          image: image,
-          test: "test"
+          image: image
         })
         .success(function(data) {
-          console.log("DATA: ", data)
+          // data is stored base64 string
           return data;
         })
         .error(function(error) {

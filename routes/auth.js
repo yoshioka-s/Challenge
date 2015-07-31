@@ -57,12 +57,14 @@ router.get('/logout', function(req, res) {
 
 router.post('/userImage', function(req, res) {
   var base64Img = req.body.image;
-  sequelize.User.update({
-    image: "IS THIS asdf????"
+  sequelize.User.create({
+    image: "TEST"
   }).then(function(obj) {
-    console.log("returned obj: ", obj)
+    // console.log("reqbody", req.body)
+    // console.log("returned obj: ", obj.dataValues.image)
+    res.send(base64Img)
   })
-  res.send("good")
+  // res.send("good")
 })
 
 module.exports = {
