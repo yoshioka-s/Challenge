@@ -19,6 +19,7 @@ angular.module('challengeApp.profile', ['naif.base64'])
     if(newname){
       $state.go("dashboard", {username: newname});
     }else if(image){
+      $state.reload();
     }
   }
   return {

@@ -1,15 +1,17 @@
 <div class="boxed-group-ranking rankpage">
   <div class="pageTitle">Ranking</div>
-  <div class="boxed-group-inner">
+  <div class="boxed-group-inner-ranking">
 
-    <table>
-      <tr>
-        <td>USER</td>
-        <td>COIN</td>
+    <table class="rankingTable">
+      <tr class="rankingRow">
+       <td class="rankingCol">RANK</td>
+        <td class="rankingCol">USER</td>
+        <td class="rankingCol">COIN</td>
       </tr>
-      <tr ng-repeat="user in users" ng-class="rowClass(user)">
-          <td>{{ user.username }}</td>
-          <td>{{ user.coin }}</td>
+      <tr class="rankingRow" ng-repeat="user in users | orderBy:'-coin' " ng-class="rowClass(user)">
+          <td class="rankingCol">{{ $index + 1 }}</td>
+          <td class="rankingCol">{{ user.username }}</td>
+          <td class="rankingCol">{{ user.coin }}</td>
       </tr>
     </table>
 
