@@ -7,11 +7,9 @@ angular.module('challengeApp.detail', [])
         $scope.challengeData = res;
 
         $scope.winner = res.participants.filter(function(participant) { return participant.id === res.winner; })[0] || null;
-
         $scope.started = res.started;
         $scope.canUpvote = $scope.started === 'Started';
         $scope.complete = res.complete;
-
         $scope.isParticipant = res.participants.some(function(participant) { return participant.id === $scope.user.id; });
         console.log(res.participants);
         $scope.hasAccepted = res.participants.some(function(participant) { return participant.id === $scope.user.id && participant.accepted; });
