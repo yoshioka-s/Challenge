@@ -1,5 +1,18 @@
 angular.module('challengeApp.services', [])
   .factory('Auth', function($http, $q) {
+    var uploadImage = function(image) {
+      $http.post('/auth/userImage', {
+          image: image
+        })
+        .success(function(data) {
+          // data is stored base64 string
+          return data;
+        })
+        .error(function(error) {
+          console.log("Error with image upload: ", error)
+        })
+    };
+    
     var createUser = function(username, password) {
       var deferred = $q.defer();
       $http.post('/auth/signup', {
@@ -24,7 +37,8 @@ angular.module('challengeApp.services', [])
           return data;
         })
 
-    }
+    };
+
     var logout = function() {
       return $http.get('/auth/logout').then(function() {
         return true;
@@ -33,9 +47,10 @@ angular.module('challengeApp.services', [])
       });
     };
     return {
-      'createUser': createUser,
+      createUser: createUser,
       login: login,
-      'logout': logout
+      logout: logout,
+      uploadImage: uploadImage
     };
   })
   .factory('ChallengeFactory', function($http) {
@@ -113,9 +128,11 @@ angular.module('challengeApp.services', [])
     var upvoteUser = function(challengeId, targetUserId) {
       return $http({
         method: 'POST',
-        data: {'targetUserId': targetUserId},
+        data: {
+          'targetUserId': targetUserId
+        },
         url: 'api/1/challenge/' + challengeId + '/upvote'
-      }).then(function (resp) {
+      }).then(function(resp) {
         return resp.data;
       });
     };
@@ -134,6 +151,7 @@ angular.module('challengeApp.services', [])
   })
 
 .factory('CreateChallengeFactory', function($http) {
+<<<<<<< HEAD
   var getAllUsers = function() {
     return $http({
       method: 'GET',
@@ -217,3 +235,59 @@ angular.module('challengeApp.services', [])
     updateUsername:updateUsername
   }
 }])
+=======
+    var getAllUsers = function() {
+      return $http({
+        method: 'GET',
+        url: '/api/1/allUsers'
+      }).then(function(resp) {
+        return resp.data;
+      });
+    };
+
+    var getCreatorInfo = function() {
+      return $http({
+        method: 'GET',
+        url: '/api/1/user_info'
+      }).then(function(resp) {
+        return resp.data;
+      });
+    };
+
+    // POST method for creating a challenge
+    var postChallenge = function(challengeInfo, userId) {
+      challengeInfo.participants = challengeInfo.participants.map(function(participant) {
+        return participant.id;
+      });
+      return $http({
+        method: 'POST',
+        url: '/api/1/challenge',
+        data: {
+          form: challengeInfo,
+          id: userId
+        }
+      }).then(function(resp) {
+        return resp.data;
+      });
+    };
+
+    return {
+      getAllUsers: getAllUsers,
+      getCreatorInfo: getCreatorInfo,
+      postChallenge: postChallenge
+    };
+  })
+  .factory('UserFactory', ['$http', function($http) {
+    var getUserInfo = function(username, callback) {
+      $http.post('/api/1/login_user_info', {
+        username: username
+      }).then(function(data) {
+        callback(data);
+      })
+    };
+
+    return {
+      getUserInfo: getUserInfo
+    }
+  }])
+>>>>>>> 5b7852f6acc9d70bdf9af3a6f704cfded44df530

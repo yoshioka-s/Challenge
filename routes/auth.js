@@ -56,6 +56,7 @@ router.post('/login', function(req, res) {
   }).then(function(obj) {
     return compare(password, hashedPw)
       .then(function(data) {
+        // data is boolean returned from bcrypt compare
         if (data) {
           req.session.user = userObj;
           req.session.save()
@@ -68,6 +69,18 @@ router.post('/login', function(req, res) {
 router.get('/logout', function(req, res) {
   req.session = null;
   res.send('yo delete dat cookie');
+})
+
+router.post('/userImage', function(req, res) {
+  var base64Img = req.body.image;
+  sequelize.User.create({
+    image: "TEST"
+  }).then(function(obj) {
+    // console.log("reqbody", req.body)
+    // console.log("returned obj: ", obj.dataValues.image)
+    res.send(base64Img)
+  })
+  // res.send("good")
 })
 
 module.exports = {

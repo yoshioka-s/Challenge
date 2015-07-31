@@ -7,7 +7,8 @@ angular.module('challengeApp', [
   'challengeApp.dashboard',
   'challengeApp.profile',
   'challengeApp.auth',
-  'ui.router'
+  'ui.router',
+  'naif.base64'
 ])
 
 .config(function($stateProvider, $urlRouterProvider) {
