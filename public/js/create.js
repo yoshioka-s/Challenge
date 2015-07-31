@@ -21,14 +21,16 @@ angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
     challengeInfo.wager = Number(challengeInfo.wager) || 100;
     challengeInfo.message = challengeInfo.message || "no description";
     challengeInfo.userId = $scope.loginUser.id;
-
     if (Number($scope.user.coin) < Number(challengeInfo.wager)) {
       console.log('the wager exceeds your coin');
       $scope.errorMessage = 'make sure the wager does not exceed your coin.';
     }
     else{
         CreateChallengeFactory.postChallenge(challengeInfo,function(data){
-          console.log(data);
+          $scope.challenges.push(data.data.challenge);
+          $state.go("dashboard.detail", {
+            itemId: data.data.challenge.id
+          });
         })
     }
 

@@ -21,7 +21,7 @@ var Challenge = orm.define('challenges', {
   title:    { type: Sequelize.STRING, allowNull: false },
   message:  { type: Sequelize.STRING, allowNull: false },
   started:  { type: Sequelize.STRING, defaultValue: 'Not Started' },
-  wager:    { type: Sequelize.INTEGER, defaultValue: 100},
+  wager:    { type: Sequelize.INTEGER, defaultValue: 0},
   winner:   { type: Sequelize.INTEGER, allowNull: true },
   time:     { type: Sequelize.INTEGER, defaultValue: 300 },
   date_started:   { type: Sequelize.DATE,allowNull: false },

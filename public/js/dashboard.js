@@ -7,25 +7,8 @@ angular.module('challengeApp.dashboard', [])
       $scope.loginUser = data.data;
       console.log($scope.loginUser)
     });
-
     // $state.transitionTo('dashboard.profile');
-    $scope.challenges = [
-    {
-      id:"1",
-      title:"Eat",
-      time:"1 hour",
-      status:"open"
-    },{
-      id:"2",
-      title:"Code",
-      time:"13 hour",
-      status:"open"
-    },{
-      id:"3",
-      title:"Sleep",
-      time:"10 hour",
-      status:"open"
-    }]
+    $scope.challenges = [];
 
     $scope.editProfile = function(){
       $state.go("dashboard.profile");

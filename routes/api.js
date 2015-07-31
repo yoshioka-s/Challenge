@@ -20,7 +20,7 @@ var requires_login = function(req, res, next) {
 /**
  * Endpoint to get information about logged in user
  *
- * Requires login 
+ * Requires login
  */
 
 router.post('/login_user_info', requires_login, function(req, res) {
@@ -233,8 +233,8 @@ router.post('/create_challenge', requires_login, function(req, res) {
       coin: Sequelize.literal('coin -' + form.wager)
     }, { where: { id: form.userId }})
     .then(function () {
-      res.status(201).json({
-        id: challenge.id
+      res.status(200).json({
+        challenge: challenge
       });
     });
   });
