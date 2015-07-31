@@ -1,18 +1,5 @@
 angular.module('challengeApp.services', [])
   .factory('Auth', function($http, $q) {
-    var uploadImage = function(image) {
-      $http.post('/auth/userImage', {
-          image: image
-        })
-        .success(function(data) {
-          // data is stored base64 string
-          return data;
-        })
-        .error(function(error) {
-          console.log("Error with image upload: ", error)
-        })
-    };
-    
     var createUser = function(username, password) {
       var deferred = $q.defer();
       $http.post('/auth/signup', {
@@ -46,9 +33,9 @@ angular.module('challengeApp.services', [])
       });
     };
     return {
-      'createUser': createUser,
+      createUser: createUser,
       login: login,
-      'logout': logout
+      logout: logout,
     };
   })
 .factory('ChallengeFactory', function($http) {
@@ -185,6 +172,16 @@ angular.module('challengeApp.services', [])
   };
 })
 .factory('UserFactory', ['$http', function($http){
+  var uploadImage = function(image, userId) {
+  $http.post('/auth/userImage', {
+      image: image,
+      userId: userId
+    })
+    .then(function(data) {
+      return data;
+    })
+};
+
   var getUserInfo = function(username,callback){
     $http.post('/api/1/login_user_info', {
       username: username
@@ -212,6 +209,7 @@ angular.module('challengeApp.services', [])
   };
 
   return {
+    uploadImage:uploadImage,
     getUserChallenges:getUserChallenges,
     getUserInfo: getUserInfo,
     updateUsername:updateUsername
