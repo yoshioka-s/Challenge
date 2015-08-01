@@ -1,6 +1,7 @@
 angular.module('challengeApp.detail', [])
 .controller('DetailController', ['$scope','$location','$state','$stateParams', 'ChallengeFactory','UserFactory',
   function($scope,$location,$state,$stateParams,ChallengeFactory,UserFactory){
+
     $scope.challenge = $stateParams.itemId;
     $scope.userChallenges = [];
     $scope.getChallengeInfo = function(id,callback) {
@@ -25,11 +26,14 @@ angular.module('challengeApp.detail', [])
           for(var j=0;j<players.length;j++){
             if(players[j].id === $scope.userChallenges[i].userId){
               $scope.userChallenges[i].player = players[j];
+              if($scope.userChallenges[i].userId === $scope.loginUser.id){
+                $scope.userIsplaying = true
+              }
+              // $scope.accept = $scope.userChallenges[i]
             }
           }
         }
         console.log($scope.userChallenges)
-        console.log($scope.loginUser)
 
       });
     });
@@ -38,6 +42,15 @@ angular.module('challengeApp.detail', [])
       UserFactory.uploadChallengeImage(myPic.base64,userId,challengeid)
       $state.reload();
     }
+
+    $scope.acceptFunc = function(accept){
+      if(accept){
+        return 'red'
+      }else{
+        return 'green'
+      }
+    }
+
 
 
   $scope.vote = function(player){
