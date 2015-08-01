@@ -60,6 +60,7 @@ console.log('found!!');
         // data is boolean returned from bcrypt compare
 console.log('matching!!');
         if (data) {
+console.log(userObj);
           req.session.user = userObj;
           req.session.save()
         }
