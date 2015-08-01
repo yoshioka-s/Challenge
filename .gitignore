@@ -1,7 +1,7 @@
 /node_modules
 /bower_components
 challenge.sublime-workspace
-
+challengedb.sqlite
 npm-debug.log
 
 sessions/
