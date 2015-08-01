@@ -6,17 +6,20 @@
 
    <img id="previewChallengeImg" ng-show="imageChallenge" data-ng-src="data:image/png;base64,{{imageChallenge.base64}}">
 
-      <div class="fileUpload btn btn-success">
-          <span>Upload Img</span>
+  <div class="challengeStatus">
+    <div class="challengeDetailTitle">Challenge: {{challengeData.title}}</div>
+    <div>Description: {{challengeData.message}}</div>
+    <span>State: {{started}}</span>
+
+    <span ng-show="started==='Completed'">Winner is {{winner.username}}</span>
+  </div>
+
+      <div class="fileUpload btn btn-success challengeImgButton" ng-show="userIsplaying">
+            <span>Upload Img</span>
            <input class="uploadChallengeButton upload" type="file" ng-model="imageChallenge" base-sixty-four-input>
       </div>
 
     <button ng-show="imageChallenge" ng-click="uploadimage(imageChallenge,loginUser.id,challengeData.id)">Update</button>
-
-  <div class="challengeStatus">
-    <span>State: {{started}}</span>
-    <span ng-show="started==='Completed'">Winner is {{winner.username}}</span>
-  </div>
 
 </div>
 
@@ -28,7 +31,7 @@
       <li class="playerItem"
       ng-repeat="player in userChallenges">
         <div class="playerName"> {{player.player.username}} </div>
-        <div>
+        <div class="imgBackground">
           <img data-ng-src="data:image/png;base64,{{player.image}}">
         </div>
         <div class="playerBotton">
