@@ -1,0 +1,20 @@
+<div class="boxed-group">
+  <div class="pageTitle">Public Square</div>
+  <div class="boxed-group-inner-public">
+
+
+      <div class="allChallengeDiv">
+        <ul class="allChallengeDiv">
+          <li class="AllchallengeBox" ng-repeat="challenge in publicChallenges"
+          ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" ng-click="findDetail(challenge)" >
+            <div class="challengeTitle challengeText"> {{challenge.title}} </div>
+            <div class="challengeTime challengeText"> {{challenge.message}} </div>
+          </li>
+        </ul>
+      </div>
+
+
+  </div>
+</div>
+
+

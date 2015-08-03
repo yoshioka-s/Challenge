@@ -8,7 +8,6 @@ angular.module('challengeApp.challenge', [])
   $scope.canBeStarted = false;
   $scope.isParticipant = false;
   $scope.hasAccepted = false;
-
   $scope.comments = [];
   $scope.newComment = '';
 
@@ -64,6 +63,17 @@ angular.module('challengeApp.challenge', [])
       $scope.getChallengeInfo($stateParams.id);
     });
   };
+
+  $scope.upvoteUser = function (targetUserId) {
+    console.log('upvote ', $scope.challengeData.id, targetUserId);
+    ChallengeFactory.upvoteUser($scope.challengeData.id, targetUserId).then(function (upvote) {
+      $scope.challengeData.participants.forEach(function (participant) {
+        if(participant.id === targetUserId){
+          participant.upvote = upvote;
+        }
+      });
+    });
+  };
 }).controller('ChallengeListController', function ($scope, ChallengeFactory) {
   $scope.challenges = [];
 
@@ -74,13 +84,4 @@ angular.module('challengeApp.challenge', [])
   };
   $scope.getChallengeList();
 
-  $scope.upvoteUser = function (targetUserId) {
-    ChallengeFactory.upvoteUser($scope.challengeData.id, targetUserId).then(function (upvote) {
-      $scope.challengeData.participants.forEach(function (participant) {
-        if(participant.id === targetUserId){
-          participant.upvote = upvote;
-        }
-      });
-    });
-  };
 });

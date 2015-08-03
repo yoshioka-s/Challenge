@@ -1,0 +1,26 @@
+<div class="boxed-group-profile">
+  <div class="pageTitle">Profile</div>
+  <div class="boxed-group-inner">
+
+    <div class="edit-profile-avatar">
+      <div>Profile picture</div>
+       <img id="avatar" data-ng-src="data:image/png;base64,{{myPic.base64}}">
+       <div class="fileUpload btn btn-success">
+          <span>Choose Pic</span>
+          <input type="file" class="upload" ng-model="myPic" base-sixty-four-input />
+      </div>
+
+    </div>
+
+    <div class="edit-profile">
+      <div>Name</div>
+      <input class="form-control profile-input" size="20" type="text"
+            placeholder=" {{loginUser.username}}" ng-model="newname">
+    </div>
+
+
+    <button class="btn btn-success" ng-click="update(loginUser.username,loginUser.id,newname,myPic)">SAVE</button>
+  </div>
+</div>
+
+

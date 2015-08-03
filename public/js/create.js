@@ -1,31 +1,42 @@
-angular.module('challengeApp.createChallenge', [])
-
+angular.module('challengeApp.createChallenge', ['isteven-multi-select'])
 .controller('CreateChallengeController', function ($scope, $state, CreateChallengeFactory) {
 
-  $scope.allUsers = [];
+  $scope.participants = [];
   $scope.challengeInfo = {};
   $scope.challengeInfo.participants = [];
   $scope.selectedParticipant = null;
 
   // get array of all users in the database
   CreateChallengeFactory.getAllUsers().then(function(res){
-    $scope.allUsers = res.filter(function(user) {
-      return (user.id !== $scope.user.id);
+    res.filter(function(user) {
+      user.ticked = false;
+      $scope.participants.push(user)
     });
   });
+  console.log($scope.loginUser)
 
-  $scope.addParticipant = function() {
-    if ($scope.challengeInfo.participants.indexOf($scope.selectedParticipant.id) === -1) {
-      $scope.challengeInfo.participants.push($scope.selectedParticipant);
+  $scope.postChallenge = function(challengeInfo){
+    challengeInfo.title = challengeInfo.title|| "untitled";
+    challengeInfo.time = Number(challengeInfo.time) || 300;
+    challengeInfo.wager = Number(challengeInfo.wager) || 100;
+    challengeInfo.message = challengeInfo.message || "no description";
+    challengeInfo.userId = $scope.loginUser.id;
+    $scope.loginUser.coin = $scope.loginUser.coin - challengeInfo.wager;
+    if (Number($scope.loginUser.coin) < Number(challengeInfo.wager)) {
+      console.log('the wager exceeds your coin');
+      $scope.errorMessage = 'make sure the wager does not exceed your coin.';
     }
-  };
+    else{
+        CreateChallengeFactory.postChallenge(challengeInfo,function(data){
+          $scope.challenges.push(data.data.challenge);
+          $state.go("dashboard.detail", {
+            itemId: data.data.challenge.id
+          });
+        })
+    }
 
-  // method that takes the challengeInfo object as argument and calls the factory POST call
-  $scope.postChallenge = function(){
-    CreateChallengeFactory.postChallenge($scope.challengeInfo).then(function(res){
-      $state.go('challenge_view', {'id': res.id});
-    });
-  };
+};
+
 
 
 });

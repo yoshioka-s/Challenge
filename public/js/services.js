@@ -1,21 +1,18 @@
 angular.module('challengeApp.services', [])
-  .factory('Auth', function($http) {
+  .factory('Auth', function($http, $q) {
     var createUser = function(username, password) {
+      var deferred = $q.defer();
       $http.post('/auth/signup', {
           username: username,
           password: password
         })
         .success(function(data) {
-          return data;
+          deferred.resolve(data);
         })
         .error(function(error) {
-          console.log("getUserInfoError: ", error)
+          deferred.reject(error);
         })
-        // return $http.get('/api/1/user_info').then(function(res) {
-        //   return res.data;
-        // }, function(error) {
-        //   throw Error(error);
-        // });
+      return deferred.promise;
     };
 
     var login = function(username, password) {
@@ -26,9 +23,7 @@ angular.module('challengeApp.services', [])
         .then(function(data) {
           return data;
         })
-        // .error(function(error) {
-        //   console.log("login error, ", error);
-        // })
+
     }
     var logout = function() {
       return $http.get('/auth/logout').then(function() {
@@ -38,12 +33,23 @@ angular.module('challengeApp.services', [])
       });
     };
     return {
-      'createUser': createUser,
+      createUser: createUser,
       login: login,
-      'logout': logout
+      logout: logout
     };
   })
-  .factory('ChallengeFactory', function($http) {
+.factory('ChallengeFactory', function($http) {
+
+      var getChallengeUser = function(challengeId,callback){
+      $http.post('/api/1/getChallengeUser', {
+        challengeId: challengeId
+      }).then(function(data) {
+        callback(data);
+      })
+    };
+
+
+
     var getChallengeInfo = function(challengeId) {
       return $http({
         method: 'GET',
@@ -53,10 +59,11 @@ angular.module('challengeApp.services', [])
       });
     };
 
-    var acceptChallenge = function(challengeId) {
+    var acceptChallenge = function(challengeId, userId) {
       return $http({
-        method: 'PUT',
+        method: 'POST',
         url: '/api/1/challenge/' + challengeId + '/accept',
+        data: {user_id: userId}
       }).then(function(resp) {
         return resp.data;
       });
@@ -84,14 +91,6 @@ angular.module('challengeApp.services', [])
       });
     };
 
-    var getUserChallenges = function() {
-      return $http({
-        method: 'GET',
-        url: '/api/1/challenge/user'
-      }).then(function(resp) {
-        return resp.data;
-      });
-    };
 
     var getChallengeList = function() {
       return $http({
@@ -123,11 +122,11 @@ angular.module('challengeApp.services', [])
       });
     };
 
-    var upvoteUser = function(challengeId, targetUserId) {
+    var upvoteUser = function(challengeId, targetUserId, userId) {
       return $http({
         method: 'POST',
-        data: {'targetUserId': targetUserId},
-        url: 'api/challenge/' + challengeId + '/upvote'
+        data: {'targetUserId': targetUserId, user_id: userId},
+        url: 'api/1/challenge/' + challengeId + '/upvote'
       }).then(function (resp) {
         return resp.data;
       });
@@ -135,11 +134,11 @@ angular.module('challengeApp.services', [])
 
 
     return {
+      getChallengeUser:getChallengeUser,
       getChallengeInfo: getChallengeInfo,
       acceptChallenge: acceptChallenge,
       challengeStart: challengeStart,
       challengeComplete: challengeComplete,
-      getUserChallenges: getUserChallenges,
       getChallengeList: getChallengeList,
       getChallengeComments: getChallengeComments,
       postChallengeComment: postChallengeComment,
@@ -167,17 +166,16 @@ angular.module('challengeApp.services', [])
   };
 
   // POST method for creating a challenge
-  var postChallenge = function(challengeInfo) {
+  var postChallenge = function(challengeInfo,callback) {
     challengeInfo.participants = challengeInfo.participants.map(function(participant) {
       return participant.id;
     });
-    return $http({
-      method: 'POST',
-      url: '/api/1/challenge',
-      data: challengeInfo
-    }).then(function(resp) {
-      return resp.data;
-    });
+
+    $http.post('/api/1/create_challenge', {
+      challengeInfo: challengeInfo
+    }).then(function(data) {
+      callback(data);
+    })
   };
 
   return {
@@ -185,4 +183,59 @@ angular.module('challengeApp.services', [])
     getCreatorInfo: getCreatorInfo,
     postChallenge: postChallenge
   };
-});
+})
+.factory('UserFactory', ['$http', function($http){
+  var getUserInfo = function(username,callback){
+    $http.post('/api/1/login_user_info', {
+      username: username
+    }).then(function(data) {
+      callback(data);
+    })
+  };
+
+  var updateUsername = function(userId,newName,callback){
+    $http.post('/api/1/update_username', {
+      userId: userId,
+      newName: newName
+    }).then(function(data) {
+      callback(data)
+    })
+  }
+
+  var getUserChallenges = function(userId,callback) {
+  $http.post('/api/1/challenge/user', {
+      userId:userId
+    }).then(function(data) {
+      callback(data);
+    })
+  };
+
+  var uploadImage = function(image,userId) {
+  $http.post('/api/1/userImage', {
+      image: image,
+      userId:userId
+    })
+    .success(function(data) {
+      return data;
+    })
+  };
+
+  var uploadChallengeImage = function(image,userId,challengeId) {
+    $http.post('/api/1/ChallengeImage', {
+      image: image,
+      userId:userId,
+      challengeId:challengeId
+    })
+    .success(function(data) {
+      return data;
+    })
+  };
+
+  return {
+    uploadChallengeImage:uploadChallengeImage,
+    uploadImage:uploadImage,
+    getUserChallenges:getUserChallenges,
+    getUserInfo: getUserInfo,
+    updateUsername:updateUsername
+  }
+}])

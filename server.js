@@ -1,31 +1,24 @@
 var express = require('express');
 var path = require('path');
-var logger = require('morgan');
+// var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session')
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var api = require('./routes/api');
 var auth = require('./routes/auth');
-
 var session = require('express-session');
-var FileStore = require('session-file-store')(session);
-// var passport = require('./middleware/passport');
-
 var app = express();
+var RedisStore = require('connect-redis')(session);
 
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(session({
-  'store': new FileStore(),
-  'secret': 'all along the watchtower',
-  'resave': false,
-  'saveUninitialized': false
+// app.use(logger('dev'));
+app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
+app.use(cookieSession({
+  secret: 'makersquare'
 }));
-// app.use(passport.initialize());
-// app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
@@ -62,6 +55,8 @@ app.use(function(err, req, res, next) {
   //   error: {}
   // });
 });
+
+
 
 module.exports = app;
 

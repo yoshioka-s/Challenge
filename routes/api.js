@@ -17,37 +17,98 @@ var requires_login = function(req, res, next) {
   next();
 };
 
-/**
- * Endpoint to get information about logged in user
- *
- * Requires login
- */
-router.get('/user_info', requires_login, function(req) {
-  console.log('userinfo', req.body);
+
+router.post('/getChallengeUser',requires_login, function(req, res) {
+  var challengeId = req.body.challengeId;
+  models.UserChallenge.findAll({
+    where: {challengeId: challengeId}
+  }).then(function(data) { res.json(data) })
+})
+
+router.post('/ChallengeImage',requires_login, function(req, res) {
+  var image = req.body.image;
+  var userId = req.body.userId;
+  var challengeId = req.body.challengeId;
+  models.UserChallenge.update({image: image}, {
+      where: {
+        userId: userId,
+        challengeId:challengeId
+      }}).then(function(user) { res.json(user) })
+})
+
+
+
+
+
+router.post('/userImage',requires_login, function(req, res) {
+  var image = req.body.image;
+  var userId = req.body.userId;
+  models.User.update({image: image}, {where: {id: userId}})
+                .then(function(user) { res.json(user) })
+})
+
+
+router.post('/update_username', requires_login, function(req, res) {
+  var userId = req.body.userId;
+  var newName = req.body.newName;
+  models.User.update({username:newName} , {where: {id:userId}})
+             .then(function(user){ res.json(user) });
 });
+
+
+
+  router.post('/user_challenge', requires_login, function(req, res) {
+  var userId = req.body.id;
+  var challengeId = []
+  models.UserChallenge.findAll({
+    where:{
+      userId:userId
+    }
+  }).then(function(challenge){
+    for(var i = 0; i<challenge.length;i++){
+      challengeId.push(challenge[i].dataValues.challengeId);// 1 2 3 10
+    }
+    res.json(challenge);
+  })
+});
+
+
+router.post('/login_user_info', requires_login, function(req, res) {
+  var username = req.body.username;
+  models.User.findOne({
+    where:{
+      username:username
+    }
+  }).then(function(user){
+    res.json(user);
+  });
+});
+
+router.post('/update_username', requires_login, function(req, res) {
+  var userId = req.body.userId;
+  var newName = req.body.newName;
+  models.User.update({username:newName} , {where: {id:userId}})
+             .then(function(user){ res.json(user) });
+});
+
 
 
 /**
  * Endpoint to get a list of all users
  */
 router.get('/allUsers', function(req, res) {
-
   models.User.findAll()
     .then(function(users) {
       var data = [];
       for(var i = 0; i < users.length; i++) {
         data.push({
           id: users[i].get('id'),
-          first_name: users[i].get('first_name'),
-          last_name: users[i].get('last_name'),
-          email: users[i].get('email'),
-          fb_id: users[i].get('fb_id'),
-          date_created: users[i].get('createdAt'),
-          profile_image: users[i].get('profile_image'),
-          updatedAt: users[i].get('updatedAt')
+          username: users[i].get('username'),
+          profile_image: users[i].get('image'),
+          coin: users[i].get('coin')
         });
       }
-
+      console.log(data);
       res.json(data);
     })
     .catch(function(err) {
@@ -57,12 +118,48 @@ router.get('/allUsers', function(req, res) {
 
 
 /**
+ * helper function to get challenge obj from challenge model and participants obj
+ */
+var makeChallengeObj = function (challengeModel, rawParticipants) {
+  var participants = [];
+
+  for(var i = 0; i < rawParticipants.length; i++) {
+    participants.push({
+      id: rawParticipants[i].id,
+      username: rawParticipants[i].username,
+      coin: rawParticipants[i].coin,
+      image: rawParticipants[i].image,
+      accepted: rawParticipants[i].usersChallenges.accepted,
+      upvote: rawParticipants[i].usersChallenges.upvote
+    });
+  }
+
+  return {
+    id: challengeModel.get('id'),
+    title: challengeModel.get('title'),
+    message: challengeModel.get('message'),
+    wager: challengeModel.get('wager'),
+    creator: challengeModel.get('creator'),
+    winner: challengeModel.get('winner'),
+    complete: challengeModel.get('complete'),
+    started: challengeModel.get('started'),
+    date_created: challengeModel.get('createdAt'),
+    date_completed: challengeModel.get('date_completed'),
+    date_started: challengeModel.get('date_started'),
+    participants: participants
+  };
+};
+
+
+
+
+/**
  * Endpoint to get a list of challenges associated with currently logged in user
  *
  * Requires login
  */
-router.get('/challenge/user', requires_login, function(req, res) {
-  models.User.findOne({where: {id: req.user.id}})
+router.post('/challenge/user', requires_login, function(req, res) {
+  models.User.findOne({where: {id: req.body.userId}})
   .then(function(user) {
     user.getChallenges({
         include: [{
@@ -72,37 +169,11 @@ router.get('/challenge/user', requires_login, function(req, res) {
      })
     .then(function(challenges) {
       var data = [];  // Didn't want to use 'response' since that might be confused with http res
-
       for(var i = 0; i < challenges.length; i++) {
-
-        var participants = [];
-
-        for(var j = 0; j < challenges[i].participants.length; j++) {
-          participants.push({
-            first_name: challenges[i].participants[j].get('first_name'),
-            id: challenges[i].participants[j].get('id'),
-            last_name: challenges[i].participants[j].get('last_name'),
-            profile_image: challenges[i].participants[j].get('profile_image'),
-            accepted: challenges[i].participants[j].usersChallenges.accepted
-          });
-        }
-
-        data.push({
-          complete: challenges[i].get('complete'),
-          creator: challenges[i].get('creator'),
-          date_completed: challenges[i].get('date_completed'),
-          date_created: challenges[i].get('createdAt'),
-          date_started: challenges[i].get('date_started'),
-          id: challenges[i].get('id'),
-          message: challenges[i].get('message'),
-          started: challenges[i].get('started'),
-          title: challenges[i].get('title'),
-          wager: challenges[i].get('wager'),
-          winner: challenges[i].get('winner'),
-          participants: participants
-        });
+        var rawParticipants = challenges[i].get('participants', {plain: true});
+        var challengeObj = makeChallengeObj(challenges[i], rawParticipants);
+        data.push(challengeObj);
       }
-
       res.json(data);
     });
   });
@@ -126,32 +197,10 @@ router.get('/challenge/public', function(req, res) {
       var data = [];
       for(var i = 0; i < challenges.length; i++) {
         var rawParticipants = challenges[i].get('participants', {plain: true});
-        var participants = [];
 
-        for(var j = 0; j < rawParticipants.length; j++) {
-          participants.push({
-            id: rawParticipants[i].id,
-            first_name: rawParticipants[i].first_name,
-            last_name: rawParticipants[i].last_name,
-            profile_image: rawParticipants[i].profile_image,
-            accepted: rawParticipants[i].usersChallenges.accepted
-          });
-        }
+        var challengeObj = makeChallengeObj(challenges[i], rawParticipants);
 
-        data.push({
-          id: challenges[i].get('id'),
-          title: challenges[i].get('title'),
-          message: challenges[i].get('message'),
-          wager: challenges[i].get('wager'),
-          creator: challenges[i].get('creator'),
-          winner: challenges[i].get('winner'),
-          complete: challenges[i].get('complete'),
-          started: challenges[i].get('started'),
-          date_created: challenges[i].get('createdAt'),
-          date_completed: challenges[i].get('date_completed'),
-          date_started: challenges[i].get('date_started'),
-          participants: participants
-        });
+        data.push(challengeObj);
       }
 
       res.json(data);
@@ -166,6 +215,7 @@ router.get('/challenge/public', function(req, res) {
  * Endpoint to get single challenge specified by id
  */
 router.get('/challenge/:id', function(req, res) {
+  console.log('GET A CHALLENGE');
   var target_id = parseInt(req.params.id);
   // var data = req.db.Challenge.findById(req.params.id);
 
@@ -178,33 +228,10 @@ router.get('/challenge/:id', function(req, res) {
     })
     .then(function(challenge) {
       var rawParticipants = challenge.get('participants', {plain: true});
-      var participants = [];
 
-      for(var i = 0; i < rawParticipants.length; i++) {
-        participants.push({
-          id: rawParticipants[i].id,
-          first_name: rawParticipants[i].first_name,
-          last_name: rawParticipants[i].last_name,
-          profile_image: rawParticipants[i].profile_image,
-          accepted: rawParticipants[i].usersChallenges.accepted,
-          upvote: rawParticipants[i].usersChallenges.upvote
-        });
-      }
+      var challengeObj = makeChallengeObj(challenge, rawParticipants);
 
-      res.json({
-        id: challenge.get('id'),
-        title: challenge.get('title'),
-        message: challenge.get('message'),
-        wager: challenge.get('wager'),
-        creator: challenge.get('creator'),
-        winner: challenge.get('winner'),
-        complete: challenge.get('complete'),
-        started: challenge.get('started'),
-        date_created: challenge.get('createdAt'),
-        date_started: challenge.get('date_started'),
-        date_completed: challenge.get('date_completed'),
-        participants: participants
-      });
+      res.json(challengeObj);
     });
 });
 
@@ -218,6 +245,7 @@ var challenge_form_is_valid = function(form) {
   var min_text_length = 3;
 
   required_fields.forEach(function(field) {
+    console.log(form[field]);
     if (form[field] === '' || form[field].length < min_text_length) {
       valid = false;
     }
@@ -232,12 +260,10 @@ var challenge_form_is_valid = function(form) {
  *
  * Requires login
  */
-router.post('/challenge', requires_login, function(req, res) {
-  var form = req.body;
-  // FIXME mocking user
-  var userId = 1;
-  console.log('POST CHALLENGE ');
-  console.log(form);
+router.post('/create_challenge', requires_login, function(req, res) {
+  var form = req.body.challengeInfo;
+
+  console.log(req.body.challengeInfo);
 
   // validate form
   if (!challenge_form_is_valid(form)) {
@@ -245,132 +271,40 @@ router.post('/challenge', requires_login, function(req, res) {
     return;
   }
 
-  // Create the challenge
-  console.log('CREATE CHALLENGE!');
-  console.log({
-    title: form.title,
-    message: form.message,
-    wager: form.wager,
-    creator: userId,
-    date_started: Date.now()
-  });
   models.Challenge.create({
     title: form.title,
     message: form.message,
     wager: form.wager,
-    creator: userId,
-    date_started: Date.now()
+    date_started: Date.now(),
+    time: form.time
   })
   .then(function(challenge) {
-    console.log('CREATED!');
+    // insert into usersChallenges
+    form.participants = form.participants.filter(function (id) {
+      return id !== form.userId;
+    });
     challenge.addParticipants(form.participants); // form.participants should be an array
-    console.log('addParticipants 1');
-    challenge.addParticipant([userId], {accepted: true}); // links creator of challenge
-console.log('addParticipants 2');
-    res.status(201).json({
-      id: challenge.id
+    challenge.addParticipant([form.userId], {accepted: true}); // links creator of challenge
+
+    // take the wager from creater
+    models.User.update({
+      coin: Sequelize.literal('coin -' + form.wager)
+    }, { where: { id: form.userId }})
+    .then(function () {
+      res.status(200).json({
+        challenge: challenge
+      });
     });
   });
 });
 
-
-/**
- * Endpoint to set a challenge to started
- *
- * Requires login
- */
-router.put('/challenge/:id/started', requires_login, function(req, res) {
+router.post('/challenge/:id/accept', requires_login, function(req, res) {
   var target_id = parseInt(req.params.id);
-  var user_id = req.user.id;
+  console.log('ACCEPT!!!!!!!!');
+  console.log(req.body);
+  var user_id = req.body.user_id;
 
-  models.Challenge.update({
-    started: true,
-    date_started: Date.now()
-  }, {
-    where: {
-      id: target_id,
-      creator: user_id,
-      started: false,
-      complete: false
-    }
-  })
-  .then(function(numChallenges) { // Returns an array with element '0' being number of
-    if(numChallenges[0] > 0) {    // rows affected (should not be greater than 1 in our case)
-      models.Challenge.findOne({
-        where: {
-          id: target_id,
-          started: true
-        }
-      })
-      .then(function(/*challenge*/) { // May want to do something with newly started challenge
-          res.status(201).json({'success': true});
-      });
-    } else {
-      res.status(400).json({'error': 'error at /challenge/:id/started',
-        'message': 'Could not update challenge to "started" or could not find challenge'});
-    }
-  })
-  .catch(function(error) {
-    if(error) {
-      res.status(400).json({'error': error,
-        'message': 'database update failed at /challenge/:id/started'});
-    }
-  });
-});
-
-
-/**
- * Endpoint to set a winner and complete challenge
- *
- * Requires login
- */
-router.put('/challenge/:id/complete', requires_login, function(req, res) {
-  var target_id = parseInt(req.params.id);
-  var winner;
-  if(req.body.winner === undefined) {
-    winner = null;
-  } else {
-    winner = parseInt(req.body.winner);
-  }
-
-  models.Challenge.update({
-    winner: winner,
-    complete: true
-  }, {
-    where: {
-      id: target_id,
-      creator: req.user.id,
-      started: true,
-      complete: false
-    }
-  })
-  .then(function(numChallenges) {
-    if(numChallenges[0] > 0) {
-      models.Challenge.findOne({
-        where: {id: target_id},
-        complete: true
-      })
-      .then(function(/*challenge*/) {  // May want to do something with newly created challenge
-          res.status(201).json({'success': true});
-      });
-    } else {
-      res.status(400).json({
-        'error': 'error at /challenge/:id/complete',
-        'message': 'could not update challenge to complete or could not find challenge'
-      });
-    }
-  })
-  .catch(function(error) {
-    res.status(400).json({'error': error,
-      'message': 'Database update failed at /challenge/:id/complete'
-    });
-  });
-});
-
-router.put('/challenge/:id/accept', requires_login, function(req, res) {
-  var target_id = parseInt(req.params.id);
-  var user_id = req.user.id;
-
+  // update UsersChallenges.accepted to true
   models.UserChallenge.update({
     accepted: true
   }, {
@@ -387,11 +321,59 @@ router.put('/challenge/:id/accept', requires_login, function(req, res) {
       }
     })
     .then(function(userChallenge) {
-      if (userChallenge.get('accepted')) {
-        res.status(201).json({'success': true});
-      } else {
+      if (!userChallenge.get('accepted')) {
         res.status(200).json({'success': false});
       }
+      console.log('updated: ', userChallenge);
+
+      models.Challenge.findOne({
+        where: {
+          id: target_id
+        }
+      })
+      .then(function (challenge) {
+
+        // update users.coin
+        console.log('found: ', challenge);
+
+        models.User.update({
+          coin: Sequelize.literal('coin -' + challenge.get('wager'))
+        }, {
+          where: {
+            id: user_id
+          }
+        });
+
+        // update challenges.total_wager
+        var newData = {
+        };
+
+        // check if this is there is unparticipate users
+        models.UserChallenge.count({
+          where: {
+            challengeId: target_id,
+            accepted: false
+          }
+        }).then(function (count) {
+
+          if (!count) {
+            // if there is no more participants to accept, start the challenge!
+            console.log('START THE CHALLENGE!');
+            newData.started = 'Started';
+            newData.date_started = Sequelize.literal('CURRENT_TIMESTAMP');
+            newData.date_completed = Sequelize.literal('datetime("now", "+' + challenge.get('time') + ' Seconds")');
+          }
+
+          models.Challenge.update(newData, {
+            where: {
+              id: target_id
+            }
+          }).then(function () {
+            res.status(201).json({'success': true});
+            console.log('SUCCESS');
+          });
+        });
+      });
     });
   });
 });
@@ -418,8 +400,7 @@ router.get('/challenge/:id/comments', function(req, res) {
         'date_created': comment.createdAt,
         'user': {
           'id': comment.user.id,
-          'first_name': comment.user.first_name,
-          'last_name': comment.user.last_name,
+          'username': comment.user.username,
           'profile_image': comment.user.profile_image
         }
       });
@@ -448,77 +429,64 @@ router.post('/challenge/:id/comments', requires_login, function(req, res) {
 
 router.post('/challenge/:id/upvote', requires_login, function(req, res) {
   var challengeId = parseInt(req.params.id);
-  // FIXME mocking user
-  var userId = req.body.targetUserId;
+  var targetId = req.body.targetUserId;
+  var userId = req.body.user_id;
+  console.log('UPVOTE!! ', userId);
+  // var userId = req.session.user[0].id;
+  models.Upvote.findOne({
+    where: {
+      userId: userId,
+      challengeId: challengeId}
+  }).then(function (upvote) {
+    if (upvote) {
+      models.Upvote.update({
+        vote: targetId
+      }, {
+        where: {
+          id: upvote.get('id')
+        }
+      }
+      ).then(function () {
+        // update userschallenge
+        // substract and add
+        updateUserChallengeUpvote(challengeId, upvote.get('vote'), -1);
+        updateUserChallengeUpvote(challengeId, targetId, 1)
+        .then(function (vote) {
+          res.status(200).json();
+        });
+      });
+    } else {
+      models.Upvote.create({
+        userId: userId,
+        challengeId: challengeId,
+        vote: targetId
+      }).then(function () {
+        // update userschallenge
+        // add 1
+        updateUserChallengeUpvote(challengeId, targetId, 1)
+        .then(function () {
+          res.status(200).json();
+        });
+      });
+    }
+  });
+});
 
-  models.UserChallenge.findOne({
+function updateUserChallengeUpvote(challengeId, userId, number) {
+  var numString = number < 0 ? '' + number : '+' + number;
+  return models.UserChallenge.update({
+    upvote: Sequelize.literal('upvote ' + numString)
+  }, {
     where: {
       challengeId: challengeId,
       userId: userId
     }
-  }).then(function (userChallenge) {
-    console.log(userChallenge);
-    var upvote = userChallenge.get('upvote');
-    console.log('upvote: ', upvote);
-    models.UserChallenge.update({
-      upvote: upvote +1
-    }, {
-      where: {
-        challengeId: challengeId,
-        userId: userId
-      }
-    }).then(function () {
-      res.status(200).json({'success': true});
-    });
   });
-});
+}
+
+
 
 module.exports = {
   'router': router,
   'challenge_form_is_valid': challenge_form_is_valid
 };
-
-function updateWinner(req, res) {
-  models.Challenge.findAll({
-    limit: 10,
-    order: [['createdAt', 'DESC']], // must pass an array of tuples
-    where: {
-      winner: 0
-      // date_completed: {
-      //   lt: Sequelize.NOW
-      // }
-    },
-    include: [{
-      model: models.User,
-      as: 'participants'
-    }]
-  }).then(function (challenges) {
-
-    // set winner to each challenges
-    challenges.forEach(function (challenge) {
-      var newWinner = 0;
-
-      // compare each users upvote to get the winner
-      challenge.get('participants').reduce(function (max, participant) {
-
-        if (max < participant.usersChallenges.upvote){
-          newWinner = participant.id;
-          console.log('newWinner', newWinner);
-          return participant.upvote;
-        }
-        return max;
-      }, 0);
-      console.log('updated winner of challenge ' + challenge.get('id'));
-      console.log('newWinner', newWinner);
-      
-      models.Challenge.update({
-        winner: newWinner
-      },{
-        where: {
-          id: challenge.get('id')
-        }
-      });
-    });
-    res.status(200).send();
-  });
-}

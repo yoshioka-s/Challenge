@@ -1,16 +1,40 @@
-<div class="leftSide">
-  <div id="allChallenges">
-    <div ui-view></div>
+<div class="dashboard">
+  <div class="leftSide">
+      <div id="ui-view" ui-view></div>
+  </div>
+
+
+  <div class="rightSide">
+    <div class="upRight">
+    <img id="profileImg" data-ng-src="data:image/png;base64,{{loginUser.image}}">
+      <div id="greeting"> {{loginUser.username}} </div>
+      <div id="coindev">
+        <img id="coinimg" src="./img/coin.png">
+        <span id='coin'>$ {{loginUser.coin}} </span>
+      </div>
+    </div>
+
+      <div class="profileButton">
+        <div class="dashboardButton Button1" ng-click="showAllChallenges()">Public</div>
+        <div class="dashboardButton Button2" ng-click="showRanking()">Ranking</div>
+        <div class="dashboardButton Button3" ng-click="createChallenge()">Create</div>
+        <div class="dashboardButton Button4" ng-click="editProfile()">Profile</div>
+        <div class="dashboardButton Button5" ng-click="logout()">Logout</div>
+      </div>
+
+
+    <div class="downRight">
+      <div class="challengeDiv">
+        <ul>
+          <li class="challengeBox" ng-repeat="challenge in challenges | limitTo:challengeNumber"  ng-click="findDetail(challenge)" ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}">
+            <div class="challengeTitle challengeText"> {{challenge.title}} </div>
+            <div class="challengeTime challengeText"> {{challenge.message}} </div>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
   </div>
 </div>
 
-
-<div class="rightSide">
-  <div class="upRight">
-
-  </div>
-
-  <div class="downRight">
-
-  </div>
-</div>
