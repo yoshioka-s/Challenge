@@ -1,12 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var models = require('../models');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt');
-var session = require('express-session');
-var sequelize = require('../models/index.js')
+var sequelize = require('../models/index.js');
 var compare = Promise.promisify(bcrypt.compare);
-var app = express();
 
 router.post('/signup', function(req, res) {
   console.log('got in with test', req.body);
@@ -32,13 +29,13 @@ router.post('/signup', function(req, res) {
               password: hash
             }).then(function(obj) {
               res.send('done');
-            })
-        })
-      })
+            });
+        });
+      });
     } else {
       res.send('username already exists');
     }
-  })
+  });
 });
 
 router.post('/login', function(req, res) {
@@ -58,18 +55,18 @@ router.post('/login', function(req, res) {
       .then(function(data) {
         // data is boolean returned from bcrypt compare
         if (data) {
-          req.session.user = userObj;
-          req.session.save()
+          console.log(userObj);
+          req.session.save();
         }
         res.send(data);
-      })
-  })
+      });
+  });
 });
 
 router.get('/logout', function(req, res) {
   req.session = null;
   res.send('yo delete dat cookie');
-})
+});
 
 
 module.exports = {

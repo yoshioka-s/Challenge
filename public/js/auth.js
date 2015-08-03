@@ -8,7 +8,7 @@ angular.module('challengeApp.auth', [])
       $scope.swapAuth = function() {
         $scope.showLogin = !$scope.showLogin;
         $scope.showSignup = !$scope.showSignup;
-      }
+      };
 
       $scope.signup = function(username, password) {
         $scope.user.username = username;
@@ -20,8 +20,8 @@ angular.module('challengeApp.auth', [])
           } else {
             $scope.swapAuth();
           }
-        })
-      }
+        });
+      };
 
       $scope.login = function(username, password) {
         $scope.user.username = username;
@@ -29,9 +29,9 @@ angular.module('challengeApp.auth', [])
         var name = username;
         Auth.login(username, password)
           .then(function(data) {
-            if (data.data === "true") {
-              sessionStorage.setItem("loggedIn", "true")
-              $state.go("dashboard", {
+            if (data.data === 'true') {
+              sessionStorage.setItem('loggedIn', 'true');
+              $state.go('dashboard', {
                 username: username
               });
 
@@ -39,14 +39,14 @@ angular.module('challengeApp.auth', [])
               console.log('Incorrect password');
             }
           });
-      }
+      };
 
       $scope.logout = function() {
-        sessionStorage.removeItem("loggedIn")
+        sessionStorage.removeItem('loggedIn');
         console.log('logout');
         Auth.logout();
         $location.path('/auth');
-      }
+      };
 
     }
   ]);

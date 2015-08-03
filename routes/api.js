@@ -120,7 +120,8 @@ router.get('/allUsers', function(req, res) {
 /**
  * helper function to get challenge obj from challenge model and participants obj
  */
-var makeChallengeObj = function (challengeModel, rawParticipants) {
+var makeChallengeObj = function (challengeModel) {
+  var rawParticipants = challengeModel.get('participants', {plain: true});
   var participants = [];
 
   for(var i = 0; i < rawParticipants.length; i++) {
@@ -170,8 +171,7 @@ router.post('/challenge/user', requires_login, function(req, res) {
     .then(function(challenges) {
       var data = [];  // Didn't want to use 'response' since that might be confused with http res
       for(var i = 0; i < challenges.length; i++) {
-        var rawParticipants = challenges[i].get('participants', {plain: true});
-        var challengeObj = makeChallengeObj(challenges[i], rawParticipants);
+        var challengeObj = makeChallengeObj(challenges[i]);
         data.push(challengeObj);
       }
       res.json(data);
@@ -193,16 +193,11 @@ router.get('/challenge/public', function(req, res) {
       }]
     })
     .then(function(challenges) {
-
       var data = [];
       for(var i = 0; i < challenges.length; i++) {
-        var rawParticipants = challenges[i].get('participants', {plain: true});
-
-        var challengeObj = makeChallengeObj(challenges[i], rawParticipants);
-
+        var challengeObj = makeChallengeObj(challenges[i]);
         data.push(challengeObj);
       }
-
       res.json(data);
     })
     .catch(function(err) {
@@ -227,10 +222,7 @@ router.get('/challenge/:id', function(req, res) {
       }]
     })
     .then(function(challenge) {
-      var rawParticipants = challenge.get('participants', {plain: true});
-
-      var challengeObj = makeChallengeObj(challenge, rawParticipants);
-
+      var challengeObj = makeChallengeObj(challenge);
       res.json(challengeObj);
     });
 });
@@ -301,7 +293,6 @@ router.post('/create_challenge', requires_login, function(req, res) {
 router.post('/challenge/:id/accept', requires_login, function(req, res) {
   var target_id = parseInt(req.params.id);
   console.log('ACCEPT!!!!!!!!');
-  console.log(req.body);
   var user_id = req.body.user_id;
 
   // update UsersChallenges.accepted to true
