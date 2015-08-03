@@ -22,8 +22,8 @@ router.post('/getChallengeUser',requires_login, function(req, res) {
   var challengeId = req.body.challengeId;
   models.UserChallenge.findAll({
     where: {challengeId: challengeId}
-  }).then(function(data) { res.json(data) })
-})
+  }).then(function(data) { res.json(data); });
+});
 
 router.post('/ChallengeImage',requires_login, function(req, res) {
   var image = req.body.image;
@@ -33,8 +33,8 @@ router.post('/ChallengeImage',requires_login, function(req, res) {
       where: {
         userId: userId,
         challengeId:challengeId
-      }}).then(function(user) { res.json(user) })
-})
+      }}).then(function(user) { res.json(user); });
+});
 
 
 
@@ -44,22 +44,22 @@ router.post('/userImage',requires_login, function(req, res) {
   var image = req.body.image;
   var userId = req.body.userId;
   models.User.update({image: image}, {where: {id: userId}})
-                .then(function(user) { res.json(user) })
-})
+                .then(function(user) { res.json(user); });
+});
 
 
 router.post('/update_username', requires_login, function(req, res) {
   var userId = req.body.userId;
   var newName = req.body.newName;
   models.User.update({username:newName} , {where: {id:userId}})
-             .then(function(user){ res.json(user) });
+             .then(function(user){ res.json(user); });
 });
 
 
 
   router.post('/user_challenge', requires_login, function(req, res) {
   var userId = req.body.id;
-  var challengeId = []
+  var challengeId = [];
   models.UserChallenge.findAll({
     where:{
       userId:userId
@@ -69,7 +69,7 @@ router.post('/update_username', requires_login, function(req, res) {
       challengeId.push(challenge[i].dataValues.challengeId);// 1 2 3 10
     }
     res.json(challenge);
-  })
+  });
 });
 
 
@@ -88,7 +88,7 @@ router.post('/update_username', requires_login, function(req, res) {
   var userId = req.body.userId;
   var newName = req.body.newName;
   models.User.update({username:newName} , {where: {id:userId}})
-             .then(function(user){ res.json(user) });
+             .then(function(user){ res.json(user); });
 });
 
 
@@ -350,6 +350,7 @@ router.post('/challenge/:id/accept', requires_login, function(req, res) {
           if (!count) {
             // if there is no more participants to accept, start the challenge!
             console.log('START THE CHALLENGE!');
+            console.log('CURRENT_TIMESTAMP + ' + challenge.get('time') + ' * "1 second"::interval');
             newData.started = 'Started';
             newData.date_started = Sequelize.literal('CURRENT_TIMESTAMP');
             newData.date_completed = Sequelize.literal('CURRENT_TIMESTAMP + ' + challenge.get('time') + ' * "1 second"::interval');
