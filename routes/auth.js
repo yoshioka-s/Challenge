@@ -55,7 +55,6 @@ router.post('/login', function(req, res) {
       .then(function(data) {
         // data is boolean returned from bcrypt compare
         if (data) {
-          console.log(userObj);
           req.session.save();
         }
         res.send(data);

@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 var orm = new Sequelize(process.env.DATABASE_URL || 'sqlite://ChallengeDb.sqlite');
-
+console.log('URL DATABASE', process.env.DATABASE_URL);
 orm.authenticate()
   // .then(function() {
   //   console.log('Connection to db successful!');
