@@ -353,7 +353,7 @@ router.post('/challenge/:id/accept', requires_login, function(req, res) {
             console.log('CURRENT_TIMESTAMP + ' + challenge.get('time') + ' * "1 second"::interval');
             newData.started = 'Started';
             newData.date_started = Sequelize.literal('CURRENT_TIMESTAMP');
-            newData.date_completed = Sequelize.literal('CURRENT_TIMESTAMP + ' + challenge.get('time') + ' * "1 second"::interval');
+            newData.date_completed = Sequelize.literal('CURRENT_TIMESTAMP + ' + challenge.get('time') + " * '1 second'::interval");
           }
 
           models.Challenge.update(newData, {
@@ -443,7 +443,7 @@ router.post('/challenge/:id/upvote', requires_login, function(req, res) {
         // substract and add
         updateUserChallengeUpvote(challengeId, upvote.get('vote'), -1);
         updateUserChallengeUpvote(challengeId, targetId, 1)
-        .then(function (vote) {
+        .then(function () {
           res.status(200).json();
         });
       });
